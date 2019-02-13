@@ -1,0 +1,23 @@
+{
+  "name": "ipfs-deploy",
+  "version": "0.0.1",
+  "description": "Pin directory locally and send cid to pinning service to be always available",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agentofuser/ipfs-deploy.git"
+  },
+  "keywords": [
+    "ipfs",
+    "deploy"
+  ],
+  "author": "Agent of User",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/agentofuser/ipfs-deploy/issues"
+  },
+  "homepage": "https://github.com/agentofuser/ipfs-deploy#readme"
+}
