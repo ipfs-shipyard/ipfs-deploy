@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/agentofuser/ipfs-deploy/issues"
   },
-  "homepage": "https://github.com/agentofuser/ipfs-deploy#readme"
+  "homepage": "https://github.com/agentofuser/ipfs-deploy#readme",
+  "dependencies": {
+    "ipfs": "^0.35.0-rc.4",
+    "pinata-sdk": "^0.1.7"
+  }
 }
