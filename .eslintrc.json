@@ -1,0 +1,27 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+
+  "env": {
+    "es6": true
+  },
+  "extends": ["prettier"],
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": false
+      }
+    ]
+  }
+}
