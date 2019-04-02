@@ -51,7 +51,8 @@
   "scripts": {
     "format": "npx prettier --write ./**/*.{js,json,md,mdx,html,css}",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "semantic-release": "semantic-release"
+    "semantic-release": "node -r dotenv/config `which npx` semantic-release -d",
+    "deploy": "node -r dotenv/config `which npx` semantic-release"
   },
   "husky": {
     "hooks": {
