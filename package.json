@@ -75,5 +75,9 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "sgc": {
+    "emoji": true,
+    "lowercaseTypes": true
   }
 }
