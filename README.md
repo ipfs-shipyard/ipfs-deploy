@@ -38,10 +38,8 @@ These are free services subject to their terms. Not a decentralization nirvana
 by any stretch of the imagination, but a nice way to get started quickly with a
 blog, static website, or frontend web app.
 
-If you use this to deploy your website, send a pull request and I'll add it to
-the README.
-
-### Any optional sections
+If you use this package to deploy your website, send a pull request and I'll
+add it to the README.
 
 ## Install
 
@@ -78,7 +76,7 @@ $ echo '.env' >> .gitignore
 
 Put this somewhere in a `deploy.js` file:
 
-```
+```javascript
 const ipfsDeploy = require(@agentofuser/ipfs-deploy)
 ipfsDeploy()
 ```
@@ -93,6 +91,12 @@ Add a deploy command to your `package.json`:
 //  ⋮
   }
 //  ⋮
+```
+
+And when you have built your website into `./public/`, run:
+
+```
+$ npm run deploy
 ```
 
 ## Contributing
