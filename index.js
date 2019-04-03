@@ -2,6 +2,7 @@ const IPFSFactory = require('ipfsd-ctl')
 const which = require('which')
 const clipboardy = require('clipboardy')
 const pinataSDK = require('@pinata/sdk')
+const got = require('got')
 const updateCloudflareDnslink = require('dnslink-cloudflare')
 const ora = require('ora')
 
@@ -49,14 +50,14 @@ async function main() {
 
   const spinner = ora()
   spinner.start()
-  spinner.info('☎️Connecting to local IPFS daemon...')
+  spinner.info('☎️ Connecting to local IPFS daemon...')
 
   df.spawn({ disposable: false, init: false, start: false }, (err, ipfsd) => {
     if (err) throw err
 
     ipfsd.start([], (err2, ipfsClient) => {
       if (err2) throw err2
-      spinner.succeed('📶  Connected.')
+      spinner.succeed('📶 Connected.')
 
       spinner.info('💾 Adding and pinning ./public/ locally...')
       ipfsClient.addFromFs(
@@ -66,7 +67,7 @@ async function main() {
           if (err3) throw err3
 
           const { hash } = localPinResult[localPinResult.length - 1]
-          spinner.succeed(`#️⃣ Added locally as ${hash}.`)
+          spinner.succeed(`🔗 Added locally as ${hash}.`)
 
           ipfsClient.id((err4, { addresses }) => {
             if (err4) throw err4
@@ -93,11 +94,27 @@ async function main() {
               process.env.PINATA_SECRET_API_KEY
             )
 
-            spinner.info('📠 Requesting remote pin to Pinata.cloud...')
+            spinner.info('📠 Requesting remote pin to pinata.cloud...')
             pinata
               .pinHashToIPFS(hash, pinataOptions)
-              .then(_pinataPinResult => {
+              .then(async _pinataPinResult => {
                 spinner.succeed("📌 It's pinned to Pinata now.")
+
+                try {
+                  spinner.info('📠 Requesting remote pin to infura.io...')
+                  const infuraResponse = await got(
+                    `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${hash}` +
+                      '&recursive=true'
+                  )
+
+                  if (infuraResponse.statusCode === 200) {
+                    spinner.succeed("📌 It's pinned to Infura now.")
+                  } else {
+                    spinner.fail("Pinning to Infura didn't work.")
+                  }
+                } catch (e) {
+                  console.error(e)
+                }
 
                 clipboardy.writeSync(hash)
                 spinner.succeed(`📋 Hash ${hash} copied to clipboard.`)

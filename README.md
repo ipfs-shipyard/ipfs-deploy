@@ -26,9 +26,10 @@ control.
 
 ## Background
 
-So far, ipfs-deploy relies on [Pinata.cloud](https://pinata.cloud) as the
-pinning service and [Cloudflare](https://cloudflare.com) as the DNS provider
-and IPFS gateway. Hopefully those will be configurable in the future.
+So far, ipfs-deploy relies on [Pinata.cloud](https://pinata.cloud) and
+[Infura.io](https://infura.io) as the pinning services and
+[Cloudflare](https://cloudflare.com) as the DNS provider. Hopefully those will
+be configurable in the future.
 
 Cloudflare doesn't host the content itself, so Pinata is needed if you don't
 want to rely on your computer's IPFS daemon's availability to serve your
@@ -57,6 +58,8 @@ https://www.cloudflare.com/distributed-web-gateway/
 and:
 
 https://pinata.cloud/documentation#GettingStarted
+
+(Infura doesn't require creating an account.)
 
 Then copy over `.env.sample` to `.env` and fill out your credentials:
 
