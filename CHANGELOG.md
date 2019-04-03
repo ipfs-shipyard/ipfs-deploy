@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/agentofuser/ipfs-deploy/compare/v1.0.0...v1.1.0) (2019-04-03)
+
+### Bug Fixes
+
+- fix ora newlines
+  ([4335458](https://github.com/agentofuser/ipfs-deploy/commit/4335458))
+
+### Features
+
+- deploy to infura.io besides pinata.cloud
+  ([3502bc7](https://github.com/agentofuser/ipfs-deploy/commit/3502bc7))
+
 # 1.0.0 (2019-04-03)
 
 ### Features
