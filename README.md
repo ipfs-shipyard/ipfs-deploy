@@ -17,6 +17,7 @@ deploy a static website to IPFS.
 - [Usage](#usage)
 - [API](#api)
 - [Contributing](#contributing)
+- [Who's Using](#users)
 - [License](#license)
 
 ## Security
@@ -109,6 +110,11 @@ PRs accepted.
 Small note: If editing the Readme, please conform to the
 [standard-readme](https://github.com/RichardLitt/standard-readme)
 specification.
+
+## Users
+
+- [agentofuser.com](https://agentofuser.com)
+- [interplanetarygatsby.com](https://interplanetarygatsby.com)
 
 ## License
 
