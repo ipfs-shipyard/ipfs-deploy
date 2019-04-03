@@ -3,7 +3,7 @@
   "version": "0.0.0-development",
   "description": "Pin directory locally, send hash to pinning service, and update DNS",
   "author": "Agent of User",
-  "license": "MIT",
+  "license": "(BlueOak-1.0.0 OR BSD-2-Clause-Patent)",
   "bugs": {
     "url": "https://github.com/agentofuser/ipfs-deploy/issues"
   },
