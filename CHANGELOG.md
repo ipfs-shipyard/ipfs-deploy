@@ -1,3 +1,18 @@
+# [2.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v1.2.0...v2.0.0) (2019-04-04)
+
+### Features
+
+- Parameterize binary and library
+  ([53ce7a6](https://github.com/agentofuser/ipfs-deploy/commit/53ce7a6))
+
+### BREAKING CHANGES
+
+- - Ask for path to deploy when running binary
+
+* Move dotenv call from library to binary
+* Use IPFS_DEPLOY prefix in env variables and change their names
+* Change deploy() signature to take credentials & domain as parameters
+
 # [1.2.0](https://github.com/agentofuser/ipfs-deploy/compare/v1.1.0...v1.2.0) (2019-04-04)
 
 ### Features
