@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://asciinema.org/a/238920">
-    <img width="600" src="https://raw.githubusercontent.com/agentofuser/ipfs-deploy/master/docs/ipfs-deploy.svg">
+    <img width="600" src="https://www.gitcdn.xyz/repo/agentofuser/ipfs-deploy/master/docs/ipfs-deploy-demo.svg">
   </a>
 </p>
 
