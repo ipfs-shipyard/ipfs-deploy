@@ -63,10 +63,11 @@ npm install --save-dev @agentofuser/ipfs-deploy
 npm install -g @agentofuser/ipfs-deploy
 ```
 
-You might want to alias that in your terminal. I added this to my `~/.bashrc`:
+You can call it either as `ipd` or as `ipfs-deploy`:
 
 ```bash
-alias ipd='ipfs-deploy public'
+ipd plublic/
+ipfs-deploy public/
 ```
 
 ### No install:
@@ -118,13 +119,13 @@ Assuming your website's production build is at the `public` subdirectory
 the project's root:
 
 ```bash
-ipfs-daemon public
+ipd public
 ```
 
 To see more details about command line usage, run:
 
 ```bash
-ipfs-deploy --help
+ipd --help
 ```
 
 You can optionally add a deploy command to your `package.json`:

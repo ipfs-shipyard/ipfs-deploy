@@ -26,7 +26,8 @@
   },
   "main": "index.js",
   "bin": {
-    "ipfs-deploy": "bin/ipfs-deploy.js"
+    "ipfs-deploy": "bin/ipfs-deploy.js",
+    "ipd": "bin/ipfs-deploy.js"
   },
   "dependencies": {
     "@pinata/sdk": "^1.0.16",
