@@ -5,10 +5,12 @@ const pinataSDK = require('@pinata/sdk')
 const got = require('got')
 const updateCloudflareDnslink = require('dnslink-cloudflare')
 const ora = require('ora')
+const chalk = require('chalk')
+const openUrl = require('open')
 
 require('dotenv').config()
 
-async function updateDns(hash) {
+async function doUpdateDns(hash) {
   const key = process.env.CF_API_KEY
   const email = process.env.CF_API_EMAIL
   const domain = process.env.SITE_DOMAIN
@@ -16,7 +18,7 @@ async function updateDns(hash) {
   const spinner = ora()
 
   if (!key || !email || !domain || !hash) {
-    throw new Error('Missing information for updateDns()')
+    throw new Error('Missing information for doUpdateDns()')
   }
 
   const api = {
@@ -31,17 +33,29 @@ async function updateDns(hash) {
   }
 
   try {
-    spinner.info('📡 Beaming new hash to DNS provider...')
+    spinner.info(
+      `📡 Beaming new hash to DNS provider ${chalk.whiteBright(
+        'Cloudflare'
+      )}...`
+    )
     const content = await updateCloudflareDnslink(api, opts)
-    spinner.succeed(`🙌 SUCCESS! Updated TXT ${opts.record} to ${content}.`)
-    spinner.succeed('🌐 Your website is deployed now :)')
+    spinner.succeed('🙌 SUCCESS!')
+    spinner.info(`Updated TXT ${chalk.whiteBright(opts.record)} to:`)
+    spinner.info(`${chalk.whiteBright(content)}.`)
+    spinner.succeed('🌐 Your website is deployed now.')
   } catch (err) {
     console.log(err)
     process.exit(1)
   }
 }
 
-async function main() {
+async function deploy({
+  updateDns = true,
+  open = false,
+  // pinners = ['pinata', 'infura'], TODO
+  // pinRemotely = true, TODO
+  publicDirPath = 'public',
+} = {}) {
   const ipfsBinAbsPath =
     which.sync('ipfs', { nothrow: true }) ||
     which.sync('jsipfs', { nothrow: true })
@@ -57,17 +71,25 @@ async function main() {
 
     ipfsd.start([], (err2, ipfsClient) => {
       if (err2) throw err2
-      spinner.succeed('📶 Connected.')
+      // spinner.succeed('📶 Connected.')
 
-      spinner.info('💾 Adding and pinning ./public/ locally...')
+      spinner.info(
+        `💾 Adding and pinning ${chalk.blue(publicDirPath)} locally...`
+      )
+
       ipfsClient.addFromFs(
-        'public',
+        publicDirPath,
         { recursive: true },
         (err3, localPinResult) => {
-          if (err3) throw err3
+          if (err3) {
+            spinner.fail(
+              "☠  Couldn't connect to local ipfs daemon. Is it running?"
+            )
+            throw err3
+          }
 
           const { hash } = localPinResult[localPinResult.length - 1]
-          spinner.succeed(`🔗 Added locally as ${hash}.`)
+          spinner.succeed(`🔗 Added locally as ${chalk.green(hash)}.`)
 
           ipfsClient.id((err4, { addresses }) => {
             if (err4) throw err4
@@ -94,14 +116,22 @@ async function main() {
               process.env.PINATA_SECRET_API_KEY
             )
 
-            spinner.info('📠 Requesting remote pin to pinata.cloud...')
+            spinner.info(
+              `📠 Requesting remote pin to ${chalk.whiteBright(
+                'pinata.cloud'
+              )}...`
+            )
             pinata
               .pinHashToIPFS(hash, pinataOptions)
               .then(async _pinataPinResult => {
                 spinner.succeed("📌 It's pinned to Pinata now.")
 
                 try {
-                  spinner.info('📠 Requesting remote pin to infura.io...')
+                  spinner.info(
+                    `📠 Requesting remote pin to ${chalk.whiteBright(
+                      'infura.io'
+                    )}.`
+                  )
                   const infuraResponse = await got(
                     `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${hash}` +
                       '&recursive=true'
@@ -117,9 +147,13 @@ async function main() {
                 }
 
                 clipboardy.writeSync(hash)
-                spinner.succeed(`📋 Hash ${hash} copied to clipboard.`)
+                spinner.succeed(
+                  `📋 Hash ${chalk.green(hash)} copied to clipboard.`
+                )
 
-                updateDns(hash)
+                if (updateDns) doUpdateDns(hash)
+
+                if (open) openUrl(`https://${process.env.SITE_DOMAIN}`)
               })
               .catch(err5 => {
                 throw err5
@@ -131,4 +165,4 @@ async function main() {
   })
 }
 
-module.exports = main
+module.exports = deploy
