@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/agentofuser/ipfs-deploy/compare/v1.1.0...v1.2.0) (2019-04-04)
+
+### Features
+
+- Add --help and parameterize CLI and library
+  ([726fd8d](https://github.com/agentofuser/ipfs-deploy/commit/726fd8d))
+- Add ipfs-deploy executable
+  ([51db254](https://github.com/agentofuser/ipfs-deploy/commit/51db254))
+
 # [1.1.0](https://github.com/agentofuser/ipfs-deploy/compare/v1.0.0...v1.1.0) (2019-04-03)
 
 ### Bug Fixes
