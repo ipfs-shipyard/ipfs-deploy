@@ -2,7 +2,9 @@
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-> Pin directory locally, send hash to pinning service, and update dnslink.
+> Pin directory locally, upload to pinning service, and update dnslink.
+
+[![asciicast](https://asciinema.org/a/238920.svg)](https://asciinema.org/a/238920)
 
 ## 🚨 WARNING: This is alpha software and very much in "works for me" status. APIs and CLI options will change. Use with caution, but please do, give feedback, and consider contributing :)
 

@@ -70,7 +70,7 @@ async function deploy({
 
   const spinner = ora()
   spinner.start()
-  spinner.info('☎️ Connecting to local IPFS daemon...')
+  spinner.info('☎️  Connecting to local IPFS daemon...')
 
   df.spawn({ disposable: false, init: false, start: false }, (err, ipfsd) => {
     if (err) throw err
@@ -136,7 +136,7 @@ async function deploy({
                   spinner.info(
                     `📠 Requesting remote pin to ${chalk.whiteBright(
                       'infura.io'
-                    )}.`
+                    )}...`
                   )
                   const infuraResponse = await got(
                     `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${hash}` +
