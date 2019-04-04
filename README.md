@@ -4,7 +4,11 @@
 
 > Pin directory locally, upload to pinning service, and update dnslink.
 
-[![asciicast](https://asciinema.org/a/238920.svg)](https://asciinema.org/a/238920)
+<p align="center">
+  <a href="https://asciinema.org/a/238920">
+    <img width="600" src="https://raw.githubusercontent.com/agentofuser/ipfs-deploy/master/docs/ipfs-deploy.svg">
+  </a>
+</p>
 
 ## 🚨 WARNING: This is alpha software and very much in "works for me" status. APIs and CLI options will change. Use with caution, but please do, give feedback, and consider contributing :)
 
