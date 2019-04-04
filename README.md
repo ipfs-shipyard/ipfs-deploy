@@ -148,7 +148,7 @@ npm run deploy
 
 ### As a library:
 
-````javascript
+```javascript
 const deploy = require('ipfs-deploy')
 
 ;(async () => {
@@ -192,4 +192,3 @@ specification.
 
 (The first two are the most permissive possible ever, more than MIT, which
 doesn't have a patent waiver. Use whichever satisfies your lawyer better.)
-````
