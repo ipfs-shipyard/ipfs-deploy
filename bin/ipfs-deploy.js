@@ -3,6 +3,8 @@ const chalk = require('chalk')
 
 const deploy = require('../index')
 
+require('dotenv').config()
+
 const argv = require('yargs')
   .scriptName('ipfs-deploy')
   .usage(
@@ -15,6 +17,7 @@ const argv = require('yargs')
           default: './public/',
           describe: 'The path to deploy',
         })
+        .env('IPFS_DEPLOY')
         .options({
           D: {
             type: 'boolean',
@@ -84,6 +87,17 @@ function main() {
     // pinners: argv.p, TODO
     // pinRemotely: !argv.P, TODO
     publicDirPath: argv.path,
+    remote: {
+      siteDomain: argv.siteDomain,
+      cloudflare: {
+        apiKey: argv.cloudflare.apiKey,
+        apiEmail: argv.cloudflare.apiEmail,
+      },
+      pinata: {
+        apiKey: argv.pinata.apiKey,
+        secretApiKey: argv.pinata.secretApiKey,
+      },
+    },
   })
 }
 

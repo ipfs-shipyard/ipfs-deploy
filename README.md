@@ -4,9 +4,9 @@
 
 > Pin directory locally, send hash to pinning service, and update dnslink.
 
-## 🚨 WARNING: This is alpha software and very much in "quick hack that works for me" status. Use with caution.
+## 🚨 WARNING: This is alpha software and very much in "works for me" status. APIs and CLI options will change. Use with caution, but please do, give feedback, and consider contributing :)
 
-The goal of @agentofuser/ipfs-deploy is to make it as easy as possible to
+The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
 deploy a static website to IPFS.
 
 ## Table of Contents
@@ -45,16 +45,43 @@ add it to the README.
 
 ## Install
 
-```
+### As a library:
+
+```bash
 npm install --save-dev @agentofuser/ipfs-deploy
 ```
 
+### As an executable:
+
+```bash
+npm install -g @agentofuser/ipfs-deploy
+```
+
+You might want to alias that in your terminal. I added this to my `~/.bashrc`:
+
+```bash
+alias ipd='ipfs-deploy public'
+```
+
+### No install:
+
+You can run it directly with [npx](https://www.npmjs.com/package/npx 'npx')
+without needing to install anything:
+
+```bash
+npx ipfs-deploy _site
+```
+
+Just remember to have the credentials properly set up as instructed below.
+
 ## Usage
+
+### As an executable:
 
 I won't go over how to set up Pinata and Cloudflare right now, but you can read
 up on that over at:
 
-https://www.cloudflare.com/distributed-web-gateway/
+https://www.cloudflare.com/distributed-web-gateway
 
 and:
 
@@ -62,45 +89,81 @@ https://pinata.cloud/documentation#GettingStarted
 
 (Infura doesn't require creating an account.)
 
-Then copy over `.env.sample` to `.env` and fill out your credentials:
+After setting up your Cloudflare and Pinata accounts, in your website's
+repository root, create or edit the file `.env` with your domain and
+credentials:
 
 ```
-PINATA_API_KEY=
-PINATA_SECRET_API_KEY=
-SITE_DOMAIN=
-CF_API_KEY=
-CF_API_EMAIL=
+IPFS_DEPLOY_SITE_DOMAIN=
+IPFS_DEPLOY_PINATA__API_KEY=
+IPFS_DEPLOY_PINATA__SECRET_API_KEY=
+IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=
+IPFS_DEPLOY_CLOUDFLARE__API_KEY=
 ```
 
-(**Don't** commit it!)
+(**Don't** commit it to source control unless you know what you're doing.)
 
 ```
 $ echo '.env' >> .gitignore
 ```
 
-Put this somewhere in a `deploy.js` file:
+Assuming your website's production build is at the `public` subdirectory
+(that's what Gatsby and Hugo use; Jekyll and Hakyll use `_site`), run this at
+the project's root:
 
-```javascript
-const ipfsDeploy = require(@agentofuser/ipfs-deploy)
-ipfsDeploy()
+```bash
+ipfs-daemon public
 ```
 
-Add a deploy command to your `package.json`:
+To see more details about command line usage, run:
+
+```bash
+ipfs-deploy --help
+```
+
+You can optionally add a deploy command to your `package.json`:
 
 ```javascript
 //  ⋮
   "scripts": {
 //  ⋮
-    "deploy": "node ./ipfs-deploy.js",
+    "deploy": "npx ipfs-daemon public",
 //  ⋮
   }
 //  ⋮
 ```
 
-And when you have built your website into `./public/`, run:
+Then to run it, execute:
 
+```bash
+npm run deploy
 ```
-$ npm run deploy
+
+### As a library:
+
+````javascript
+const deploy = require('ipfs-deploy')
+
+;(async () => {
+  try {
+    deploy({
+      updateDns: true,
+      open: false, // opens browser after deploying
+      publicDirPath: 'public',
+      remote: {
+        siteDomain: 'example.com',
+        cloudflare: {
+          apiEmail,
+          apiKey,
+        },
+        pinata: {
+          apiKey,
+          secretApiKey,
+        },
+      },
+    })
+  } catch (e) {}
+})()
 ```
 
 ## Contributing
@@ -118,6 +181,8 @@ specification.
 
 ## License
 
-[BlueOak-1.0.0 OR BSD-2-Clause-Patent © Agent of User](./LICENSE.md)
+[BlueOak-1.0.0 OR BSD-2-Clause-Patent OR MIT © Agent of User](./LICENSE.md)
 
-(These are the most permissive possible ever.)
+(The first two are the most permissive possible ever, more than MIT, which
+doesn't have a patent waiver. Use whichever satisfies your lawyer better.)
+````

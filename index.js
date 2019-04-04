@@ -8,27 +8,22 @@ const ora = require('ora')
 const chalk = require('chalk')
 const openUrl = require('open')
 
-require('dotenv').config()
-
-async function doUpdateDns(hash) {
-  const key = process.env.CF_API_KEY
-  const email = process.env.CF_API_EMAIL
-  const domain = process.env.SITE_DOMAIN
-
+async function doUpdateDns({ siteDomain, cloudflare }, hash) {
   const spinner = ora()
 
-  if (!key || !email || !domain || !hash) {
+  const { apiEmail, apiKey } = cloudflare
+  if (!apiKey || !apiEmail || !siteDomain || !hash) {
     throw new Error('Missing information for doUpdateDns()')
   }
 
   const api = {
-    key,
-    email,
+    email: apiEmail,
+    key: apiKey,
   }
 
   const opts = {
-    record: domain,
-    zone: domain,
+    record: siteDomain,
+    zone: siteDomain,
     link: `/ipfs/${hash}`,
   }
 
@@ -44,7 +39,7 @@ async function doUpdateDns(hash) {
     spinner.info(`${chalk.whiteBright(content)}.`)
     spinner.succeed('🌐 Your website is deployed now.')
   } catch (err) {
-    console.log(err)
+    console.error(err)
     process.exit(1)
   }
 }
@@ -55,6 +50,17 @@ async function deploy({
   // pinners = ['pinata', 'infura'], TODO
   // pinRemotely = true, TODO
   publicDirPath = 'public',
+  remote = {
+    siteDomain,
+    cloudflare: {
+      apiEmail,
+      apiKey,
+    },
+    pinata: {
+      apiKey,
+      secretApiKey,
+    },
+  },
 } = {}) {
   const ipfsBinAbsPath =
     which.sync('ipfs', { nothrow: true }) ||
@@ -104,7 +110,7 @@ async function deploy({
             const pinataOptions = {
               host_nodes: publicMultiaddresses,
               pinataMetadata: {
-                name: process.env.SITE_DOMAIN,
+                name: remote.siteDomain,
                 keyvalues: {
                   gitCommitHash: 'TODO',
                 },
@@ -112,8 +118,8 @@ async function deploy({
             }
 
             const pinata = pinataSDK(
-              process.env.PINATA_API_KEY,
-              process.env.PINATA_SECRET_API_KEY
+              remote.pinata.apiKey,
+              remote.pinata.secretApiKey
             )
 
             spinner.info(
@@ -151,9 +157,9 @@ async function deploy({
                   `📋 Hash ${chalk.green(hash)} copied to clipboard.`
                 )
 
-                if (updateDns) doUpdateDns(hash)
+                if (updateDns) doUpdateDns(remote, hash)
 
-                if (open) openUrl(`https://${process.env.SITE_DOMAIN}`)
+                if (open) openUrl(`https://${remote.siteDomain}`)
               })
               .catch(err5 => {
                 throw err5

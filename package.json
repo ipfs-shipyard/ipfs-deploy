@@ -56,7 +56,7 @@
     "lint-staged": "^8.1.5",
     "ndb": "^1.0.44",
     "prettier": "^1.16.4",
-    "semantic-git-commit-cli": "^3.2.1",
+    "semantic-git-commit-cli": "^3.2.2",
     "semantic-release": "^15.13.8",
     "semantic-release-cli": "^4.1.1"
   },
