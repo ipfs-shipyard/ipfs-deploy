@@ -1,3 +1,22 @@
+# [3.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v2.0.0...v3.0.0) (2019-04-07)
+
+### Features
+
+- Add `ipd` as shorter binary alias
+  ([089f23e](https://github.com/agentofuser/ipfs-deploy/commit/089f23e))
+- Remove friction from first use
+  ([000d323](https://github.com/agentofuser/ipfs-deploy/commit/000d323))
+
+### BREAKING CHANGES
+
+- - Make 'public' default deploy path for binary
+- Open public gateway URL on browser by default, use -O to opt-out
+- Don't require signing up for anything with default options
+- Don't upload to pinata by default
+- Don't update cloudflare DNS by default, use -d cloudflare
+- Keep uploading to infura, which doesn't require signup
+- Rework API options for deploy()
+
 # [2.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v1.2.0...v2.0.0) (2019-04-04)
 
 ### Features
