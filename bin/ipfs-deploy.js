@@ -8,36 +8,41 @@ require('dotenv').config()
 const argv = require('yargs')
   .scriptName('ipfs-deploy')
   .usage(
-    '$0 [options] path',
+    '$0 [options] [path]',
     'Pin path locally, upload to pinning service, and update DNS',
     yargs => {
       yargs
         .positional('path', {
           type: 'string',
-          default: './public/',
-          describe: 'The path to deploy',
+          describe: 'The local directory or file to be deployed',
+          default: 'public',
+          normalize: true,
         })
         .env('IPFS_DEPLOY')
         .options({
-          D: {
-            type: 'boolean',
-            default: false,
-            describe: "DON'T update Cloudflare DNS' TXT dnslink",
+          C: {
+            alias: 'no-clipboard',
+            describe: "DON'T copy ipfs.io/ipfs/<hash> to clipboard",
           },
-          o: {
+          d: {
+            alias: 'dns',
+            choices: ['cloudflare'],
+            describe: 'DNS provider whose dnslink TXT field will be updated',
+          },
+          O: {
             type: 'boolean',
-            default: false,
-            describe: 'Open URL after deploying',
+            describe: "DON'T open URL after deploying",
           },
           p: {
             alias: 'pinner',
             choices: ['pinata', 'infura'],
-            default: ['pinata', 'infura'],
+            default: ['infura'],
             describe: `Pinning services to which ${chalk.whiteBright(
               'path'
             )} will be uploaded`,
           },
           P: {
+            alias: 'no-remote-pin',
             type: 'boolean',
             default: false,
             describe:
@@ -45,60 +50,59 @@ const argv = require('yargs')
           },
         })
         .example(
-          '$0 _site',
+          '$0',
+          `# Deploys relative path "${chalk.whiteBright('public')}" to
+            ${chalk.whiteBright('ipfs.infura.io/ipfs/<hash>')}; doesn't ` +
+            'update DNS; copies and opens URL. These defaults are chosen ' +
+            'so as not to require signing up for any service or ' +
+            'setting up environment variables on first use.'
+        )
+        .example(
+          '$0 -p pinata _site',
           `# Deploys path "${chalk.whiteBright(
             '_site'
-          )}" to ${chalk.whiteBright('pinata')} and ${chalk.whiteBright(
-            'infura'
-          )}, and updates ${chalk.whiteBright('cloudflare')} DNS`
+          )}" ONLY to ${chalk.whiteBright('pinata')} and doesn't update DNS`
         )
         .example(
-          '$0 -p infura -p pinata',
+          '$0 -p infura -p pinata -d cloudflare',
           `# Deploys path "${chalk.whiteBright(
-            './public/'
+            'public'
           )}" to ${chalk.whiteBright('pinata')} and ${chalk.whiteBright(
             'infura'
-          )}, and updates ${chalk.whiteBright('cloudflare')} DNS`
+          )}, and updates cloudflare DNS`
         )
         .example(
-          '$0 -p pinata static',
-          `# Deploys path "${chalk.whiteBright(
-            'static'
-          )}" ONLY to ${chalk.whiteBright(
-            'pinata'
-          )} and updates ${chalk.whiteBright('cloudflare')} DNS`
-        )
-        .example(
-          '$0 -D docs',
-          `# Deploys path "${chalk.whiteBright(
-            'docs'
-          )}" to ${chalk.whiteBright('pinata')} and ${chalk.whiteBright(
-            'infura'
-          )}, and ${chalk.whiteBright("DON'T")} update DNS`
+          '$0 -COP docs',
+          `# Pins path "${chalk.whiteBright('docs')}" to local daemon ` +
+            'only and does nothing else. Same as ' +
+            `${chalk.whiteBright('ipfs add -r docs')}`
         )
     }
   )
-  .help().argv
+  .help()
+  .alias('h', 'help').argv
 
 function main() {
-  deploy({
-    updateDns: !argv.D,
-    open: argv.o,
-    // pinners: argv.p, TODO
-    // pinRemotely: !argv.P, TODO
+  const deployOptions = {
     publicDirPath: argv.path,
-    remote: {
-      siteDomain: argv.siteDomain,
+    copyPublicGatewayUrlToClipboard: !argv.noClipboard,
+    open: !argv.O,
+    localPinOnly: argv.P,
+    remotePinners: argv.p,
+    dnsProviders: argv.d,
+    siteDomain: argv.siteDomain,
+    credentials: {
       cloudflare: {
-        apiKey: argv.cloudflare.apiKey,
-        apiEmail: argv.cloudflare.apiEmail,
+        apiKey: argv.cloudflare && argv.cloudflare.apiKey,
+        apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
       },
       pinata: {
-        apiKey: argv.pinata.apiKey,
-        secretApiKey: argv.pinata.secretApiKey,
+        apiKey: argv.pinata && argv.pinata.apiKey,
+        secretApiKey: argv.pinata && argv.pinata.secretApiKey,
       },
     },
-  })
+  }
+  deploy(deployOptions)
 }
 
 main()
