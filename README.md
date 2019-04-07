@@ -10,7 +10,7 @@
   </a>
 </p>
 
-## 🚨 WARNING: This is alpha software and very much in "works for me" status. APIs and CLI options will change. Use with caution, but please do, give feedback, and consider contributing :)
+## 🚨 WARNING: This is alpha software and very much in "works for me" status. APIs and CLI options will change. Use with caution, but please use it, give feedback, and consider contributing :) If it works for you too, [please let me know on this issue](https://github.com/agentofuser/ipfs-deploy/issues/1 'feedback').
 
 The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
 deploy a static website to IPFS.
@@ -33,21 +33,35 @@ control.
 
 ## Background
 
-So far, ipfs-deploy relies on [Pinata.cloud](https://pinata.cloud) and
-[Infura.io](https://infura.io) as the pinning services and
-[Cloudflare](https://cloudflare.com) as the DNS provider. Hopefully those will
-be configurable in the future.
+You can start using `ipfs-deploy` without signing up for anything.
 
-Cloudflare doesn't host the content itself, so Pinata is needed if you don't
-want to rely on your computer's IPFS daemon's availability to serve your
-website.
+Default settings deploy to [infura.io](https://infura.io), which doesn't
+request an account to pin our stuff. They probably do some rate-limiting, but
+either way, take it easy on them. Being able to try things out without friction
+and without giving out personal info is a very important smooth on-ramp.
+
+So far, `ipfs-deploy` integrates with these services:
+
+- [Infura.io](https://infura.io): freemium pinning service. Doesn't require
+  signup.
+- [Pinata.cloud](https://pinata.cloud): freemium pinning service. Gives more
+  control over what's uploaded. You can delete, label, and add metadata.
+- [Cloudflare DNS](https://cloudflare.com): freemium DNS API. Supports CNAME
+  for naked domains and integrates with their IPFS gateway at
+  [cloudflare-ipfs.com](https://cloudflare-ipfs.com).
+
+Feel free to request or add support to other services.
+
+Cloudflare IPFS doesn't host the content itself (it's a cached gateway), so a
+stable pinning service is needed if you don't want to rely on your computer's
+IPFS daemon's availability to serve your website.
 
 These are free services subject to their terms. Not a decentralization nirvana
 by any stretch of the imagination, but a nice way to get started quickly with a
 blog, static website, or frontend web app.
 
-If you use this package to deploy your website, send a pull request and I'll
-add it to the README.
+If you use this package to deploy your website, send a pull request so I can
+add it to the README. (I reserve the right to exercise discretion.)
 
 ## Install
 
@@ -76,7 +90,7 @@ You can run it directly with [npx](https://www.npmjs.com/package/npx 'npx')
 without needing to install anything:
 
 ```bash
-npx ipfs-deploy _site
+npx @agentofuser/ipfs-deploy _site
 ```
 
 Just remember to have the credentials properly set up as instructed below.
@@ -84,6 +98,29 @@ Just remember to have the credentials properly set up as instructed below.
 ## Usage
 
 ### As an executable:
+
+```
+Examples:
+  ipfs-deploy                               # Deploys relative path "public" to
+                                            ipfs.infura.io/ipfs/<hash>; doesn't
+                                            update DNS; copies and opens URL.
+                                            These defaults are chosen so as not
+                                            to require signing up for any
+                                            service or setting up environment
+                                            variables on default use.
+
+  ipfs-deploy -p pinata _site               # Deploys path "_site" ONLY to
+                                            pinata and doesn't update DNS
+
+  ipfs-deploy -p infura -p pinata -d        # Deploys path "public" to pinata
+  cloudflare                                and infura, and updates cloudflare
+                                            DNS
+
+  ipfs-deploy -OCP docs                     # Pins path "docs" to local daemon
+                                            only and does nothing else. Same as
+                                            ipfs add -r docs
+
+```
 
 I won't go over how to set up Pinata and Cloudflare right now, but you can read
 up on that over at:
@@ -125,7 +162,7 @@ ipd public
 To see more details about command line usage, run:
 
 ```bash
-ipd --help
+ipd -h
 ```
 
 You can optionally add a deploy command to your `package.json`:
@@ -134,7 +171,7 @@ You can optionally add a deploy command to your `package.json`:
 //  ⋮
   "scripts": {
 //  ⋮
-    "deploy": "npx ipfs-daemon public",
+    "deploy": "npx @agentofuser/ipfs-daemon public",
 //  ⋮
   }
 //  ⋮
@@ -148,34 +185,42 @@ npm run deploy
 
 ### As a library:
 
+This is still pretty unstable and subject to change, so I will just show how
+the executable currently uses the API.
+
 ```javascript
 const deploy = require('ipfs-deploy')
 
 ;(async () => {
   try {
-    deploy({
-      updateDns: true,
-      open: false, // opens browser after deploying
-      publicDirPath: 'public',
-      remote: {
-        siteDomain: 'example.com',
+    const deployOptions = {
+      publicDirPath: argv.path,
+      copyPublicGatewayUrlToClipboard: !argv.noClipboard,
+      open: !argv.O,
+      localPinOnly: argv.P,
+      remotePinners: argv.p,
+      dnsProviders: argv.d,
+      siteDomain: argv.siteDomain,
+      credentials: {
         cloudflare: {
-          apiEmail,
-          apiKey,
+          apiKey: argv.cloudflare && argv.cloudflare.apiKey,
+          apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
         },
         pinata: {
-          apiKey,
-          secretApiKey,
+          apiKey: argv.pinata && argv.pinata.apiKey,
+          secretApiKey: argv.pinata && argv.pinata.secretApiKey,
         },
       },
-    })
+    }
+
+    deploy(deployOptions)
   } catch (e) {}
 })()
 ```
 
 ## Contributing
 
-PRs accepted.
+PRs accepted. Please open an issue first so we can talk about it.
 
 Small note: If editing the Readme, please conform to the
 [standard-readme](https://github.com/RichardLitt/standard-readme)

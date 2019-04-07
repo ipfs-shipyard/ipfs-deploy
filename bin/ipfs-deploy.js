@@ -55,7 +55,7 @@ const argv = require('yargs')
             ${chalk.whiteBright('ipfs.infura.io/ipfs/<hash>')}; doesn't ` +
             'update DNS; copies and opens URL. These defaults are chosen ' +
             'so as not to require signing up for any service or ' +
-            'setting up environment variables on first use.'
+            'setting up environment variables on default use.'
         )
         .example(
           '$0 -p pinata _site',
@@ -72,7 +72,7 @@ const argv = require('yargs')
           )}, and updates cloudflare DNS`
         )
         .example(
-          '$0 -COP docs',
+          '$0 -OCP docs',
           `# Pins path "${chalk.whiteBright('docs')}" to local daemon ` +
             'only and does nothing else. Same as ' +
             `${chalk.whiteBright('ipfs add -r docs')}`
