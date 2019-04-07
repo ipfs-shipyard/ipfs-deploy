@@ -92,7 +92,9 @@ async function deploy({
     recursive: true,
   })
   const { hash } = localPinResult[localPinResult.length - 1]
-  spinner.succeed(`📌 Pinned locally as ${chalk.green(hash)}.`)
+  spinner.succeed(
+    `📌 Pinned ${chalk.blue(publicDirPath)} locally as ${chalk.green(hash)}.`
+  )
 
   if (!localPinOnly && remotePinners.includes('pinata')) {
     spinner.start(
