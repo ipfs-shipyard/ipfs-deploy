@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/agentofuser/ipfs-deploy/compare/v3.1.0...v3.1.1) (2019-04-08)
+
+### Bug Fixes
+
+- Pick public multiaddresses properly
+  ([68d238a](https://github.com/agentofuser/ipfs-deploy/commit/68d238a))
+
 # [3.1.0](https://github.com/agentofuser/ipfs-deploy/compare/v3.0.0...v3.1.0) (2019-04-08)
 
 ### Features
