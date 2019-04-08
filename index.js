@@ -7,7 +7,7 @@ const got = require('got')
 const updateCloudflareDnslink = require('dnslink-cloudflare')
 const ora = require('ora')
 const chalk = require('chalk')
-const openUrl = require('open')
+const doOpen = require('open')
 const _ = require('lodash')
 
 // # Pure functions
@@ -16,6 +16,13 @@ function publicGatewayUrl(hash) {
 }
 
 // Effectful functions
+
+function openUrl(url) {
+  const spinner = ora()
+  spinner.start('🏄 Opening web browser…')
+  doOpen(url)
+  spinner.succeed('🏄 Opened web browser (call with -O to disable.)')
+}
 
 async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
   const spinner = ora()
@@ -71,21 +78,38 @@ async function deploy({
     },
   },
 } = {}) {
+  const spinner = ora()
+
   const ipfsBinAbsPath =
     which.sync('ipfs', { nothrow: true }) ||
     which.sync('jsipfs', { nothrow: true })
 
-  const df = IPFSFactory.create({ exec: ipfsBinAbsPath })
-
-  const spinner = ora()
-  spinner.start('☎️  Connecting to local IPFS daemon…')
-
-  const spawn = util.promisify(df.spawn.bind(df))
-  ipfsd = await spawn({ disposable: false, init: false, start: false })
-
-  const start = util.promisify(ipfsd.start.bind(ipfsd))
-  const ipfsClient = await start([])
-  spinner.succeed('☎️  Connected to local IPFS daemon.')
+  let ipfsd
+  let ipfsClient
+  let killDaemonAfterDone = false
+  if (ipfsBinAbsPath) {
+    spinner.start('☎️  Connecting to local IPFS daemon…')
+    const type = ipfsBinAbsPath.match(/jsipfs/) ? 'js' : 'go'
+    const df = IPFSFactory.create({ type, exec: ipfsBinAbsPath })
+    const spawn = util.promisify(df.spawn.bind(df))
+    ipfsd = await spawn({ disposable: false, init: false, start: false })
+    if (!ipfsd.started) {
+      const start = util.promisify(ipfsd.start.bind(ipfsd))
+      spinner.start('☎️  Starting local IPFS daemon…')
+      ipfsClient = await start([])
+      killDaemonAfterDone = true
+    }
+    spinner.succeed('☎️  Connected to local IPFS daemon.')
+  } else {
+    spinner.start('⏲️  Starting temporary IPFS daemon…\n')
+    const df = IPFSFactory.create({ type: 'js' })
+    const spawn = util.promisify(df.spawn.bind(df))
+    ipfsd = await spawn({ disposable: true, init: true, start: false })
+    const start = util.promisify(ipfsd.start.bind(ipfsd))
+    ipfsClient = await start([])
+    killDaemonAfterDone = true
+    spinner.succeed('☎️  Connected to temporary IPFS daemon.')
+  }
 
   spinner.start('🔗 Pinning to local IPFS…')
   const localPinResult = await ipfsClient.addFromFs(publicDirPath, {
@@ -145,9 +169,17 @@ async function deploy({
     }
   }
 
+  if (killDaemonAfterDone) {
+    const stop = util.promisify(ipfsd.stop.bind(ipfsd))
+    // spinner.start('✋️ Stopping IPFS daemon…')
+    await stop()
+    // spinner.succeed('✋️ Stopped IPFS daemon.')
+  }
+
+  spinner.start('📋 Copying public gateway URL to clipboard…')
   if (copyPublicGatewayUrlToClipboard)
     clipboardy.writeSync(publicGatewayUrl(hash))
-  spinner.succeed('📋 Public gateway URL copied to clipboard.')
+  spinner.succeed('📋 Copied public gateway URL to clipboard.')
 
   if (dnsProviders.includes('cloudflare'))
     await updateCloudflareDns(siteDomain, credentials.cloudflare, hash)
