@@ -19,11 +19,12 @@ function publicGatewayUrl(hash) {
 
 // Effectful functions
 
-function openUrl(url) {
+async function openUrl(url) {
   const spinner = ora()
   spinner.start('🏄 Opening web browser…')
-  doOpen(url)
+  const childProcess = await doOpen(url)
   spinner.succeed('🏄 Opened web browser (call with -O to disable.)')
+  return childProcess
 }
 
 async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
@@ -59,6 +60,8 @@ async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
     console.error(err)
     process.exit(1)
   }
+
+  return siteDomain
 }
 
 async function deploy({
@@ -184,9 +187,11 @@ async function deploy({
     await updateCloudflareDns(siteDomain, credentials.cloudflare, hash)
 
   if (open && !localPinOnly && !_.isEmpty(dnsProviders))
-    openUrl(`https://${siteDomain}`)
+    await openUrl(`https://${siteDomain}`)
   if (open && (localPinOnly || _.isEmpty(dnsProviders)))
-    openUrl(publicGatewayUrl(hash))
+    await openUrl(publicGatewayUrl(hash))
+
+  return hash
 }
 
 module.exports = deploy
