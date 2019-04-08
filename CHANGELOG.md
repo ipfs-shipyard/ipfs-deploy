@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v3.1.1...v4.0.0) (2019-04-08)
+
+### Features
+
+- Add return values to API and CLI
+  ([90a3395](https://github.com/agentofuser/ipfs-deploy/commit/90a3395))
+
+### BREAKING CHANGES
+
+- - Return pinned hash from deploy()
+- Return pinned hash from CLI
+
 ## [3.1.1](https://github.com/agentofuser/ipfs-deploy/compare/v3.1.0...v3.1.1) (2019-04-08)
 
 ### Bug Fixes
