@@ -9,6 +9,8 @@ const ora = require('ora')
 const chalk = require('chalk')
 const doOpen = require('open')
 const _ = require('lodash')
+const multiaddr = require('multiaddr')
+const ip = require('ip')
 
 // # Pure functions
 function publicGatewayUrl(hash) {
@@ -99,7 +101,7 @@ async function deploy({
       ipfsClient = await start([])
       killDaemonAfterDone = true
     }
-    spinner.succeed('☎️  Connected to local IPFS daemon.')
+    spinner.succeed('☎️ Connected to local IPFS daemon.')
   } else {
     spinner.start('⏲️  Starting temporary IPFS daemon…\n')
     const df = IPFSFactory.create({ type: 'js' })
@@ -125,12 +127,9 @@ async function deploy({
       `📠 Requesting remote pin to ${chalk.whiteBright('pinata.cloud')}…`
     )
     const { addresses } = await ipfsClient.id()
-
     const publicMultiaddresses = addresses.filter(
       multiaddress =>
-        !multiaddress.match(/\/::1\//) &&
-        !multiaddress.match(/127\.0\.0\.1/) &&
-        !multiaddress.match(/192\.168/)
+        !ip.isPrivate(multiaddr(multiaddress).nodeAddress().address)
     )
 
     const pinataOptions = {
