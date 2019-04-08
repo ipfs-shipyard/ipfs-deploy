@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/agentofuser/ipfs-deploy/compare/v3.0.0...v3.1.0) (2019-04-08)
+
+### Features
+
+- Spawn bundled daemon when ipfs not installed
+  ([2711044](https://github.com/agentofuser/ipfs-deploy/commit/2711044))
+
 # [3.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v2.0.0...v3.0.0) (2019-04-07)
 
 ### Features
