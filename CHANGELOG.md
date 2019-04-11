@@ -1,3 +1,14 @@
+## [4.0.2](https://github.com/agentofuser/ipfs-deploy/compare/v4.0.1...v4.0.2) (2019-04-11)
+
+### Bug Fixes
+
+- **bin:** Make path mandatory
+  ([4a634a5](https://github.com/agentofuser/ipfs-deploy/commit/4a634a5))
+- **clipboard:** Hide clipboard msgs when disabled
+  ([4e74497](https://github.com/agentofuser/ipfs-deploy/commit/4e74497))
+- **daemon:** Handle ipfs daemon connection errors
+  ([e56506b](https://github.com/agentofuser/ipfs-deploy/commit/e56506b))
+
 ## [4.0.1](https://github.com/agentofuser/ipfs-deploy/compare/v4.0.0...v4.0.1) (2019-04-11)
 
 ### Bug Fixes
