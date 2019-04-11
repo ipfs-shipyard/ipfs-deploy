@@ -185,10 +185,11 @@ async function deploy({
     // spinner.succeed('✋️ Stopped IPFS daemon.')
   }
 
-  spinner.start('📋 Copying public gateway URL to clipboard…')
-  if (copyPublicGatewayUrlToClipboard)
+  if (copyPublicGatewayUrlToClipboard) {
+    spinner.start('📋 Copying public gateway URL to clipboard…')
     clipboardy.writeSync(publicGatewayUrl(hash))
-  spinner.succeed('📋 Copied public gateway URL to clipboard.')
+    spinner.succeed('📋 Copied public gateway URL to clipboard.')
+  }
 
   if (dnsProviders.includes('cloudflare'))
     await updateCloudflareDns(siteDomain, credentials.cloudflare, hash)
