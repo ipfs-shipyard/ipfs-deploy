@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/agentofuser/ipfs-deploy/compare/v4.0.0...v4.0.1) (2019-04-11)
+
+### Bug Fixes
+
+- Handle infura pinning error
+  ([d6d6559](https://github.com/agentofuser/ipfs-deploy/commit/d6d6559))
+
 # [4.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v3.1.1...v4.0.0) (2019-04-08)
 
 ### Features
