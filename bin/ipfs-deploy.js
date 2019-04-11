@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 const chalk = require('chalk')
+const yargs = require('yargs')
 
 const deploy = require('../index')
 
 require('dotenv').config()
 
-const argv = require('yargs')
+const argv = yargs
   .scriptName('ipfs-deploy')
   .usage(
-    '$0 [options] [path]',
+    '$0 [options] path',
     'Pin path locally, upload to pinning service, and update DNS\n\n' +
       'Prints hash (CID) to stdout so you can pipe to other programs',
     yargs => {
