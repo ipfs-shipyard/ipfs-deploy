@@ -104,7 +104,7 @@ async function deploy({
       ipfsClient = await start([])
       killDaemonAfterDone = true
     }
-    spinner.succeed('☎️  Connected to local IPFS daemon.')
+    spinner.succeed('☎️ Connected to local IPFS daemon.')
   } else {
     spinner.start('⏲️  Starting temporary IPFS daemon…\n')
     const df = IPFSFactory.create({ type: 'js' })
@@ -113,7 +113,7 @@ async function deploy({
     const start = util.promisify(ipfsd.start.bind(ipfsd))
     ipfsClient = await start([])
     killDaemonAfterDone = true
-    spinner.succeed('☎️   Connected to temporary IPFS daemon.')
+    spinner.succeed('☎️  Connected to temporary IPFS daemon.')
   }
 
   spinner.start('🔗 Pinning to local IPFS…')

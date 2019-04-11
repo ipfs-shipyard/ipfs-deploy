@@ -81,6 +81,10 @@ const argv = yargs
         )
     }
   )
+  .epilogue(
+    'For help or more information, ping me on Twitter ' +
+      'at https://twitter.com/agentofuser'
+  )
   .help()
   .alias('h', 'help').argv
 
