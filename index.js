@@ -92,6 +92,7 @@ async function deploy({
   let ipfsd
   let ipfsClient
   let killDaemonAfterDone = false
+
   if (ipfsBinAbsPath) {
     spinner.start('☎️  Connecting to local IPFS daemon…')
     const type = ipfsBinAbsPath.match(/jsipfs/) ? 'js' : 'go'
@@ -101,19 +102,32 @@ async function deploy({
     if (!ipfsd.started) {
       const start = util.promisify(ipfsd.start.bind(ipfsd))
       spinner.start('☎️  Starting local IPFS daemon…')
-      ipfsClient = await start([])
-      killDaemonAfterDone = true
+      try {
+        ipfsClient = await start([])
+        killDaemonAfterDone = true
+        spinner.succeed('☎️ Connected to local IPFS daemon.')
+      } catch (e) {
+        spinner.fail("💔 Can't connect to local IPFS daemon.")
+        console.warn(`${e.name}: ${e.message}`)
+      }
     }
-    spinner.succeed('☎️ Connected to local IPFS daemon.')
-  } else {
+  }
+
+  if (!ipfsClient) {
     spinner.start('⏲️  Starting temporary IPFS daemon…\n')
     const df = IPFSFactory.create({ type: 'js' })
     const spawn = util.promisify(df.spawn.bind(df))
-    ipfsd = await spawn({ disposable: true, init: true, start: false })
-    const start = util.promisify(ipfsd.start.bind(ipfsd))
-    ipfsClient = await start([])
-    killDaemonAfterDone = true
-    spinner.succeed('☎️  Connected to temporary IPFS daemon.')
+    try {
+      ipfsd = await spawn({ disposable: true, init: true, start: false })
+      const start = util.promisify(ipfsd.start.bind(ipfsd))
+      ipfsClient = await start([])
+      killDaemonAfterDone = true
+      spinner.succeed('☎️  Connected to temporary IPFS daemon.')
+    } catch (e) {
+      spinner.fail("💔 Couldn't start temporary IPFS daemon.")
+      console.error(`${e.name}: ${e.message}`)
+      process.exit(1)
+    }
   }
 
   spinner.start('🔗 Pinning to local IPFS…')
