@@ -104,7 +104,7 @@ async function deploy({
       ipfsClient = await start([])
       killDaemonAfterDone = true
     }
-    spinner.succeed('☎️ Connected to local IPFS daemon.')
+    spinner.succeed('☎️  Connected to local IPFS daemon.')
   } else {
     spinner.start('⏲️  Starting temporary IPFS daemon…\n')
     const df = IPFSFactory.create({ type: 'js' })
@@ -113,7 +113,7 @@ async function deploy({
     const start = util.promisify(ipfsd.start.bind(ipfsd))
     ipfsClient = await start([])
     killDaemonAfterDone = true
-    spinner.succeed('☎️  Connected to temporary IPFS daemon.')
+    spinner.succeed('☎️   Connected to temporary IPFS daemon.')
   }
 
   spinner.start('🔗 Pinning to local IPFS…')
@@ -159,15 +159,22 @@ async function deploy({
     spinner.start(
       `📠 Requesting remote pin to ${chalk.whiteBright('infura.io')}…`
     )
-    const infuraResponse = await got(
-      `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${hash}` +
-        '&recursive=true'
-    )
 
-    if (infuraResponse.statusCode === 200) {
-      spinner.succeed("📌 It's pinned to Infura now.")
-    } else {
-      spinner.fail("Pinning to Infura didn't work.")
+    let infuraResponse = ''
+    try {
+      infuraResponse = await got(
+        `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${hash}` +
+          '&recursive=true'
+      )
+
+      if (infuraResponse.statusCode === 200) {
+        spinner.succeed("📌 It's pinned to Infura now.")
+      } else {
+        spinner.fail("💔 Pinning to Infura didn't work.")
+      }
+    } catch (e) {
+      spinner.fail("💔 Pinning to Infura didn't work.")
+      console.error(`${e.name}: ${e.message}`)
     }
   }
 
