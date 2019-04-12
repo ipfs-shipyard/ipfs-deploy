@@ -115,11 +115,6 @@ Examples:
   ipfs-deploy -p infura -p pinata -d        # Deploys path "public" to pinata
   cloudflare                                and infura, and updates cloudflare
                                             DNS
-
-  ipfs-deploy -OCP docs                     # Pins path "docs" to local daemon
-                                            only and does nothing else. Same as
-                                            ipfs add -r docs
-
 ```
 
 I won't go over how to set up Pinata and Cloudflare right now, but you can read
@@ -197,7 +192,6 @@ const deploy = require('ipfs-deploy')
       publicDirPath: argv.path,
       copyPublicGatewayUrlToClipboard: !argv.noClipboard,
       open: !argv.O,
-      localPinOnly: argv.P,
       remotePinners: argv.p,
       dnsProviders: argv.d,
       siteDomain: argv.siteDomain,

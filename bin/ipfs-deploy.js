@@ -43,13 +43,6 @@ const argv = yargs
               'path'
             )} will be uploaded`,
           },
-          P: {
-            alias: 'no-remote-pin',
-            type: 'boolean',
-            default: false,
-            describe:
-              "DON'T pin remotely, only to local daemon (overrides -p)",
-          },
         })
         .example(
           '$0',
@@ -73,12 +66,6 @@ const argv = yargs
             'infura'
           )}, and updates cloudflare DNS`
         )
-        .example(
-          '$0 -OCP docs',
-          `# Pins path "${chalk.whiteBright('docs')}" to local daemon ` +
-            'only and does nothing else. Same as ' +
-            `${chalk.whiteBright('ipfs add -r docs')}`
-        )
     }
   )
   .epilogue(
@@ -93,7 +80,6 @@ async function main() {
     publicDirPath: argv.path,
     copyPublicGatewayUrlToClipboard: !argv.noClipboard,
     open: !argv.O,
-    localPinOnly: argv.P,
     remotePinners: argv.p,
     dnsProviders: argv.d,
     siteDomain: argv.siteDomain,

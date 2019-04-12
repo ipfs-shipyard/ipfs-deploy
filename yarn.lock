@@ -2522,6 +2522,11 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
+currify@^3.0.0:
+  version "3.0.0"
+  resolved "http://localhost:4873/currify/-/currify-3.0.0.tgz#ec5b18fe65c2b3b08daba7f2a75a01063b2c89c2"
+  integrity sha512-ecz0Dq3T2UwiLwhiYvEFhdM4yUvlCLRgVbvpt6oI8RteJzEztum1UbLbN6snQ5nfHqtMcnrxkd7N0LeAIErorw==
+
 cyclist@~0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
@@ -3770,6 +3775,13 @@ form-data@^2.3.3, form-data@~2.3.2:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
+
+format-io@^1.0.1:
+  version "1.0.3"
+  resolved "http://localhost:4873/format-io/-/format-io-1.0.3.tgz#e63391b567fe348bccac138c796011569b343150"
+  integrity sha512-pvhpU75XNwBElVZ+LBZ/gIIhmmtgKBhwo2Lwo/nmyLKQ2uDktbyvO3V/iOvZUzSlN+n0pEv9wnfyLe2fBySIXg==
+  dependencies:
+    currify "^3.0.0"
 
 formidable@^1.2.0:
   version "1.2.1"
@@ -11234,6 +11246,13 @@ tough-cookie@~2.4.3:
   dependencies:
     psl "^1.1.24"
     punycode "^1.4.1"
+
+trammel@^2.1.0:
+  version "2.1.0"
+  resolved "http://localhost:4873/trammel/-/trammel-2.1.0.tgz#ce6e788b8844780e39c6646302a246375b98f0e3"
+  integrity sha512-XIY3w8JUzkF8Uic+07ucS8Wm4bVNHyQRDHbMII3cX2I53bAwJYvGg6ntrViFQDkke4Ulf7ZgLdKlmwmCrFAYXA==
+  dependencies:
+    format-io "^1.0.1"
 
 traverse@~0.6.6:
   version "0.6.6"
