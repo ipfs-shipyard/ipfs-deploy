@@ -174,14 +174,14 @@ async function deploy({
       `📠 Requesting remote pin to ${chalk.whiteBright('infura.io')}…`
     )
 
-    let infuraResponse = ''
+    let infuraResponse
     try {
       infuraResponse = await got(
         `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${hash}` +
           '&recursive=true'
       )
 
-      if (infuraResponse.statusCode === 200) {
+      if (infuraResponse && infuraResponse.statusCode === 200) {
         spinner.succeed("📌 It's pinned to Infura now.")
       } else {
         spinner.fail("💔 Pinning to Infura didn't work.")
