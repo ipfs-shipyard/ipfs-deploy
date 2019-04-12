@@ -1,3 +1,20 @@
+# [5.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v4.0.2...v5.0.0) (2019-04-12)
+
+### Bug Fixes
+
+- Guard property access
+  ([77b5a05](https://github.com/agentofuser/ipfs-deploy/commit/77b5a05))
+
+### Features
+
+- Show size of directory to be deployed
+  ([abe44f4](https://github.com/agentofuser/ipfs-deploy/commit/abe44f4))
+
+### BREAKING CHANGES
+
+- - Remove option to pin only locally for now Detecting an existing running
+    daemon has to be improved
+
 ## [4.0.2](https://github.com/agentofuser/ipfs-deploy/compare/v4.0.1...v4.0.2) (2019-04-11)
 
 ### Bug Fixes
