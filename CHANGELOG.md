@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/agentofuser/ipfs-deploy/compare/v5.0.0...v5.0.1) (2019-04-13)
+
+### Bug Fixes
+
+- **config:** Handle missing envvars informatively
+  ([25aee12](https://github.com/agentofuser/ipfs-deploy/commit/25aee12))
+
 # [5.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v4.0.2...v5.0.0) (2019-04-12)
 
 ### Bug Fixes
