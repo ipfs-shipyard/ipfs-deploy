@@ -11,13 +11,24 @@ const ora = require('ora')
 const chalk = require('chalk')
 const doOpen = require('open')
 const _ = require('lodash')
+const fp = require('lodash/fp')
 const multiaddr = require('multiaddr')
 const ip = require('ip')
+const neatFrame = require('neat-frame')
+const { stripIndent } = require('common-tags')
 
 // # Pure functions
 function publicGatewayUrl(hash) {
   return `https://ipfs.io/ipfs/${hash}`
 }
+
+const logError = fp.pipe(
+  stripIndent,
+  neatFrame,
+  console.error
+)
+
+const white = chalk.whiteBright
 
 // Effectful functions
 
@@ -32,37 +43,39 @@ async function openUrl(url) {
 async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
   const spinner = ora()
 
-  if (!apiKey || !apiEmail || !siteDomain || !hash) {
-    throw new Error('Missing information for updateCloudflareDns()')
-  }
+  spinner.start(`📡 Beaming new hash to DNS provider ${white('Cloudflare')}…`)
+  if (fp.some(_.isEmpty)([siteDomain, apiEmail, apiKey])) {
+    spinner.fail('💔 Missing arguments for Cloudflare API.')
+    spinner.warn('🧐  Check if these environment variables are present:')
+    logError(`
+      IPFS_DEPLOY_SITE_DOMAIN
+      IPFS_DEPLOY_CLOUDFLARE__API_EMAIL
+      IPFS_DEPLOY_CLOUDFLARE__API_KEY
+    `)
+  } else {
+    try {
+      const api = {
+        email: apiEmail,
+        key: apiKey,
+      }
 
-  const api = {
-    email: apiEmail,
-    key: apiKey,
-  }
+      const opts = {
+        record: siteDomain,
+        zone: siteDomain,
+        link: `/ipfs/${hash}`,
+      }
 
-  const opts = {
-    record: siteDomain,
-    zone: siteDomain,
-    link: `/ipfs/${hash}`,
-  }
+      const content = await updateCloudflareDnslink(api, opts)
+      spinner.succeed('🙌 SUCCESS!')
+      spinner.info(`🔄 Updated DNS TXT ${white(opts.record)} to:`)
+      spinner.info(`🔗 ${white(content)}.`)
+    } catch (e) {
+      spinner.fail("💔 Updating Cloudflare DNS didn't work.")
+      logError(`${e.name}:\n${e.message}`)
+    }
 
-  try {
-    spinner.start(
-      `📡 Beaming new hash to DNS provider ${chalk.whiteBright(
-        'Cloudflare'
-      )}...`
-    )
-    const content = await updateCloudflareDnslink(api, opts)
-    spinner.succeed('🙌 SUCCESS!')
-    spinner.info(`🔄 Updated DNS TXT ${chalk.whiteBright(opts.record)} to:`)
-    spinner.info(`🔗 ${chalk.whiteBright(content)}.`)
-  } catch (err) {
-    console.error(err)
-    process.exit(1)
+    return siteDomain
   }
-
-  return siteDomain
 }
 
 async function showSize(path) {
@@ -78,7 +91,7 @@ async function showSize(path) {
     spinner.succeed(`🚚 ${chalk.blue(path)} weighs ${readableSize}.`)
   } catch (e) {
     spinner.fail("⚖  Couldn't calculate website size.")
-    console.error(`${e.name}: ${e.message}`)
+    logError(`${e.name}:\n${e.message}`)
     process.exit(1)
   }
 }
@@ -120,7 +133,7 @@ async function getIpfsDaemon() {
       spinner.succeed('☎️  Connected to local disposable IPFS daemon.')
     } catch (e) {
       spinner.fail("💔 Couldn't start local disposable IPFS daemon.")
-      console.error(`${e.name}: ${e.message}`)
+      logError(`${e.name}:\n${e.message}`)
       process.exit(1)
     }
   }
@@ -154,33 +167,44 @@ async function pinToLocalDaemon(ipfsClient, publicDirPath) {
 async function pinToPinata(ipfsClient, credentials, metadata = {}, hash) {
   const spinner = ora()
 
-  spinner.start(
-    `📠 Requesting remote pin to ${chalk.whiteBright('pinata.cloud')}…`
-  )
-  const { addresses } = await ipfsClient.id()
-  const publicMultiaddresses = addresses.filter(
-    multiaddress =>
-      !ip.isPrivate(multiaddr(multiaddress).nodeAddress().address)
-  )
+  spinner.start(`📠 Requesting remote pin to ${white('pinata.cloud')}…`)
 
-  const pinataOptions = {
-    host_nodes: publicMultiaddresses,
-    pinataMetadata: metadata,
+  if (fp.some(_.isEmpty)([credentials.apiKey, credentials.secretApiKey])) {
+    spinner.fail('💔 Missing credentials for Pinata API.')
+    spinner.warn('🧐  Check if these environment variables are present:')
+    logError(`
+      IPFS_DEPLOY_PINATA__API_KEY
+      IPFS_DEPLOY_PINATA__SECRET_API_KEY
+    `)
+  } else {
+    const { addresses } = await ipfsClient.id()
+    const publicMultiaddresses = addresses.filter(
+      multiaddress =>
+        !ip.isPrivate(multiaddr(multiaddress).nodeAddress().address)
+    )
+
+    const pinataOptions = {
+      host_nodes: publicMultiaddresses,
+      pinataMetadata: metadata,
+    }
+
+    try {
+      const pinata = pinataSDK(credentials.apiKey, credentials.secretApiKey)
+
+      await pinata.pinHashToIPFS(hash, pinataOptions)
+
+      spinner.succeed("📌 It's pinned to Pinata now.")
+    } catch (e) {
+      spinner.fail("💔 Pinning to Pinata didn't work.")
+      logError(`${e.name}:\n${e.message}`)
+    }
   }
-
-  const pinata = pinataSDK(credentials.apiKey, credentials.secretApiKey)
-
-  await pinata.pinHashToIPFS(hash, pinataOptions)
-
-  spinner.succeed("📌 It's pinned to Pinata now.")
 }
 
 async function pinToInfura(hash) {
   const spinner = ora()
 
-  spinner.start(
-    `📠 Requesting remote pin to ${chalk.whiteBright('infura.io')}…`
-  )
+  spinner.start(`📠 Requesting remote pin to ${white('infura.io')}…`)
 
   let infuraResponse
   try {
@@ -196,7 +220,7 @@ async function pinToInfura(hash) {
     }
   } catch (e) {
     spinner.fail("💔 Pinning to Infura didn't work.")
-    console.error(`${e.name}: ${e.message}`)
+    logError(`${e.name}:\n${e.message}`)
   }
 }
 
@@ -204,8 +228,8 @@ function copyUrlToClipboard(hash) {
   const spinner = ora()
   spinner.start('📋 Copying public gateway URL to clipboard…')
   clipboardy.writeSync(publicGatewayUrl(hash))
-  spinner.succeed('📋 Copied public gateway URL to clipboard.')
-  spinner.info(`${chalk.green(publicGatewayUrl(hash))}`)
+  spinner.succeed('📋 Copied public gateway URL to clipboard:')
+  spinner.info(`🔗 ${chalk.green(publicGatewayUrl(hash))}`)
 }
 
 async function deploy({
