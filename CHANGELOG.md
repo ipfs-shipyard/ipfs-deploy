@@ -1,3 +1,17 @@
+# [6.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v5.0.1...v6.0.0) (2019-04-14)
+
+### Features
+
+- Guess SSG build path when none provided
+  ([184c66f](https://github.com/agentofuser/ipfs-deploy/commit/184c66f))
+
+### BREAKING CHANGES
+
+- - Make [path] parameter optional for good
+
+* Use list of destination directories of common static site generators to guess
+  directory to be deployed when none provided
+
 ## [5.0.1](https://github.com/agentofuser/ipfs-deploy/compare/v5.0.0...v5.0.1) (2019-04-13)
 
 ### Bug Fixes
