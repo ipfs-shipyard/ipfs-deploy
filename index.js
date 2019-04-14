@@ -1,4 +1,5 @@
 const util = require('util')
+const { existsSync } = require('fs')
 const trammel = util.promisify(require('trammel'))
 const byteSize = require('byte-size')
 const IPFSFactory = require('ipfsd-ctl')
@@ -32,6 +33,45 @@ const white = chalk.whiteBright
 
 // Effectful functions
 
+function guessedPath() {
+  const guesses = [
+    '_site', // jekyll, hakyll
+    'site',
+    'public', // gatsby, hugo
+    'dist', // nuxt
+    'output', // pelican
+    'out', // hexo
+    'build', // metalsmith, middleman
+    'website/build', // docusaurus
+    'docs',
+  ]
+
+  return fp.filter(existsSync)(guesses)[0]
+}
+
+function guessPathIfEmpty(publicPath) {
+  let result
+  const spinner = ora()
+
+  if (_.isEmpty(publicPath)) {
+    spinner.info(
+      `🤔 No ${white('path')} argument specified. Looking for common ones…`
+    )
+    result = guessedPath()
+    if (result) {
+      spinner.succeed(
+        `📂 Found local ${chalk.blue(result)} directory. Deploying that.`
+      )
+      return result
+    } else {
+      spinner.fail(
+        `🔮 Couldn't guess what to deploy. Please specify a ${white('path')}.`
+      )
+      process.exit(1)
+    }
+  }
+}
+
 async function openUrl(url) {
   const spinner = ora()
   spinner.start('🏄 Opening web browser…')
@@ -51,6 +91,8 @@ async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
       IPFS_DEPLOY_SITE_DOMAIN
       IPFS_DEPLOY_CLOUDFLARE__API_EMAIL
       IPFS_DEPLOY_CLOUDFLARE__API_KEY
+
+      You can put them in a .env file if you want and they will be picked up.
     `)
   } else {
     try {
@@ -175,6 +217,8 @@ async function pinToPinata(ipfsClient, credentials, metadata = {}, hash) {
     logError(`
       IPFS_DEPLOY_PINATA__API_KEY
       IPFS_DEPLOY_PINATA__SECRET_API_KEY
+
+      You can put them in a .env file if you want and they will be picked up.
     `)
   } else {
     const { addresses } = await ipfsClient.id()
@@ -250,6 +294,8 @@ async function deploy({
     },
   },
 } = {}) {
+  publicDirPath = guessPathIfEmpty(publicDirPath)
+
   await showSize(publicDirPath)
 
   const ipfsd = await getIpfsDaemon()

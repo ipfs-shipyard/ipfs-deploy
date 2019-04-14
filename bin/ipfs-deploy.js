@@ -9,7 +9,7 @@ require('dotenv').config()
 const argv = yargs
   .scriptName('ipfs-deploy')
   .usage(
-    '$0 [options] path',
+    '$0 [options] [path]',
     'Pin path locally, upload to pinning service, and update DNS\n\n' +
       'Prints hash (CID) to stdout so you can pipe to other programs',
     yargs => {
@@ -17,7 +17,6 @@ const argv = yargs
         .positional('path', {
           type: 'string',
           describe: 'The local directory or file to be deployed',
-          default: 'public',
           normalize: true,
         })
         .env('IPFS_DEPLOY')
