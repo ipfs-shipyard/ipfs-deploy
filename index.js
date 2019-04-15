@@ -138,7 +138,7 @@ async function showSize(path) {
   }
 }
 
-async function getIpfsDaemon() {
+async function getIpfsDaemonAndClient() {
   const spinner = ora()
 
   const ipfsBinAbsPath =
@@ -154,7 +154,12 @@ async function getIpfsDaemon() {
     const spawn = util.promisify(df.spawn.bind(df))
     spinner.start('♻️️  Starting local disposable IPFS daemon…')
     try {
-      ipfsd = await spawn({ disposable: true, init: true, start: false })
+      ipfsd = await spawn({
+        disposable: true,
+        init: true,
+        start: false,
+        defaultAddrs: true,
+      })
       const start = util.promisify(ipfsd.start.bind(ipfsd))
       ipfsClient = await start([])
       spinner.succeed('☎️ Connected to local disposable IPFS daemon.')
@@ -169,7 +174,12 @@ async function getIpfsDaemon() {
     const spawn = util.promisify(df.spawn.bind(df))
     spinner.start('♻️️  Starting local disposable IPFS daemon…\n')
     try {
-      ipfsd = await spawn({ disposable: true, init: true, start: false })
+      ipfsd = await spawn({
+        disposable: true,
+        init: true,
+        start: false,
+        defaultAddrs: true,
+      })
       const start = util.promisify(ipfsd.start.bind(ipfsd))
       ipfsClient = await start([])
       spinner.succeed('☎️  Connected to local disposable IPFS daemon.')
@@ -180,7 +190,7 @@ async function getIpfsDaemon() {
     }
   }
 
-  return ipfsd
+  return { ipfsd, ipfsClient }
 }
 
 async function stopIpfsDaemonIfDisposable(ipfsd) {
@@ -240,7 +250,11 @@ async function pinToPinata(ipfsClient, credentials, metadata = {}, hash) {
       spinner.succeed("📌 It's pinned to Pinata now.")
     } catch (e) {
       spinner.fail("💔 Pinning to Pinata didn't work.")
-      logError(`${e.name}:\n${e.message}`)
+      if (e.name && e.message) {
+        logError(`${e.name}:\n${e.message}`)
+      } else {
+        logError(JSON.stringify(e, null, 2))
+      }
     }
   }
 }
@@ -298,8 +312,7 @@ async function deploy({
 
   await showSize(publicDirPath)
 
-  const ipfsd = await getIpfsDaemon()
-  const ipfsClient = ipfsd.api
+  const { ipfsd, ipfsClient } = await getIpfsDaemonAndClient()
 
   const hash = await pinToLocalDaemon(ipfsClient, publicDirPath)
 
