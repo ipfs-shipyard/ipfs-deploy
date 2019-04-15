@@ -1,6 +1,6 @@
 {
   "name": "@agentofuser/ipfs-deploy",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Pin directory locally, send hash to pinning service, and update DNS",
   "author": {
     "name": "Agent of User",

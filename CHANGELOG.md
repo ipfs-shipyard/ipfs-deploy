@@ -1,3 +1,10 @@
+## [6.0.1](https://github.com/agentofuser/ipfs-deploy/compare/v6.0.0...v6.0.1) (2019-04-15)
+
+### Bug Fixes
+
+- **ipfsd:** Listen to peers outside localhost
+  ([618e1a2](https://github.com/agentofuser/ipfs-deploy/commit/618e1a2))
+
 # [6.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v5.0.1...v6.0.0) (2019-04-14)
 
 ### Features
