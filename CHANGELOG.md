@@ -1,3 +1,10 @@
+## [7.0.2](https://github.com/agentofuser/ipfs-deploy/compare/v7.0.1...v7.0.2) (2019-04-22)
+
+### Bug Fixes
+
+- Promote prettier to regular dependency
+  ([24f198e](https://github.com/agentofuser/ipfs-deploy/commit/24f198e))
+
 ## [7.0.1](https://github.com/agentofuser/ipfs-deploy/compare/v7.0.0...v7.0.1) (2019-04-22)
 
 ### Bug Fixes
