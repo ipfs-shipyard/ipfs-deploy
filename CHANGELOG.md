@@ -1,3 +1,10 @@
+## [7.0.1](https://github.com/agentofuser/ipfs-deploy/compare/v7.0.0...v7.0.1) (2019-04-22)
+
+### Bug Fixes
+
+- Fix missing dependency
+  ([34d8bff](https://github.com/agentofuser/ipfs-deploy/commit/34d8bff))
+
 # [7.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v6.0.1...v7.0.0) (2019-04-22)
 
 ### Code Refactoring
