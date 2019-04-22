@@ -1,5 +1,6 @@
 module.exports = {
   ci: false,
+  repositoryUrl: 'git@github.com:agentofuser/ipfs-deploy.git',
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
