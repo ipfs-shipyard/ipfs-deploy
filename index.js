@@ -1,10 +1,13 @@
 const util = require('util')
 const { existsSync } = require('fs')
+const stringify = require('json-stringify-safe')
+const prettier = require('prettier')
+const jsonifyError = require('jsonify-error')
 const trammel = util.promisify(require('trammel'))
 const byteSize = require('byte-size')
-const IPFSFactory = require('ipfsd-ctl')
-const which = require('which')
 const clipboardy = require('clipboardy')
+const publicIp = require('public-ip')
+const IPFS = require('ipfs')
 const pinataSDK = require('@pinata/sdk')
 const got = require('got')
 const updateCloudflareDnslink = require('dnslink-cloudflare')
@@ -13,8 +16,8 @@ const chalk = require('chalk')
 const doOpen = require('open')
 const _ = require('lodash')
 const fp = require('lodash/fp')
-const multiaddr = require('multiaddr')
-const ip = require('ip')
+const Multiaddr = require('multiaddr')
+ipaddr = require('ipaddr.js')
 const neatFrame = require('neat-frame')
 const { stripIndent } = require('common-tags')
 
@@ -23,11 +26,28 @@ function publicGatewayUrl(hash) {
   return `https://ipfs.io/ipfs/${hash}`
 }
 
-const logError = fp.pipe(
-  stripIndent,
-  neatFrame,
-  console.error
-)
+function logError(e) {
+  const prettierJson = obj =>
+    prettier.format(stringify(obj), {
+      parser: 'json',
+      printWidth: 72,
+      tabWidth: 2,
+    })
+  const beautifyStr = fp.pipe(
+    stripIndent,
+    str => neatFrame(str, { trim: false })
+  )
+  if (_.isError(e)) {
+    eStr = prettierJson(jsonifyError(e))
+  } else if (_.isString(e)) {
+    eStr = e
+  } else if (_.isObjectLike(e)) {
+    eStr = prettierJson(e)
+  }
+  const beautifulErrorString = beautifyStr(eStr)
+  console.error(beautifulErrorString)
+  return beautifulErrorString
+}
 
 const white = chalk.whiteBright
 
@@ -113,7 +133,7 @@ async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
       spinner.info(`🔗 ${white(content)}.`)
     } catch (e) {
       spinner.fail("💔 Updating Cloudflare DNS didn't work.")
-      logError(`${e.name}:\n${e.message}`)
+      logError(e)
     }
 
     return siteDomain
@@ -133,90 +153,73 @@ async function showSize(path) {
     spinner.succeed(`🚚 ${chalk.blue(path)} weighs ${readableSize}.`)
   } catch (e) {
     spinner.fail("⚖  Couldn't calculate website size.")
-    logError(`${e.name}:\n${e.message}`)
+    logError(e)
     process.exit(1)
   }
 }
 
-async function getIpfsDaemonAndClient() {
+async function withIpfsNode(deployerFn) {
   const spinner = ora()
 
-  const ipfsBinAbsPath =
-    which.sync('ipfs', { nothrow: true }) ||
-    which.sync('jsipfs', { nothrow: true })
+  spinner.start('♻️️  Starting temporary IPFS node…\n')
+  try {
+    const node = new IPFS({
+      silent: true,
+      config: {
+        Addresses: {
+          Swarm: [
+            '/ip4/0.0.0.0/tcp/4002',
+            `/ip4/${await publicIp.v4()}/tcp/4002`,
+            '/ip6/::/tcp/4002',
+            `/ip6/${await publicIp.v6()}/tcp/4002`,
+          ],
+        },
+      },
+      EXPERIMENTAL: {
+        dht: true,
+      },
+    })
 
-  let ipfsd
-  let ipfsClient
-
-  if (ipfsBinAbsPath) {
-    const type = ipfsBinAbsPath.match(/jsipfs/) ? 'js' : 'go'
-    const df = IPFSFactory.create({ type, exec: ipfsBinAbsPath })
-    const spawn = util.promisify(df.spawn.bind(df))
-    spinner.start('♻️️  Starting local disposable IPFS daemon…')
-    try {
-      ipfsd = await spawn({
-        disposable: true,
-        init: true,
-        start: false,
-        defaultAddrs: true,
-      })
-      const start = util.promisify(ipfsd.start.bind(ipfsd))
-      ipfsClient = await start([])
-      spinner.succeed('☎️ Connected to local disposable IPFS daemon.')
-    } catch (e) {
-      spinner.fail("💔 Can't connect to local disposable IPFS daemon.")
-      console.warn(`${e.name}: ${e.message}`)
-    }
-  }
-
-  if (!ipfsClient) {
-    const df = IPFSFactory.create({ type: 'js' })
-    const spawn = util.promisify(df.spawn.bind(df))
-    spinner.start('♻️️  Starting local disposable IPFS daemon…\n')
-    try {
-      ipfsd = await spawn({
-        disposable: true,
-        init: true,
-        start: false,
-        defaultAddrs: true,
-      })
-      const start = util.promisify(ipfsd.start.bind(ipfsd))
-      ipfsClient = await start([])
-      spinner.succeed('☎️  Connected to local disposable IPFS daemon.')
-    } catch (e) {
-      spinner.fail("💔 Couldn't start local disposable IPFS daemon.")
-      logError(`${e.name}:\n${e.message}`)
-      process.exit(1)
-    }
-  }
-
-  return { ipfsd, ipfsClient }
-}
-
-async function stopIpfsDaemonIfDisposable(ipfsd) {
-  if (ipfsd.disposable) {
-    const stop = util.promisify(ipfsd.stop.bind(ipfsd))
-    // spinner.start('✋️ Stopping IPFS daemon…')
-    await stop()
-    // spinner.succeed('✋️ Stopped IPFS daemon.')
+    node.on('ready', async () => {
+      spinner.succeed('☎️  Connected to temporary IPFS node.')
+      const hash = await deployerFn(node)
+      await stopIpfsNode(node)
+      process.stdout.write(hash + '\n')
+    })
+  } catch (e) {
+    spinner.fail("💔 Couldn't start temporary IPFS node.")
+    logError(e)
+    process.exit(1)
   }
 }
 
-async function pinToLocalDaemon(ipfsClient, publicDirPath) {
+async function stopIpfsNode(node) {
+  const spinner = ora()
+  spinner.start('✋️ Stopping temporary IPFS node…')
+  try {
+    await node.stop()
+    spinner.succeed('✋️ Stopped temporary IPFS node.')
+  } catch (e) {
+    spinner.fail("🚂 Couldn't stop temporary IPFS node.")
+    logError(e)
+  }
+}
+
+async function pinToTmpIpfsNode(ipfsNode, publicDirPath) {
   const spinner = ora()
 
-  spinner.start('🔗 Pinning to local disposable IPFS daemon…')
-  const localPinResult = await ipfsClient.addFromFs(publicDirPath, {
+  spinner.start('🔗 Pinning to temporary IPFS node…')
+  const localPinResult = await ipfsNode.addFromFs(publicDirPath, {
     recursive: true,
   })
   const { hash } = localPinResult[localPinResult.length - 1]
   spinner.succeed(
-    `📌 Pinned ${chalk.blue(publicDirPath)} to local disposable IPFS daemon.`
+    `📌 Pinned ${chalk.blue(publicDirPath)} to temporary IPFS node.`
   )
   return hash
 }
 
-async function pinToPinata(ipfsClient, credentials, metadata = {}, hash) {
+async function pinToPinata(ipfsNode, credentials, metadata = {}, hash) {
   const spinner = ora()
 
   spinner.start(`📠 Requesting remote pin to ${white('pinata.cloud')}…`)
@@ -231,11 +234,28 @@ async function pinToPinata(ipfsClient, credentials, metadata = {}, hash) {
       You can put them in a .env file if you want and they will be picked up.
     `)
   } else {
-    const { addresses } = await ipfsClient.id()
-    const publicMultiaddresses = addresses.filter(
-      multiaddress =>
-        !ip.isPrivate(multiaddr(multiaddress).nodeAddress().address)
-    )
+    const nodeId = util.promisify(ipfsNode.id.bind(ipfsNode))
+    const id = await nodeId()
+    const addresses = id.addresses
+    const publicMultiaddresses = addresses
+      .map(multiaddress => {
+        let ipAddress
+        let nodeMaddr
+        try {
+          nodeMaddr = Multiaddr(multiaddress)
+          const nodeAddr = nodeMaddr.nodeAddress()
+          ipAddress = ipaddr.parse(nodeAddr.address)
+        } catch (e) {
+          ipAddress = null
+        }
+        // unicast is a regular public address
+        if (ipAddress && ipAddress.range() === 'unicast') {
+          return nodeMaddr
+        } else {
+          return null
+        }
+      })
+      .filter(nodeMaddr => nodeMaddr !== null)
 
     const pinataOptions = {
       host_nodes: publicMultiaddresses,
@@ -248,13 +268,11 @@ async function pinToPinata(ipfsClient, credentials, metadata = {}, hash) {
       await pinata.pinHashToIPFS(hash, pinataOptions)
 
       spinner.succeed("📌 It's pinned to Pinata now.")
+      return true
     } catch (e) {
       spinner.fail("💔 Pinning to Pinata didn't work.")
-      if (e.name && e.message) {
-        logError(`${e.name}:\n${e.message}`)
-      } else {
-        logError(JSON.stringify(e, null, 2))
-      }
+      logError(e)
+      return false
     }
   }
 }
@@ -273,12 +291,15 @@ async function pinToInfura(hash) {
 
     if (infuraResponse && infuraResponse.statusCode === 200) {
       spinner.succeed("📌 It's pinned to Infura now.")
+      return true
     } else {
       spinner.fail("💔 Pinning to Infura didn't work.")
+      return false
     }
   } catch (e) {
     spinner.fail("💔 Pinning to Infura didn't work.")
-    logError(`${e.name}:\n${e.message}`)
+    logError(e)
+    return false
   }
 }
 
@@ -312,37 +333,49 @@ async function deploy({
 
   await showSize(publicDirPath)
 
-  const { ipfsd, ipfsClient } = await getIpfsDaemonAndClient()
+  await withIpfsNode(async ipfsNode => {
+    const hash = await pinToTmpIpfsNode(ipfsNode, publicDirPath)
 
-  const hash = await pinToLocalDaemon(ipfsClient, publicDirPath)
+    let successfulRemotePinners = []
 
-  if (remotePinners.includes('pinata')) {
-    await pinToPinata(
-      ipfsClient,
-      credentials.pinata,
-      { name: siteDomain },
-      hash
-    )
-  }
+    if (remotePinners.includes('pinata')) {
+      if (
+        await pinToPinata(
+          ipfsNode,
+          credentials.pinata,
+          { name: siteDomain },
+          hash
+        )
+      ) {
+        successfulRemotePinners = successfulRemotePinners.concat(['pinata'])
+      }
+    }
 
-  if (remotePinners.includes('infura')) {
-    await pinToInfura(hash)
-  }
+    if (remotePinners.includes('infura')) {
+      if (await pinToInfura(hash)) {
+        successfulRemotePinners = successfulRemotePinners.concat(['infura'])
+      }
+    }
 
-  await stopIpfsDaemonIfDisposable(ipfsd)
+    if (successfulRemotePinners.length > 0) {
+      if (copyPublicGatewayUrlToClipboard) {
+        copyUrlToClipboard(hash)
+      }
 
-  if (copyPublicGatewayUrlToClipboard) {
-    copyUrlToClipboard(hash)
-  }
+      if (dnsProviders.includes('cloudflare')) {
+        await updateCloudflareDns(siteDomain, credentials.cloudflare, hash)
+      }
 
-  if (dnsProviders.includes('cloudflare')) {
-    await updateCloudflareDns(siteDomain, credentials.cloudflare, hash)
-  }
-
-  if (open && _.isEmpty(dnsProviders)) await openUrl(publicGatewayUrl(hash))
-  if (open && !_.isEmpty(dnsProviders)) await openUrl(`https://${siteDomain}`)
-
-  return hash
+      if (open && _.isEmpty(dnsProviders))
+        await openUrl(publicGatewayUrl(hash))
+      if (open && !_.isEmpty(dnsProviders))
+        await openUrl(`https://${siteDomain}`)
+    } else {
+      logError('Failed to deploy.')
+      process.exit(1)
+    }
+    return hash
+  })
 }
 
 module.exports = deploy

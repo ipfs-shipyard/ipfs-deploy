@@ -94,8 +94,7 @@ async function main() {
     },
   }
 
-  const hash = await deploy(deployOptions)
-  process.stdout.write(`${hash}\n`)
+  await deploy(deployOptions)
 }
 
 main()
