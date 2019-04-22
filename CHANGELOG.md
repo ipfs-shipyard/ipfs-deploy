@@ -1,3 +1,14 @@
+# [7.0.0](https://github.com/agentofuser/ipfs-deploy/compare/v6.0.1...v7.0.0) (2019-04-22)
+
+### Code Refactoring
+
+- **daemon:** Remove js-ipfsd-ctl
+  ([71761c3](https://github.com/agentofuser/ipfs-deploy/commit/71761c3))
+
+### BREAKING CHANGES
+
+- **daemon:** - js-ipfs requires manual port forwarding
+
 ## [6.0.1](https://github.com/agentofuser/ipfs-deploy/compare/v6.0.0...v6.0.1) (2019-04-15)
 
 ### Bug Fixes
