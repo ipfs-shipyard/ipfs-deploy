@@ -1,3 +1,10 @@
+## [7.0.3](https://github.com/agentofuser/ipfs-deploy/compare/v7.0.2...v7.0.3) (2019-04-25)
+
+### Bug Fixes
+
+- Publish to correct registry
+  ([a6f71f1](https://github.com/agentofuser/ipfs-deploy/commit/a6f71f1))
+
 ## [7.0.2](https://github.com/agentofuser/ipfs-deploy/compare/v7.0.1...v7.0.2) (2019-04-22)
 
 ### Bug Fixes
