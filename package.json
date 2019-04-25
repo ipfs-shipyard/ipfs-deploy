@@ -23,6 +23,7 @@
     "deploy"
   ],
   "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "main": "index.js",
