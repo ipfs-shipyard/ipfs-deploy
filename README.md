@@ -10,7 +10,7 @@
   </a>
 </p>
 
-## 🚨 WARNING: This is beta software and very much in "works for me" status. APIs and CLI options will change. Use with caution, but please use it, give feedback, and consider contributing :) If it works for you too, [please let me know on this issue](https://github.com/agentofuser/ipfs-deploy/issues/1 'feedback').
+### 🚨 WARNING: This is beta software and very much in "works for me" status. APIs and CLI options will change. Use with caution, but please use it, give feedback, and consider contributing :) If it works for you too, [please let me know on this issue](https://github.com/agentofuser/ipfs-deploy/issues/1 'feedback').
 
 The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
 **deploy a static website to IPFS.**
