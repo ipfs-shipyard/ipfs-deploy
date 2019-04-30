@@ -6,7 +6,7 @@ const deploy = require('../index')
 
 require('dotenv').config()
 
-const argv = yargs
+const parser = yargs
   .scriptName('ipfs-deploy')
   .usage(
     '$0 [options] [path]',
@@ -42,6 +42,12 @@ const argv = yargs
               'path'
             )} will be uploaded`,
           },
+          port: {
+            default: '4002',
+            describe:
+              'Externally reachable port for pinners to connect to ' +
+              'local IPFS node',
+          },
         })
         .example(
           '$0',
@@ -67,18 +73,28 @@ const argv = yargs
         )
     }
   )
-  .epilogue(
-    'For help or more information, ping me on Twitter ' +
-      'at https://twitter.com/agentofuser'
-  )
   .help()
-  .alias('h', 'help').argv
+  .alias('h', 'help')
 
 async function main() {
+  const processArgv = process.argv.slice(1)
+  const yargsParse = new Promise((resolve, reject) => {
+    parser.parse(processArgv, (err, argv, output) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve({ argv, output })
+      }
+    })
+  })
+
+  const { argv, output } = await yargsParse
+
   const deployOptions = {
     publicDirPath: argv.path,
     copyPublicGatewayUrlToClipboard: !argv.noClipboard,
     open: !argv.O,
+    port: argv.port,
     remotePinners: argv.p,
     dnsProviders: argv.d,
     siteDomain: argv.siteDomain,
@@ -94,7 +110,19 @@ async function main() {
     },
   }
 
-  await deploy(deployOptions)
+  process.stdout.write(output)
+
+  if (argv.h) {
+    // Had to do this because couldn't get yargs#epilogue() to work
+    process.stdout.write(`
+  For help or more information, ping me at
+  https://twitter.com/${chalk.whiteBright('agentofuser')}
+    `)
+  } else {
+    await deploy(deployOptions)
+  }
 }
 
-main()
+;(async () => {
+  await main()
+})()
