@@ -1,3 +1,10 @@
+# [7.1.0](https://github.com/agentofuser/ipfs-deploy/compare/v7.0.3...v7.1.0) (2019-04-30)
+
+### Features
+
+- Prevent Infura timeouts when only pinner
+  ([51ef698](https://github.com/agentofuser/ipfs-deploy/commit/51ef698))
+
 ## [7.0.3](https://github.com/agentofuser/ipfs-deploy/compare/v7.0.2...v7.0.3) (2019-04-25)
 
 ### Bug Fixes
