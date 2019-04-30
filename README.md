@@ -235,7 +235,8 @@ by any stretch of the imagination, but a nice way to get started quickly with a
 blog, static website, or frontend web app.
 
 If you use this package to deploy your website, please send a pull request so I
-can add it to the README. (I reserve the right to exercise discretion.)
+can add it to the [Users](#users) section in the README. (I reserve the right
+to exercise discretion.)
 
 ## Contributing
 
