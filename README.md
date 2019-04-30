@@ -28,16 +28,14 @@ The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
 
 ## Install
 
-### As a library:
-
-```bash
-npm install --save-dev @agentofuser/ipfs-deploy
-```
-
-### As an executable:
-
 ```bash
 npm install -g @agentofuser/ipfs-deploy
+```
+
+Or
+
+```bash
+yarn global add @agentofuser/ipfs-deploy
 ```
 
 You can call it either as `ipd` or as `ipfs-deploy`:
@@ -56,7 +54,8 @@ without needing to install anything:
 npx @agentofuser/ipfs-deploy _site
 ```
 
-Just remember to have the credentials properly set up as instructed below.
+It will deploy to a public pinning service and give you a link to
+`ipfs.io/ipfs/your-hash` so you can check it out.
 
 ## Usage
 
