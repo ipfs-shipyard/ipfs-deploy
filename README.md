@@ -5,12 +5,8 @@
 > Pin directory locally, upload to pinning service, and update dnslink.
 
 <p align="center">
-  <a href="https://asciinema.org/a/239528">
-    <img width="600" src="https://combinatronics.com/agentofuser/ipfs-deploy/master/docs/ipfs-deploy-demo.svg">
-  </a>
+  <img width="600" src="https://ipfs.io/ipfs/QmQD7u9iNegNCF3QeiR6DNvYsgDfnmw7im7qEgwXgeTDmh/ipfs-deploy-demo.svg">
 </p>
-
-### 🚨 WARNING: This is beta software and very much in "works for me" status. APIs and CLI options will change. Use with caution, but please use it, give feedback, and consider contributing :) If it works for you too, [please let me know on this issue](https://github.com/agentofuser/ipfs-deploy/issues/1 'feedback').
 
 The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
 **deploy a static website to IPFS.**
