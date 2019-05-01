@@ -119,7 +119,10 @@ async function main() {
   https://twitter.com/${chalk.whiteBright('agentofuser')}
     `)
   } else {
-    await deploy(deployOptions)
+    const pinnedHash = await deploy(deployOptions)
+    if (!pinnedHash) {
+      process.exit(1)
+    }
   }
 }
 

@@ -100,8 +100,10 @@ function guessPathIfEmpty(publicPath) {
       spinner.fail(
         `🔮 Couldn't guess what to deploy. Please specify a ${white('path')}.`
       )
-      process.exit(1)
+      return undefined
     }
+  } else {
+    return publicPath
   }
 }
 
@@ -164,10 +166,11 @@ async function showSize(path) {
     const kibi = byteSize(size, { units: 'iec' })
     const readableSize = `${kibi.value} ${kibi.unit}`
     spinner.succeed(`🚚 ${chalk.blue(path)} weighs ${readableSize}.`)
+    return readableSize
   } catch (e) {
     spinner.fail("⚖  Couldn't calculate website size.")
     logError(e)
-    process.exit(1)
+    return undefined
   }
 }
 
@@ -326,7 +329,15 @@ async function deploy({
 } = {}) {
   publicDirPath = guessPathIfEmpty(publicDirPath)
 
-  await showSize(publicDirPath)
+  if (!publicDirPath) {
+    return undefined
+  }
+
+  const readableSize = await showSize(publicDirPath)
+
+  if (!readableSize) {
+    return undefined
+  }
 
   let successfulRemotePinners = []
   let pinnedHashes = {}
@@ -374,13 +385,16 @@ async function deploy({
       await updateCloudflareDns(siteDomain, credentials.cloudflare, pinnedHash)
     }
 
-    if (open && _.isEmpty(dnsProviders))
+    if (open && _.isEmpty(dnsProviders)) {
       await openUrl(publicGatewayUrl(pinnedHash))
-    if (open && !_.isEmpty(dnsProviders))
+    }
+    if (open && !_.isEmpty(dnsProviders)) {
       await openUrl(`https://${siteDomain}`)
+    }
+    return pinnedHash
   } else {
     logError('Failed to deploy.')
-    process.exit(1)
+    return undefined
   }
 }
 
