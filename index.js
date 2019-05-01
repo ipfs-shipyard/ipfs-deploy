@@ -145,7 +145,7 @@ async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
       const content = await updateCloudflareDnslink(api, opts)
       spinner.succeed('🙌 SUCCESS!')
       spinner.info(`🔄 Updated DNS TXT ${white(opts.record)} to:`)
-      spinner.info(`🔗 ${white(content)}.`)
+      spinner.info(`🔗 ${white(content)}`)
     } catch (e) {
       spinner.fail("💔 Updating Cloudflare DNS didn't work.")
       logError(e)
