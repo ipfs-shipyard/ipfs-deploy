@@ -2,7 +2,7 @@
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-> Pin directory locally, upload to pinning service, and update dnslink.
+> Upload static website to IPFS pinning services and optionally update DNS.
 
 <p align="center">
   <img width="600" src="https://ipfs.io/ipfs/QmQD7u9iNegNCF3QeiR6DNvYsgDfnmw7im7qEgwXgeTDmh/ipfs-deploy-demo.svg">
