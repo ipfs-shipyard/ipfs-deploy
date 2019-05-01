@@ -37,7 +37,7 @@ yarn global add @agentofuser/ipfs-deploy
 You can call it either as `ipd` or as `ipfs-deploy`:
 
 ```bash
-ipd plublic/
+ipd public/
 ipfs-deploy public/
 ```
 
