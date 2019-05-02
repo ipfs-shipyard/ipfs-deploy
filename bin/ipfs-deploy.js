@@ -92,7 +92,7 @@ async function main() {
 
   const deployOptions = {
     publicDirPath: argv.path,
-    copyPublicGatewayUrlToClipboard: !argv.noClipboard,
+    copyHttpGatewayUrlToClipboard: !argv.noClipboard,
     open: !argv.O,
     port: argv.port,
     remotePinners: argv.p,

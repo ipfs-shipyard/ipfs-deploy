@@ -21,8 +21,14 @@ const neatFrame = require('neat-frame')
 const { stripIndent } = require('common-tags')
 
 // # Pure functions
-function publicGatewayUrl(hash) {
-  return `https://ipfs.io/ipfs/${hash}`
+function httpGatewayUrl(hash, gatewayProvider = 'ipfs') {
+  const gateways = {
+    ipfs: 'https://ipfs.io',
+    infura: 'https://ipfs.infura.io',
+    pinata: 'https://gateway.pinata.cloud',
+  }
+  const origin = gateways[gatewayProvider] || gateways['ipfs']
+  return `${origin}/ipfs/${hash}`
 }
 
 function formatError(e) {
@@ -300,17 +306,17 @@ async function addToInfura(publicDirPath) {
   }
 }
 
-function copyUrlToClipboard(hash) {
+function copyUrlToClipboard(url) {
   const spinner = ora()
-  spinner.start('📋 Copying public gateway URL to clipboard…')
-  clipboardy.writeSync(publicGatewayUrl(hash))
-  spinner.succeed('📋 Copied public gateway URL to clipboard:')
-  spinner.info(`🔗 ${chalk.green(publicGatewayUrl(hash))}`)
+  spinner.start('📋 Copying HTTP gateway URL to clipboard…')
+  clipboardy.writeSync(url)
+  spinner.succeed('📋 Copied HTTP gateway URL to clipboard:')
+  spinner.info(`🔗 ${chalk.green(url)}`)
 }
 
 async function deploy({
   publicDirPath,
-  copyPublicGatewayUrlToClipboard = false,
+  copyHttpGatewayUrlToClipboard = false,
   open = false,
   port = '4002',
   remotePinners = ['infura'],
@@ -370,6 +376,7 @@ async function deploy({
 
   if (successfulRemotePinners.length > 0) {
     const pinnedHash = Object.values(pinnedHashes)[0]
+    const gatewayUrl = httpGatewayUrl(pinnedHash, successfulRemotePinners[0])
     const isEqual = hash => hash === pinnedHash
     if (!fp.every(isEqual)(Object.values(pinnedHashes))) {
       const spinner = ora()
@@ -377,8 +384,8 @@ async function deploy({
       logError(pinnedHashes)
     }
 
-    if (copyPublicGatewayUrlToClipboard) {
-      copyUrlToClipboard(pinnedHash)
+    if (copyHttpGatewayUrlToClipboard) {
+      copyUrlToClipboard(gatewayUrl)
     }
 
     if (dnsProviders.includes('cloudflare')) {
@@ -386,7 +393,7 @@ async function deploy({
     }
 
     if (open && _.isEmpty(dnsProviders)) {
-      await openUrl(publicGatewayUrl(pinnedHash))
+      await openUrl(gatewayUrl)
     }
     if (open && !_.isEmpty(dnsProviders)) {
       await openUrl(`https://${siteDomain}`)
