@@ -20,7 +20,7 @@ The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
 - [API](#api)
 - [Security](#security)
 - [Background](#background)
-- [Contributing](#contributing)
+- [Contributors](#contributors)
 - [Who's Using](#users)
 - [License](#license)
 
@@ -232,30 +232,6 @@ These are free services subject to their terms. Not a decentralization nirvana
 by any stretch of the imagination, but a nice way to get started quickly with a
 blog, static website, or frontend web app.
 
-If you use this package to deploy your website, please send a pull request so I
-can add it to the [Users](#users) section in the README. (I reserve the right
-to exercise discretion.)
-
-## Contributing
-
-PRs accepted. Please open an issue first so we can talk about it.
-
-Small note: If editing the Readme, please conform to the
-[standard-readme](https://github.com/RichardLitt/standard-readme)
-specification.
-
-## Users
-
-- [agentofuser.com](https://agentofuser.com)
-- [interplanetarygatsby.com](https://interplanetarygatsby.com)
-
-## License
-
-[BlueOak-1.0.0 OR BSD-2-Clause-Patent OR MIT © Agent of User](./LICENSE.md)
-
-(The first two are the most permissive possible ever, more than MIT, which
-doesn't have a patent waiver. Use whichever satisfies your lawyer better.)
-
 ## Contributors
 
 Thanks goes to these wonderful people
@@ -270,3 +246,20 @@ Thanks goes to these wonderful people
 This project follows the
 [all-contributors](https://github.com/all-contributors/all-contributors)
 specification. Contributions of any kind welcome!
+
+## Users
+
+- [agentofuser.com](https://agentofuser.com)
+- [interplanetarygatsby.com](https://interplanetarygatsby.com)
+- _Your website here_
+
+If you use this package to deploy your website, please send a pull request so I
+can add it to the [Users](#users) section in the README. (I reserve the right
+to exercise discretion.)
+
+## License
+
+[BlueOak-1.0.0 OR BSD-2-Clause-Patent OR MIT © Agent of User](./LICENSE.md)
+
+(The first two are the most permissive possible ever, more than MIT, which
+doesn't have a patent waiver. Use whichever satisfies your lawyer better.)
