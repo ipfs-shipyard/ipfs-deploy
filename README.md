@@ -1,6 +1,6 @@
 # @agentofuser/ipfs-deploy
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
@@ -263,7 +263,7 @@ Thanks goes to these wonderful people
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-<table><tr><td align="center"><a href="https://tableflip.io"><img src="https://avatars3.githubusercontent.com/u/58871?v=4" width="100px;" alt="Oli Evans"/><br /><sub><b>Oli Evans</b></sub></a><br /><a href="https://github.com/agentofuser/ipfs-deploy/commits?author=olizilla" title="Code">💻</a></td></tr></table>
+<table><tr><td align="center"><a href="https://tableflip.io"><img src="https://avatars3.githubusercontent.com/u/58871?v=4" width="100px;" alt="Oli Evans"/><br /><sub><b>Oli Evans</b></sub></a><br /><a href="https://github.com/agentofuser/ipfs-deploy/commits?author=olizilla" title="Code">💻</a></td><td align="center"><a href="https://agentofuser.com"><img src="https://avatars1.githubusercontent.com/u/45322175?v=4" width="100px;" alt="Agent of User"/><br /><sub><b>Agent of User</b></sub></a><br /><a href="https://github.com/agentofuser/ipfs-deploy/commits?author=agentofuser" title="Code">💻</a></td></tr></table>
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
