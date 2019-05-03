@@ -1,4 +1,9 @@
 #!/usr/bin/env node
+const updateNotifier = require('update-notifier')
+const pkg = require('../package.json')
+
+updateNotifier({ pkg, updateCheckInterval: 0 }).notify()
+
 const chalk = require('chalk')
 const yargs = require('yargs')
 
@@ -115,9 +120,11 @@ async function main() {
   if (argv.h) {
     // Had to do this because couldn't get yargs#epilogue() to work
     process.stdout.write(`
+
   For help or more information, ping me at
   https://twitter.com/${chalk.whiteBright('agentofuser')}
-    `)
+
+`)
   } else {
     const pinnedHash = await deploy(deployOptions)
     if (!pinnedHash) {
