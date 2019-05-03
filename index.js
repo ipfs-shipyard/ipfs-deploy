@@ -362,7 +362,7 @@ async function deploy({
     const pinataHash = await pinToPinata(
       ipfsNode,
       credentials.pinata,
-      { name: siteDomain },
+      { name: siteDomain || __dirname },
       localHash
     )
 
