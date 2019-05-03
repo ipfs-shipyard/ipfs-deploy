@@ -1,3 +1,10 @@
+# [7.3.0](https://github.com/agentofuser/ipfs-deploy/compare/v7.2.1...v7.3.0) (2019-05-03)
+
+### Features
+
+- notify when update is available
+  ([b5afeef](https://github.com/agentofuser/ipfs-deploy/commit/b5afeef))
+
 ## [7.2.1](https://github.com/agentofuser/ipfs-deploy/compare/v7.2.0...v7.2.1) (2019-05-03)
 
 ### Bug Fixes
