@@ -27,7 +27,8 @@
       "profile": "https://agentofuser.com",
       "contributions": [
         "code",
-        "ideas"
+        "ideas",
+        "bug"
       ]
     }
   ],
