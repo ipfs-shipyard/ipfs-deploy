@@ -5,7 +5,7 @@
 > Upload static website to IPFS pinning services and optionally update DNS.
 
 <p align="center">
-  <img width="600" src="https://ipfs.io/ipfs/QmQD7u9iNegNCF3QeiR6DNvYsgDfnmw7im7qEgwXgeTDmh/ipfs-deploy-demo.svg">
+  <img width="600" src="./docs/og-image.png">
 </p>
 
 The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
