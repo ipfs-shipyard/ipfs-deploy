@@ -1,3 +1,10 @@
+## [7.2.1](https://github.com/agentofuser/ipfs-deploy/compare/v7.2.0...v7.2.1) (2019-05-03)
+
+### Bug Fixes
+
+- fix missing pinata name when domain empty
+  ([8023d82](https://github.com/agentofuser/ipfs-deploy/commit/8023d82))
+
 # [7.2.0](https://github.com/agentofuser/ipfs-deploy/compare/v7.1.1...v7.2.0) (2019-05-02)
 
 ### Features
