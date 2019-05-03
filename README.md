@@ -176,7 +176,7 @@ const deploy = require('@agentofuser/ipfs-deploy')
   try {
     const deployOptions = {
       publicDirPath: argv.path,
-      copyPublicGatewayUrlToClipboard: !argv.noClipboard,
+      copyHttpGatewayUrlToClipboard: !argv.noClipboard,
       open: !argv.O,
       remotePinners: argv.p,
       dnsProviders: argv.d,
