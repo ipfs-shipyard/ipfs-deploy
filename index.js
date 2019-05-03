@@ -19,17 +19,9 @@ const _ = require('lodash')
 const fp = require('lodash/fp')
 const neatFrame = require('neat-frame')
 const { stripIndent } = require('common-tags')
+const httpGatewayUrl = require('./src/gateway')
 
 // # Pure functions
-function httpGatewayUrl(hash, gatewayProvider = 'ipfs') {
-  const gateways = {
-    ipfs: 'https://ipfs.io',
-    infura: 'https://ipfs.infura.io',
-    pinata: 'https://gateway.pinata.cloud',
-  }
-  const origin = gateways[gatewayProvider] || gateways['ipfs']
-  return `${origin}/ipfs/${hash}`
-}
 
 function formatError(e) {
   const prettierJson = obj =>
