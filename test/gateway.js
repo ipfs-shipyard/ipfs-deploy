@@ -19,8 +19,8 @@ test('get http gateway url for a cid on pinata', t => {
   t.is(actual, expected)
 })
 
-test('throw if no cid', t => {
-  t.throws(() => {
-    httpGatewayUrl()
-  })
+test('get just the http gateway url if no cid', t => {
+  const expected = 'https://ipfs.io'
+  const actual = httpGatewayUrl()
+  t.is(actual, expected)
 })
