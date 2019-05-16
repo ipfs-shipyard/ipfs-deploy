@@ -73,16 +73,17 @@ async function isNodeReachable(port) {
 }
 
 function guessedPath() {
+  // prettier-ignore
   const guesses = [
-    '_site', // jekyll, hakyll
-    'site',
-    'public', // gatsby, hugo
-    'dist', // nuxt
-    'output', // pelican
-    'out', // hexo
-    'build', // metalsmith, middleman
+    '_site',         // jekyll, hakyll, eleventy
+    'site',          // forgot which
+    'public',        // gatsby, hugo
+    'dist',          // nuxt
+    'output',        // pelican
+    'out',           // hexo
+    'build',         // create-react-app, metalsmith, middleman
     'website/build', // docusaurus
-    'docs',
+    'docs',          // many others
   ]
 
   return fp.filter(existsSync)(guesses)[0]

@@ -7,7 +7,7 @@
 > Upload static website to IPFS pinning services and optionally update DNS.
 
 <p align="center">
-  <img src="./docs/og-image.png">
+  <img src="docs/og-image.png">
 </p>
 
 The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
@@ -67,16 +67,17 @@ guess it for you based on the build directories used by the most popular static
 site generators:
 
 ```javascript
+// prettier-ignore
 const guesses = [
-  '_site', // jekyll, hakyll
-  'site',
-  'public', // gatsby, hugo
-  'dist', // nuxt
-  'output', // pelican
-  'out', // hexo
-  'build', // metalsmith, middleman
+  '_site',         // jekyll, hakyll, eleventy
+  'site',          // forgot which
+  'public',        // gatsby, hugo
+  'dist',          // nuxt
+  'output',        // pelican
+  'out',           // hexo
+  'build',         // create-react-app, metalsmith, middleman
   'website/build', // docusaurus
-  'docs',
+  'docs',          // many others
 ]
 ```
 

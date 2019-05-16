@@ -78,6 +78,7 @@
     "format": "npx prettier --write ./**/*.{js,json,md,mdx,html,css}",
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "npx sgc",
+    "commit:retry": "npx sgc --retry",
     "semantic-release": "./semantic-release-dry-run.bash",
     "deploy": "./release.bash"
   },
