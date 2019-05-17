@@ -1,3 +1,15 @@
+# [7.5.0](https://github.com/agentofuser/ipfs-deploy/compare/v7.4.0...v7.5.0) (2019-05-17)
+
+### Bug Fixes
+
+- return just gateway url if no cid provided
+  ([98e55d4](https://github.com/agentofuser/ipfs-deploy/commit/98e55d4))
+
+### Features
+
+- add example ava test
+  ([cc1c34d](https://github.com/agentofuser/ipfs-deploy/commit/cc1c34d))
+
 # [7.4.0](https://github.com/agentofuser/ipfs-deploy/compare/v7.3.0...v7.4.0) (2019-05-16)
 
 ### Features
