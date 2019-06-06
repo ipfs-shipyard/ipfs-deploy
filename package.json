@@ -42,7 +42,7 @@
     "common-tags": "^2.0.0-alpha.1",
     "dnslink-cloudflare": "^2.0.1",
     "dotenv": "^8.0.0",
-    "ipfs": "^0.35.0",
+    "ipfs": "^0.36.3",
     "is-port-reachable": "^2.0.1",
     "json-stringify-safe": "^5.0.1",
     "jsonify-error": "^1.4.5",
