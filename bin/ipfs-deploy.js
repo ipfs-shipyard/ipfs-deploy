@@ -117,6 +117,11 @@ async function main() {
 
   process.stdout.write(output)
 
+  if (argv.version) {
+    process.stdout.write('\n')
+    process.exit()
+  }
+
   if (argv.h) {
     // Had to do this because couldn't get yargs#epilogue() to work
     process.stdout.write(`
