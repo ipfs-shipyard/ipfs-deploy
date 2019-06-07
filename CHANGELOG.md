@@ -1,3 +1,20 @@
+# [7.7.0](https://github.com/agentofuser/ipfs-deploy/compare/v7.6.0...v7.7.0) (2019-06-07)
+
+### Bug Fixes
+
+- don't deploy after printing version
+  ([4cbe850](https://github.com/agentofuser/ipfs-deploy/commit/4cbe850)),
+  closes [#6](https://github.com/agentofuser/ipfs-deploy/issues/6)
+- print pinned hash to stdout
+  ([2d4e2c9](https://github.com/agentofuser/ipfs-deploy/commit/2d4e2c9)),
+  closes [#9](https://github.com/agentofuser/ipfs-deploy/issues/9)
+
+### Features
+
+- use HTTP to pin to Pinata
+  ([14e7453](https://github.com/agentofuser/ipfs-deploy/commit/14e7453)),
+  closes [#11](https://github.com/agentofuser/ipfs-deploy/issues/11)
+
 # [7.6.0](https://github.com/agentofuser/ipfs-deploy/compare/v7.5.0...v7.6.0) (2019-05-17)
 
 ### Features
