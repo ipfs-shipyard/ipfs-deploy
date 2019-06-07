@@ -28,6 +28,7 @@ const parser = yargs
         .options({
           C: {
             alias: 'no-clipboard',
+            type: 'boolean',
             describe: "DON'T copy ipfs.io/ipfs/<hash> to clipboard",
           },
           d: {
@@ -36,6 +37,7 @@ const parser = yargs
             describe: 'DNS provider whose dnslink TXT field will be updated',
           },
           O: {
+            alias: 'no-open',
             type: 'boolean',
             describe: "DON'T open URL after deploying",
           },
@@ -98,10 +100,10 @@ async function main() {
   const deployOptions = {
     publicDirPath: argv.path,
     copyHttpGatewayUrlToClipboard: !argv.noClipboard,
-    open: !argv.O,
     port: argv.port,
-    remotePinners: argv.p,
-    dnsProviders: argv.d,
+    open: !argv.noOpen,
+    remotePinners: argv.pinner,
+    dnsProviders: argv.dns,
     siteDomain: argv.siteDomain,
     credentials: {
       cloudflare: {
@@ -132,7 +134,9 @@ async function main() {
 `)
   } else {
     const pinnedHash = await deploy(deployOptions)
-    if (!pinnedHash) {
+    if (pinnedHash) {
+      process.stdout.write(pinnedHash + '\n')
+    } else {
       process.exit(1)
     }
   }
