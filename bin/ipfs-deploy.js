@@ -49,12 +49,6 @@ const parser = yargs
               'path'
             )} will be uploaded`,
           },
-          port: {
-            default: '4002',
-            describe:
-              'Externally reachable port for pinners to connect to ' +
-              'local IPFS node',
-          },
         })
         .example(
           '$0',
@@ -100,7 +94,6 @@ async function main() {
   const deployOptions = {
     publicDirPath: argv.path,
     copyHttpGatewayUrlToClipboard: !argv.noClipboard,
-    port: argv.port,
     open: !argv.noOpen,
     remotePinners: argv.pinner,
     dnsProviders: argv.dns,

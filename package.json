@@ -35,15 +35,15 @@
     "node": ">=10.15.3"
   },
   "dependencies": {
-    "@pinata/sdk": "^1.0.18",
+    "axios": "^0.19.0",
     "byte-size": "^5.0.1",
     "chalk": "^2.4.2",
     "clipboardy": "^2.0.0",
     "common-tags": "^2.0.0-alpha.1",
     "dnslink-cloudflare": "^2.0.1",
     "dotenv": "^8.0.0",
-    "ipfs": "^0.35.0",
-    "is-port-reachable": "^2.0.1",
+    "form-data": "^2.3.3",
+    "ipfs-http-client": "^32.0.1",
     "json-stringify-safe": "^5.0.1",
     "jsonify-error": "^1.4.5",
     "lodash": "^4.17.11",
@@ -51,7 +51,7 @@
     "open": "^6.2.0",
     "ora": "^3.4.0",
     "prettier": "^1.17.0",
-    "public-ip": "^3.1.0",
+    "recursive-fs": "^1.1.2",
     "trammel": "^2.1.0",
     "update-notifier": "^3.0.0",
     "yargs": "^13.2.2"

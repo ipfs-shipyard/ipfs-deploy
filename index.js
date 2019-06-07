@@ -1,68 +1,22 @@
-const util = require('util')
 const { existsSync } = require('fs')
-const stringify = require('json-stringify-safe')
-const prettier = require('prettier')
-const jsonifyError = require('jsonify-error')
+const util = require('util')
 const trammel = util.promisify(require('trammel'))
 const byteSize = require('byte-size')
 const clipboardy = require('clipboardy')
-const publicIp = require('public-ip')
-const isPortReachable = require('is-port-reachable')
 const ipfsClient = require('ipfs-http-client')
-const IPFS = require('ipfs')
-const pinataSDK = require('@pinata/sdk')
 const updateCloudflareDnslink = require('dnslink-cloudflare')
 const ora = require('ora')
 const chalk = require('chalk')
 const doOpen = require('open')
 const _ = require('lodash')
 const fp = require('lodash/fp')
-const neatFrame = require('neat-frame')
-const { stripIndent } = require('common-tags')
+
+const { logError } = require('./src/logging')
+
 const httpGatewayUrl = require('./src/gateway')
-
-// # Pure functions
-
-function formatError(e) {
-  const prettierJson = obj =>
-    prettier.format(stringify(obj), {
-      parser: 'json',
-      printWidth: 72,
-      tabWidth: 2,
-    })
-  const beautifyStr = fp.pipe(
-    stripIndent,
-    str => neatFrame(str, { trim: false })
-  )
-  if (_.isError(e)) {
-    eStr = prettierJson(jsonifyError(e))
-  } else if (_.isString(e)) {
-    eStr = e
-  } else if (_.isObjectLike(e)) {
-    eStr = prettierJson(e)
-  }
-  const beautifulErrorString = '\n' + beautifyStr(eStr)
-  return beautifulErrorString
-}
+const { setupPinata } = require('./src/pinata')
 
 const white = chalk.whiteBright
-
-// Effectful functions
-
-function logError(e) {
-  const errorString = formatError(e)
-  console.error(errorString)
-  return errorString
-}
-
-async function isNodeReachable(port) {
-  const isIpv4Reachable = await isPortReachable(port, {
-    host: await publicIp.v4(),
-    timeout: 5000,
-  })
-
-  return isIpv4Reachable
-}
 
 function guessedPath() {
   // prettier-ignore
@@ -173,105 +127,6 @@ async function showSize(path) {
   }
 }
 
-function startIpfsNode(port) {
-  return new Promise((resolve, reject) => {
-    const spinner = ora()
-
-    spinner.start('♻️️  Starting temporary local IPFS node…\n')
-    const node = new IPFS({
-      silent: true,
-      config: {
-        Addresses: {
-          Swarm: [`/ip4/0.0.0.0/tcp/${port}`],
-        },
-      },
-    })
-
-    node.on('ready', async () => {
-      spinner.succeed('☎️  Connected to temporary local IPFS node.')
-      spinner.start(`🔌 Checking if port ${port} is externally reachable…`)
-      const isReachable = await isNodeReachable(port)
-      if (isReachable) {
-        spinner.succeed(`📶 Port ${port} is externally reachable.`)
-        node.port = port
-        resolve(node)
-      } else {
-        spinner.fail(`💔 Could not reach port ${port} from the outside :(`)
-        spinner.info(
-          '💡 Please forward it or try a different one with the --port option.'
-        )
-        reject(new Error(`Could not reach port ${port} from the outside`))
-      }
-    })
-  })
-}
-
-async function stopIpfsNode(node) {
-  const spinner = ora()
-  spinner.start('✋️ Stopping temporary local IPFS node…')
-  try {
-    await node.stop()
-    spinner.succeed('✋️ Stopped temporary local IPFS node.')
-  } catch (e) {
-    spinner.fail("🚂 Couldn't stop temporary local IPFS node.")
-    logError(e)
-  }
-}
-
-async function pinToTmpIpfsNode(ipfsNode, publicDirPath) {
-  const spinner = ora()
-
-  spinner.start('🔗 Pinning to temporary local IPFS node…')
-  const localPinResult = await ipfsNode.addFromFs(publicDirPath, {
-    recursive: true,
-  })
-  const { hash } = localPinResult[localPinResult.length - 1]
-  spinner.succeed('📌 Pinned to temporary local IPFS node with hash:')
-  spinner.info(`🔗 ${hash}`)
-  return hash
-}
-
-async function pinToPinata(ipfsNode, credentials, metadata = {}, hash) {
-  const spinner = ora()
-
-  spinner.start(`📠 Requesting remote pin to ${white('pinata.cloud')}…`)
-
-  if (fp.some(_.isEmpty)([credentials.apiKey, credentials.secretApiKey])) {
-    spinner.fail('💔 Missing credentials for Pinata API.')
-    spinner.warn('🧐  Check if these environment variables are present:')
-    logError(`
-      IPFS_DEPLOY_PINATA__API_KEY
-      IPFS_DEPLOY_PINATA__SECRET_API_KEY
-
-      You can put them in a .env file if you want and they will be picked up.
-    `)
-  } else {
-    const nodeId = util.promisify(ipfsNode.id.bind(ipfsNode))
-    const nodeInfo = await nodeId()
-
-    const pinataOptions = {
-      host_nodes: [
-        `/ip4/${await publicIp.v4()}/tcp/${ipfsNode.port}/ipfs/${nodeInfo.id}`,
-      ],
-      pinataMetadata: metadata,
-    }
-
-    try {
-      const pinata = pinataSDK(credentials.apiKey, credentials.secretApiKey)
-
-      await pinata.pinHashToIPFS(hash, pinataOptions)
-
-      spinner.succeed("📌 It's pinned to Pinata now with hash:")
-      spinner.info(`🔗 ${hash}`)
-      return hash
-    } catch (e) {
-      spinner.fail("💔 Pinning to Pinata didn't work.")
-      logError(e)
-      return undefined
-    }
-  }
-}
-
 async function addToInfura(publicDirPath) {
   const spinner = ora()
 
@@ -311,7 +166,6 @@ async function deploy({
   publicDirPath,
   copyHttpGatewayUrlToClipboard = false,
   open = false,
-  port = '4002',
   remotePinners = ['infura'],
   dnsProviders = [],
   siteDomain,
@@ -350,21 +204,15 @@ async function deploy({
   }
 
   if (remotePinners.includes('pinata')) {
-    const ipfsNode = await startIpfsNode(port)
-    const localHash = await pinToTmpIpfsNode(ipfsNode, publicDirPath)
-    const pinataHash = await pinToPinata(
-      ipfsNode,
-      credentials.pinata,
-      { name: siteDomain || __dirname },
-      localHash
-    )
+    const addToPinata = setupPinata(credentials.pinata)
+    const pinataHash = await addToPinata(publicDirPath, {
+      name: siteDomain || __dirname,
+    })
 
     if (pinataHash) {
       successfulRemotePinners = successfulRemotePinners.concat(['pinata'])
-      Object.assign(pinnedHashes, { localHash, pinataHash })
+      Object.assign(pinnedHashes, { pinataHash })
     }
-
-    await stopIpfsNode(ipfsNode)
   }
 
   if (successfulRemotePinners.length > 0) {
