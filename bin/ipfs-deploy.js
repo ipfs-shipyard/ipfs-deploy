@@ -28,7 +28,6 @@ const parser = yargs
         .options({
           C: {
             alias: 'no-clipboard',
-            type: 'boolean',
             describe: "DON'T copy ipfs.io/ipfs/<hash> to clipboard",
           },
           d: {
@@ -38,7 +37,6 @@ const parser = yargs
           },
           O: {
             alias: 'no-open',
-            type: 'boolean',
             describe: "DON'T open URL after deploying",
           },
           p: {
@@ -93,8 +91,9 @@ async function main() {
 
   const deployOptions = {
     publicDirPath: argv.path,
-    copyHttpGatewayUrlToClipboard: argv.clipboard,
-    open: argv.open,
+    copyHttpGatewayUrlToClipboard:
+      !(argv.clipboard === false) && !argv.C && !argv.noClipboard,
+    open: !(argv.open === false) && !argv.O && !argv.noOpen,
     remotePinners: argv.pinner,
     dnsProviders: argv.dns,
     siteDomain: argv.siteDomain,
