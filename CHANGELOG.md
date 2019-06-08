@@ -1,3 +1,10 @@
+## [7.7.2](https://github.com/agentofuser/ipfs-deploy/compare/v7.7.1...v7.7.2) (2019-06-08)
+
+### Bug Fixes
+
+- default to open and copy to clipboard
+  ([73a9b9d](https://github.com/agentofuser/ipfs-deploy/commit/73a9b9d))
+
 ## [7.7.1](https://github.com/agentofuser/ipfs-deploy/compare/v7.7.0...v7.7.1) (2019-06-08)
 
 ### Bug Fixes
