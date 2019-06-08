@@ -1,3 +1,10 @@
+## [7.7.1](https://github.com/agentofuser/ipfs-deploy/compare/v7.7.0...v7.7.1) (2019-06-08)
+
+### Bug Fixes
+
+- fix --no-open and --no-clipboard
+  ([12284a6](https://github.com/agentofuser/ipfs-deploy/commit/12284a6))
+
 # [7.7.0](https://github.com/agentofuser/ipfs-deploy/compare/v7.6.0...v7.7.0) (2019-06-07)
 
 ### Bug Fixes
