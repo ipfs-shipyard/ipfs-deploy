@@ -38,7 +38,7 @@
     "axios": "^0.19.0",
     "byte-size": "^5.0.1",
     "chalk": "^2.4.2",
-    "clipboardy": "^2.0.0",
+    "clipboardy": "^2.1.0",
     "common-tags": "^2.0.0-alpha.1",
     "dnslink-cloudflare": "^2.0.1",
     "dotenv": "^8.0.0",
@@ -48,44 +48,48 @@
     "jsonify-error": "^1.4.5",
     "lodash": "^4.17.11",
     "neat-frame": "https://github.com/agentofuser/neat-frame#wrap-ansi-options",
-    "open": "^6.2.0",
+    "open": "^6.3.0",
     "ora": "^3.4.0",
-    "prettier": "^1.17.0",
+    "prettier": "^1.18.2",
     "recursive-fs": "^1.1.2",
     "trammel": "^2.1.0",
     "update-notifier": "^3.0.0",
-    "yargs": "^13.2.2"
+    "yargs": "^13.2.4"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^3.0.3",
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-conventional": "^8.0.0",
+    "@semantic-release/changelog": "^3.0.4",
     "@semantic-release/commit-analyzer": "^7.0.0-beta.2",
-    "@semantic-release/git": "^7.0.11",
-    "@semantic-release/github": "^5.3.2",
-    "@semantic-release/npm": "^5.1.7",
-    "@semantic-release/release-notes-generator": "^7.1.7",
-    "all-contributors-cli": "^6.4.0",
+    "@semantic-release/git": "^7.0.12",
+    "@semantic-release/github": "^5.4.0",
+    "@semantic-release/npm": "^5.1.9",
+    "@semantic-release/release-notes-generator": "^7.2.0",
+    "all-contributors-cli": "^6.7.0",
     "ava": "^2.1.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^6.0.0-alpha.0",
-    "eslint-config-prettier": "^4.2.0",
-    "eslint-plugin-import": "^2.17.2",
-    "husky": "^2.2.0",
-    "lint-staged": "^8.1.6",
-    "ndb": "^1.0.44",
-    "semantic-git-commit-cli": "^3.3.0",
-    "semantic-release": "^15.13.13",
-    "semantic-release-cli": "^5.1.0"
+    "eslint-config-prettier": "^5.0.0",
+    "eslint-plugin-import": "^2.17.3",
+    "husky": "^2.4.1",
+    "lint-staged": "^8.2.1",
+    "semantic-release": "^15.13.16",
+    "semantic-release-cli": "^5.1.1"
   },
   "scripts": {
     "format": "npx prettier --write ./**/*.{js,json,md,mdx,html,css}",
     "test": "ava",
-    "commit": "npx sgc",
-    "commit:retry": "npx sgc --retry",
+    "commit": "git-cz",
+    "commit:retry": "git-cz --retry",
+    "commitmsg": "commitlint -e",
     "semantic-release": "./semantic-release-dry-run.bash",
     "deploy": "./release.bash"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
@@ -98,7 +102,35 @@
       "git add"
     ]
   },
-  "sgc": {
-    "lowercaseTypes": true
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "header-max-length": [
+        2,
+        "always",
+        50
+      ],
+      "body-max-line-length": [
+        2,
+        "always",
+        72
+      ],
+      "footer-max-line-length": [
+        2,
+        "always",
+        72
+      ],
+      "scope-empty": [
+        2,
+        "never"
+      ]
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
