@@ -82,14 +82,12 @@
     "test": "ava",
     "commit": "git-cz",
     "commit:retry": "git-cz --retry",
-    "commitmsg": "commitlint -e",
     "semantic-release": "./semantic-release-dry-run.bash",
     "deploy": "./release.bash"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
