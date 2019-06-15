@@ -224,13 +224,15 @@ async function deploy({
 
   if (successfulRemotePinners.length > 0) {
     const pinnedHash = Object.values(pinnedHashes)[0]
-    const gatewayUrl = httpGatewayUrl(pinnedHash, successfulRemotePinners[0])
     const isEqual = hash => hash === pinnedHash
     if (!fp.every(isEqual)(Object.values(pinnedHashes))) {
       const spinner = ora()
       spinner.fail('≠  Found inconsistency in pinned hashes:')
       logError(pinnedHashes)
+      return undefined
     }
+
+    const gatewayUrl = httpGatewayUrl(pinnedHash, successfulRemotePinners[0])
 
     if (copyHttpGatewayUrlToClipboard) {
       copyUrlToClipboard(gatewayUrl)
