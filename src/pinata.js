@@ -16,7 +16,7 @@ module.exports.setupPinata = ({ apiKey, secretApiKey }) => {
   return async (publicDirPath, pinataMetadata = {}) => {
     const spinner = ora()
     spinner.start(
-      `📠 Uploading and pinning via https to ${white('pinata.cloud')}…`
+      `📠  Uploading and pinning via https to ${white('pinata.cloud')}…`
     )
 
     try {
@@ -49,12 +49,12 @@ module.exports.setupPinata = ({ apiKey, secretApiKey }) => {
         })
       })
 
-      spinner.succeed("📌 It's pinned to Pinata now with hash:")
+      spinner.succeed("📌  It's pinned to Pinata now with hash:")
       const hash = response.data.IpfsHash
-      spinner.info(`🔗 ${hash}`)
+      spinner.info(`🔗  ${hash}`)
       return hash
     } catch (e) {
-      spinner.fail("💔 Uploading to Pinata didn't work.")
+      spinner.fail("💔  Uploading to Pinata didn't work.")
       logError(e)
       return undefined
     }

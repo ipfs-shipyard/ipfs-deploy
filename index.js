@@ -41,17 +41,17 @@ function guessPathIfEmpty(publicPath) {
 
   if (_.isEmpty(publicPath)) {
     spinner.info(
-      `🤔 No ${white('path')} argument specified. Looking for common ones…`
+      `🤔  No ${white('path')} argument specified. Looking for common ones…`
     )
     result = guessedPath()
     if (result) {
       spinner.succeed(
-        `📂 Found local ${chalk.blue(result)} directory. Deploying that.`
+        `📂  Found local ${chalk.blue(result)} directory. Deploying that.`
       )
       return result
     } else {
       spinner.fail(
-        `🔮 Couldn't guess what to deploy. Please specify a ${white('path')}.`
+        `🔮  Couldn't guess what to deploy. Please specify a ${white('path')}.`
       )
       return undefined
     }
@@ -62,18 +62,18 @@ function guessPathIfEmpty(publicPath) {
 
 async function openUrl(url) {
   const spinner = ora()
-  spinner.start('🏄 Opening web browser…')
+  spinner.start('🏄  Opening web browser…')
   const childProcess = await doOpen(url)
-  spinner.succeed('🏄 Opened web browser (call with -O to disable.)')
+  spinner.succeed('🏄  Opened web browser (call with -O to disable.)')
   return childProcess
 }
 
 async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
   const spinner = ora()
 
-  spinner.start(`📡 Beaming new hash to DNS provider ${white('Cloudflare')}…`)
+  spinner.start(`📡  Beaming new hash to DNS provider ${white('Cloudflare')}…`)
   if (fp.some(_.isEmpty)([siteDomain, apiEmail, apiKey])) {
-    spinner.fail('💔 Missing arguments for Cloudflare API.')
+    spinner.fail('💔  Missing arguments for Cloudflare API.')
     spinner.warn('🧐  Check if these environment variables are present:')
     logError(`
       IPFS_DEPLOY_SITE_DOMAIN
@@ -96,11 +96,11 @@ async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
       }
 
       const content = await updateCloudflareDnslink(api, opts)
-      spinner.succeed('🙌 SUCCESS!')
-      spinner.info(`🔄 Updated DNS TXT ${white(opts.record)} to:`)
-      spinner.info(`🔗 ${white(content)}`)
+      spinner.succeed('🙌  SUCCESS!')
+      spinner.info(`🔄  Updated DNS TXT ${white(opts.record)} to:`)
+      spinner.info(`🔗  ${white(content)}`)
     } catch (e) {
-      spinner.fail("💔 Updating Cloudflare DNS didn't work.")
+      spinner.fail("💔  Updating Cloudflare DNS didn't work.")
       logError(e)
     }
 
@@ -110,7 +110,7 @@ async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
 
 async function showSize(path) {
   const spinner = ora()
-  spinner.start(`📦 Calculating size of ${chalk.blue(path)}…`)
+  spinner.start(`📦  Calculating size of ${chalk.blue(path)}…`)
   try {
     const size = await trammel(path, {
       stopOnError: true,
@@ -118,7 +118,7 @@ async function showSize(path) {
     })
     const kibi = byteSize(size, { units: 'iec' })
     const readableSize = `${kibi.value} ${kibi.unit}`
-    spinner.succeed(`🚚 ${chalk.blue(path)} weighs ${readableSize}.`)
+    spinner.succeed(`🚚  ${chalk.blue(path)} weighs ${readableSize}.`)
     return readableSize
   } catch (e) {
     spinner.fail("⚖  Couldn't calculate website size.")
@@ -138,17 +138,17 @@ async function addToInfura(publicDirPath) {
 
   try {
     spinner.start(
-      `📠 Uploading and pinning via https to ${white('infura.io')}…`
+      `📠  Uploading and pinning via https to ${white('infura.io')}…`
     )
     const response = await infuraClient.addFromFs(publicDirPath, {
       recursive: true,
     })
-    spinner.succeed("📌 It's pinned to Infura now with hash:")
+    spinner.succeed("📌  It's pinned to Infura now with hash:")
     const hash = response[response.length - 1].hash
-    spinner.info(`🔗 ${hash}`)
+    spinner.info(`🔗  ${hash}`)
     return hash
   } catch (e) {
-    spinner.fail("💔 Uploading to Infura didn't work.")
+    spinner.fail("💔  Uploading to Infura didn't work.")
     logError(e)
     return undefined
   }
@@ -156,10 +156,17 @@ async function addToInfura(publicDirPath) {
 
 function copyUrlToClipboard(url) {
   const spinner = ora()
-  spinner.start('📋 Copying HTTP gateway URL to clipboard…')
-  clipboardy.writeSync(url)
-  spinner.succeed('📋 Copied HTTP gateway URL to clipboard:')
-  spinner.info(`🔗 ${chalk.green(url)}`)
+  spinner.start('📋  Copying HTTP gateway URL to clipboard…')
+  try {
+    clipboardy.writeSync(url)
+    spinner.succeed('📋  Copied HTTP gateway URL to clipboard:')
+    spinner.info(`🔗  ${chalk.green(url)}`)
+    return url
+  } catch (e) {
+    spinner.fail('⚠️  Could not copy URL to clipboard.')
+    logError(e)
+    return undefined
+  }
 }
 
 async function deploy({
