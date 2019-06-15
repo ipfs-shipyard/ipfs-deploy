@@ -1,3 +1,10 @@
+## [7.7.3](https://github.com/agentofuser/ipfs-deploy/compare/v7.7.2...v7.7.3) (2019-06-15)
+
+### Bug Fixes
+
+- **clipboard:** prevent error on codesandbox.io
+  ([ef18271](https://github.com/agentofuser/ipfs-deploy/commit/ef18271))
+
 ## [7.7.2](https://github.com/agentofuser/ipfs-deploy/compare/v7.7.1...v7.7.2) (2019-06-08)
 
 ### Bug Fixes
