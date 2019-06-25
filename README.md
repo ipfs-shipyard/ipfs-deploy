@@ -152,10 +152,14 @@ IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
 IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.mysubdomain.agentofuser.com
 ```
 
-Note the 2 `_` after `PINATA` and `CLOUDFLARE`.
+Important:
 
-(**Don't** commit the `.env` file to source control unless you know what you're
-doing.)
+- Note the 2 `_` after `PINATA` and `CLOUDFLARE`.
+- Remember you have to set the CNAME to cloudflare-ipfs.com yourself (only
+  once). ipfs-deploy then creates/updates the \_dnslink record.
+
+**Don't** commit the `.env` file to source control unless you know what you're
+doing.
 
 ```
 $ echo '.env' >> .gitignore
