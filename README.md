@@ -7,7 +7,7 @@
 > Upload static website to IPFS pinning services and optionally update DNS.
 
 <p align="center">
-  <img src="docs/og-image.png">
+  <img src="docs/ipfs-deploy-demo.svg">
 </p>
 
 The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
@@ -149,7 +149,7 @@ Example with subdomain:
 ```bash
 # cloudflare dns info
 IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
-IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.test.agentofuser.com
+IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.mysubdomain.agentofuser.com
 ```
 
 Note the 2 `_` after `PINATA` and `CLOUDFLARE`.
