@@ -101,6 +101,8 @@ async function main() {
       cloudflare: {
         apiKey: argv.cloudflare && argv.cloudflare.apiKey,
         apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
+        zone: argv.cloudflare && argv.cloudflare.zone,
+        record: argv.cloudflare && argv.cloudflare.record,
       },
       pinata: {
         apiKey: argv.pinata && argv.pinata.apiKey,

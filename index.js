@@ -15,6 +15,7 @@ const { logError } = require('./src/logging')
 
 const httpGatewayUrl = require('./src/gateway')
 const { setupPinata } = require('./src/pinata')
+const { linkCid, linkUrl } = require('./src/utils/pure-fns')
 
 const white = chalk.whiteBright
 
@@ -64,48 +65,81 @@ async function openUrl(url) {
   const spinner = ora()
   spinner.start('🏄  Opening web browser…')
   const childProcess = await doOpen(url)
-  spinner.succeed('🏄  Opened web browser (call with -O to disable.)')
+  spinner.succeed('🏄  Opened URL on web browser (call with -O to disable):')
+  spinner.info(linkUrl(url))
   return childProcess
 }
 
-async function updateCloudflareDns(siteDomain, { apiEmail, apiKey }, hash) {
+// returns (sub)domain deployed to or null when error
+async function updateCloudflareDns(
+  siteDomain,
+  { apiEmail, apiKey, zone, record },
+  hash
+) {
+  let result
   const spinner = ora()
 
   spinner.start(`📡  Beaming new hash to DNS provider ${white('Cloudflare')}…`)
-  if (fp.some(_.isEmpty)([siteDomain, apiEmail, apiKey])) {
+  if (fp.some(_.isEmpty)([apiEmail, apiKey])) {
     spinner.fail('💔  Missing arguments for Cloudflare API.')
     spinner.warn('🧐  Check if these environment variables are present:')
     logError(`
-      IPFS_DEPLOY_SITE_DOMAIN
       IPFS_DEPLOY_CLOUDFLARE__API_EMAIL
       IPFS_DEPLOY_CLOUDFLARE__API_KEY
 
+      (Note the 2 '_' after "CLOUDFLARE".)
       You can put them in a .env file if you want and they will be picked up.
     `)
+  }
+  if (_.isEmpty(siteDomain) && fp.some(_.isEmpty)([zone, record])) {
+    spinner.fail('💔  Missing arguments for Cloudflare API.')
+    spinner.warn('🧐  Check if these environment variables are present:')
+    logError(`
+      IPFS_DEPLOY_CLOUDFLARE__ZONE
+      IPFS_DEPLOY_CLOUDFLARE__RECORD
+
+      (Note the 2 '_' after "CLOUDFLARE".)
+      You can put them in a .env file if you want and they will be picked up.
+
+      Example with top-level domain:
+      IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
+      IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.agentofuser.com
+
+      Example with subdomain:
+      IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
+      IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.test.agentofuser.com
+    `)
+    result = null
   } else {
+    const api = {
+      email: apiEmail,
+      key: apiKey,
+    }
+
+    const opts = {
+      zone: zone || siteDomain,
+      record: record || `_dnslink.${siteDomain}`,
+      link: `/ipfs/${hash}`,
+    }
+
     try {
-      const api = {
-        email: apiEmail,
-        key: apiKey,
-      }
-
-      const opts = {
-        record: siteDomain,
-        zone: siteDomain,
-        link: `/ipfs/${hash}`,
-      }
-
       const content = await updateCloudflareDnslink(api, opts)
       spinner.succeed('🙌  SUCCESS!')
       spinner.info(`🔄  Updated DNS TXT ${white(opts.record)} to:`)
       spinner.info(`🔗  ${white(content)}`)
+
+      result = opts.record
+        .split('.')
+        .slice(1)
+        .join('.')
     } catch (e) {
       spinner.fail("💔  Updating Cloudflare DNS didn't work.")
       logError(e)
+      result = null
     }
-
-    return siteDomain
   }
+
+  return result
 }
 
 async function showSize(path) {
@@ -118,7 +152,9 @@ async function showSize(path) {
     })
     const kibi = byteSize(size, { units: 'iec' })
     const readableSize = `${kibi.value} ${kibi.unit}`
-    spinner.succeed(`🚚  ${chalk.blue(path)} weighs ${readableSize}.`)
+    spinner.succeed(
+      `🚚  Directory ${chalk.blue(path)} weighs ${readableSize}.`
+    )
     return readableSize
   } catch (e) {
     spinner.fail("⚖  Couldn't calculate website size.")
@@ -144,9 +180,9 @@ async function addToInfura(publicDirPath) {
       recursive: true,
     })
     spinner.succeed("📌  It's pinned to Infura now with hash:")
-    const hash = response[response.length - 1].hash
-    spinner.info(`🔗  ${hash}`)
-    return hash
+    const pinnedHash = response[response.length - 1].hash
+    spinner.info(linkCid(pinnedHash, 'infura'))
+    return pinnedHash
   } catch (e) {
     spinner.fail("💔  Uploading to Infura didn't work.")
     logError(e)
@@ -160,7 +196,7 @@ function copyUrlToClipboard(url) {
   try {
     clipboardy.writeSync(url)
     spinner.succeed('📋  Copied HTTP gateway URL to clipboard:')
-    spinner.info(`🔗  ${chalk.green(url)}`)
+    spinner.info(linkUrl(url))
     return url
   } catch (e) {
     spinner.fail('⚠️  Could not copy URL to clipboard.')
@@ -180,6 +216,8 @@ async function deploy({
     cloudflare: {
       apiEmail,
       apiKey,
+      zone,
+      record,
     },
     pinata: {
       apiKey,
@@ -213,7 +251,10 @@ async function deploy({
   if (remotePinners.includes('pinata')) {
     const addToPinata = setupPinata(credentials.pinata)
     const pinataHash = await addToPinata(publicDirPath, {
-      name: siteDomain || __dirname,
+      name:
+        (credentials.cloudflare && credentials.cloudflare.record) ||
+        siteDomain ||
+        __dirname,
     })
 
     if (pinataHash) {
@@ -224,7 +265,7 @@ async function deploy({
 
   if (successfulRemotePinners.length > 0) {
     const pinnedHash = Object.values(pinnedHashes)[0]
-    const isEqual = hash => hash === pinnedHash
+    const isEqual = pinnedHash => pinnedHash === pinnedHash
     if (!fp.every(isEqual)(Object.values(pinnedHashes))) {
       const spinner = ora()
       spinner.fail('≠  Found inconsistency in pinned hashes:')
@@ -232,22 +273,35 @@ async function deploy({
       return undefined
     }
 
-    const gatewayUrl = httpGatewayUrl(pinnedHash, successfulRemotePinners[0])
+    let dnslinkedHostname
+    if (dnsProviders.includes('cloudflare')) {
+      dnslinkedHostname = await updateCloudflareDns(
+        siteDomain,
+        credentials.cloudflare,
+        pinnedHash
+      )
+    }
+
+    const gatewayUrls = successfulRemotePinners.map(pinner =>
+      httpGatewayUrl(pinnedHash, pinner)
+    )
+
+    if (open) {
+      gatewayUrls.forEach(async gatewayUrl => await openUrl(gatewayUrl))
+
+      if (dnslinkedHostname) {
+        await openUrl(`https://${dnslinkedHostname}`)
+      }
+    }
 
     if (copyHttpGatewayUrlToClipboard) {
-      copyUrlToClipboard(gatewayUrl)
+      if (dnslinkedHostname) {
+        copyUrlToClipboard(`https://${dnslinkedHostname}`)
+      } else {
+        copyUrlToClipboard(gatewayUrls[0])
+      }
     }
 
-    if (dnsProviders.includes('cloudflare')) {
-      await updateCloudflareDns(siteDomain, credentials.cloudflare, pinnedHash)
-    }
-
-    if (open && _.isEmpty(dnsProviders)) {
-      await openUrl(gatewayUrl)
-    }
-    if (open && !_.isEmpty(dnsProviders)) {
-      await openUrl(`https://${siteDomain}`)
-    }
     return pinnedHash
   } else {
     logError('Failed to deploy.')

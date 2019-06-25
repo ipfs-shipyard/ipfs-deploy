@@ -3,7 +3,9 @@ const fs = require('fs')
 const FormData = require('form-data')
 const recursive = require('recursive-fs')
 const ora = require('ora')
+
 const { logError } = require('./logging')
+const { linkCid } = require('./utils/pure-fns')
 
 const chalk = require('chalk')
 const white = chalk.whiteBright
@@ -50,9 +52,9 @@ module.exports.setupPinata = ({ apiKey, secretApiKey }) => {
       })
 
       spinner.succeed("📌  It's pinned to Pinata now with hash:")
-      const hash = response.data.IpfsHash
-      spinner.info(`🔗  ${hash}`)
-      return hash
+      const pinnedHash = response.data.IpfsHash
+      spinner.info(linkCid(pinnedHash, 'infura'))
+      return pinnedHash
     } catch (e) {
       spinner.fail("💔  Uploading to Pinata didn't work.")
       logError(e)

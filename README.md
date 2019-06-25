@@ -15,14 +15,17 @@ The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
 
 ## Table of Contents
 
-- [Install](#install)
-- [Usage](#usage)
-- [API](#api)
-- [Security](#security)
-- [Background](#background)
-- [Contributors](#contributors)
-- [Who's Using](#users)
-- [License](#license)
+1. [@agentofuser/ipfs-deploy](#agentofuseripfs-deploy)
+   1. [Table of Contents](#Table-of-Contents)
+   2. [Install](#Install)
+      1. [No install:](#No-install)
+   3. [Usage](#Usage)
+   4. [API](#API)
+   5. [Security](#Security)
+   6. [Background](#Background)
+   7. [Contributors](#Contributors)
+   8. [Users](#Users)
+   9. [License](#License)
 
 ## Install
 
@@ -116,18 +119,43 @@ https://pinata.cloud/documentation#GettingStarted
 pinning service used.)
 
 After setting up your Cloudflare and Pinata accounts, in your website's
-repository root, create or edit the file `.env` with your domain and
-credentials:
+repository root, create or edit the file `.env` with your credentials, zone,
+and record information:
 
-```
-IPFS_DEPLOY_SITE_DOMAIN=
+```bash
+# pinata credentials
 IPFS_DEPLOY_PINATA__API_KEY=
 IPFS_DEPLOY_PINATA__SECRET_API_KEY=
+
+# cloudflare credentials
 IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=
 IPFS_DEPLOY_CLOUDFLARE__API_KEY=
+
+# cloudflare dns info
+IPFS_DEPLOY_CLOUDFLARE__ZONE=
+IPFS_DEPLOY_CLOUDFLARE__RECORD=
 ```
 
-(**Don't** commit it to source control unless you know what you're doing.)
+Example with top-level domain:
+
+```bash
+# cloudflare dns info
+IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
+IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.agentofuser.com
+```
+
+Example with subdomain:
+
+```bash
+# cloudflare dns info
+IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
+IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.test.agentofuser.com
+```
+
+Note the 2 `_` after `PINATA` and `CLOUDFLARE`.
+
+(**Don't** commit the `.env` file to source control unless you know what you're
+doing.)
 
 ```
 $ echo '.env' >> .gitignore
@@ -177,15 +205,18 @@ const deploy = require('@agentofuser/ipfs-deploy')
   try {
     const deployOptions = {
       publicDirPath: argv.path,
-      copyHttpGatewayUrlToClipboard: !argv.noClipboard,
-      open: !argv.O,
-      remotePinners: argv.p,
-      dnsProviders: argv.d,
+      copyHttpGatewayUrlToClipboard:
+        !(argv.clipboard === false) && !argv.C && !argv.noClipboard,
+      open: !(argv.open === false) && !argv.O && !argv.noOpen,
+      remotePinners: argv.pinner,
+      dnsProviders: argv.dns,
       siteDomain: argv.siteDomain,
       credentials: {
         cloudflare: {
           apiKey: argv.cloudflare && argv.cloudflare.apiKey,
           apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
+          zone: argv.cloudflare && argv.cloudflare.zone,
+          record: argv.cloudflare && argv.cloudflare.record,
         },
         pinata: {
           apiKey: argv.pinata && argv.pinata.apiKey,
