@@ -1,3 +1,16 @@
+# [7.8.0](https://github.com/agentofuser/ipfs-deploy/compare/v7.7.3...v7.8.0) (2019-06-25)
+
+### Bug Fixes
+
+- **pinning:** error out if hashes don't match
+  ([7fd847b](https://github.com/agentofuser/ipfs-deploy/commit/7fd847b))
+
+### Features
+
+- **naming:** support subdomain dnslink on cloudflare
+  ([0cd3e12](https://github.com/agentofuser/ipfs-deploy/commit/0cd3e12)),
+  closes [#5](https://github.com/agentofuser/ipfs-deploy/issues/5)
+
 ## [7.7.3](https://github.com/agentofuser/ipfs-deploy/compare/v7.7.2...v7.7.3) (2019-06-15)
 
 ### Bug Fixes
