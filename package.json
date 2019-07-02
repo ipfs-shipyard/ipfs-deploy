@@ -74,7 +74,7 @@
     "eslint-config-prettier": "^5.0.0",
     "eslint-plugin-import": "^2.17.3",
     "husky": "^2.4.1",
-    "lint-staged": "^8.2.1",
+    "lint-staged": "^9.0.0",
     "semantic-release": "^15.13.16",
     "semantic-release-cli": "^5.1.1"
   },
