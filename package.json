@@ -69,7 +69,7 @@
     "all-contributors-cli": "^6.7.0",
     "ava": "^2.1.0",
     "commitizen": "^3.1.1",
-    "cz-conventional-changelog": "^2.1.0",
+    "cz-conventional-changelog": "^3.0.2",
     "eslint": "^6.0.0-alpha.0",
     "eslint-config-prettier": "^5.0.0",
     "eslint-plugin-import": "^2.17.3",
