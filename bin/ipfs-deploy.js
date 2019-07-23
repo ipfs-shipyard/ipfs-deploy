@@ -41,7 +41,7 @@ const parser = yargs
           },
           p: {
             alias: 'pinner',
-            choices: ['pinata', 'infura'],
+            choices: ['pinata', 'infura', 'fission'],
             default: ['infura'],
             describe: `Pinning services to which ${chalk.whiteBright(
               'path'
@@ -108,6 +108,10 @@ async function main() {
         apiKey: argv.pinata && argv.pinata.apiKey,
         secretApiKey: argv.pinata && argv.pinata.secretApiKey,
       },
+      fission: {
+        username: argv.fission && argv.fission.username,
+        password: argv.fission && argv.fission.password,
+      },
     },
   }
 
@@ -120,7 +124,7 @@ async function main() {
 
   if (argv.h) {
     // Had to do this because couldn't get yargs#epilogue() to work
-    process.stdout.write(`
+    process.stdout.write(`i
 
   For help or more information, ping me at
   https://twitter.com/${chalk.whiteBright('agentofuser')}
