@@ -9,6 +9,7 @@ const headers = { 'content-type': 'application/octet-stream' }
 
 const uploadFile = async (auth, filepath) => {
   const resp = await axios.post(BASE_URL, fs.createReadStream(filepath), {
+    maxContentLength: 'Infinity',
     auth,
     headers
   })
