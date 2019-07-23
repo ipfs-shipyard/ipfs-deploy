@@ -15,6 +15,7 @@ const { logError } = require('./src/logging')
 
 const httpGatewayUrl = require('./src/gateway')
 const { setupPinata } = require('./src/pinata')
+const { setupFission } = require('./src/fission')
 const { linkCid, linkUrl } = require('./src/utils/pure-fns')
 
 const white = chalk.whiteBright
@@ -223,6 +224,10 @@ async function deploy({
       apiKey,
       secretApiKey,
     },
+    fission: {
+      apiKey,
+      secretApiKey,
+    },
   },
 } = {}) {
   publicDirPath = guessPathIfEmpty(publicDirPath)
@@ -260,6 +265,21 @@ async function deploy({
     if (pinataHash) {
       successfulRemotePinners = successfulRemotePinners.concat(['pinata'])
       Object.assign(pinnedHashes, { pinataHash })
+    }
+  }
+
+  if (remotePinners.includes('fission')) {
+    const addToFission = setupFission(credentials.fission)
+    const fissionHash = await addToFission(publicDirPath, {
+      name:
+        (credentials.cloudflare && credentials.cloudflare.record) ||
+        siteDomain ||
+        __dirname,
+    })
+
+    if (fissionHash) {
+      successfulRemotePinners = successfulRemotePinners.concat(['fission'])
+      Object.assign(pinnedHashes, { fissionHash })
     }
   }
 
@@ -304,6 +324,7 @@ async function deploy({
 
     return pinnedHash
   } else {
+    logError(credentials.fission)
     logError('Failed to deploy.')
     return undefined
   }

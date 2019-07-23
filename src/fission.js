@@ -10,12 +10,12 @@ const { linkCid } = require('./utils/pure-fns')
 const chalk = require('chalk')
 const white = chalk.whiteBright
 
-module.exports.setupFission = ({ fission_username, fission_password }) => {
+module.exports.setupFission = ({ apiKey, secretApiKey }) => {
   const url = 'https://hostless.dev/ipfs'
 
   // we gather the files from a local directory in this example, but a valid
   // readStream is all that's needed for each file in the directory.
-  return async (publicDirPath, fissionMetadata = {}) => {
+  return async (publicDirPath /*, fissionMetadata = {}*/) => {
     const spinner = ora()
     spinner.start(
       `📠  Uploading and pinning via https to ${white('fission.codes')}…`
@@ -33,19 +33,29 @@ module.exports.setupFission = ({ fission_username, fission_password }) => {
             })
           })
 
-          const metadata = JSON.stringify(fissionMetadata)
-          data.append('fissionMetadata', metadata)
+          // const metadata = JSON.stringify(fissionMetadata)
+          // data.append('fissionMetadata', metadata)
+
+          // var basicAuth = 'Basic ' + btoa(apiKey + ':' + secretApiKey);
+          var basicAuth = new Buffer(apiKey + ':' + secretApiKey).toString(
+            'base64'
+          )
 
           axios
             .post(url, data, {
               // Infinity is needed to prevent axios from erroring out with
               // large directories
               maxContentLength: 'Infinity',
+              /*
+
+              // Looking at: https://stackoverflow.com/questions/44072750/how-to-send-basic-auth-with-axios
+               
               auth: {
-                username: fission_username,
-                password: fission_password,
-              },
+                username: apiKey,
+                password: secretApiKey,
+              }, */
               headers: {
+                Authorization: basicAuth,
                 'Content-Type': 'application/octet-stream',
               },
             })
@@ -54,7 +64,7 @@ module.exports.setupFission = ({ fission_username, fission_password }) => {
       })
 
       spinner.succeed("📌  It's pinned to FISSION now with hash:")
-      const pinnedHash = response.data.IpfsHash
+      const pinnedHash = response.data // response on success is the hash
       spinner.info(linkCid(pinnedHash, 'infura'))
       return pinnedHash
     } catch (e) {
