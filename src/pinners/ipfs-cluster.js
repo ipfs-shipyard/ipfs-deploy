@@ -48,7 +48,7 @@ module.exports = ({ host, username, password }) => {
 
       const pinnedHash = response[response.length - 1].hash
       spinner.succeed("📌  It's pinned to IPFS Cluster now with hash:")
-      spinner.info(linkCid(pinnedHash, 'ipfs-cluster'))
+      spinner.info(linkCid(pinnedHash, 'ipfs'))
       return pinnedHash
     } catch (e) {
       spinner.fail("💔  Uploading to IPFS Cluster didn't work.")
