@@ -1,4 +1,5 @@
 const ora = require('ora')
+const _ = require('lodash')
 const { logError } = require('./logging')
 
 const httpGatewayUrl = require('./utils/gateway')
@@ -58,8 +59,8 @@ async function deploy ({
     let pinner
 
     try {
-      pinner = await pinnerProviders[pinnerName](
-        credentials[pinnerName] || null
+      pinner = await pinnerProviders[_.camelCase(pinnerName)](
+        credentials[_.camelCase(pinnerName)] || null
       )
     } catch (error) {
       logError(error.toString())
@@ -95,10 +96,10 @@ async function deploy ({
   let dnslinkedHostname = null
 
   for (const provider of dnsProviders) {
-    dnslinkedHostname = await dnslinkProviders[provider](
+    dnslinkedHostname = await dnslinkProviders[_.camelCase(provider)](
       siteDomain,
       pinnedHash,
-      credentials[provider] || null
+      credentials[_.camelCase(provider)] || null
     )
   }
 

@@ -50,7 +50,7 @@ const parser = yargs
           },
           u: {
             alias: 'unique-upload',
-            choices: ['pinata', 'infura'],
+            choices: ['pinata', 'infura', 'ipfs-cluster'],
             describe: 'Upload to only one service and pin hash on others',
           },
         })
