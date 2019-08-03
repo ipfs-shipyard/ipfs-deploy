@@ -41,7 +41,7 @@ const parser = yargs
           },
           p: {
             alias: 'pinner',
-            choices: ['pinata', 'infura'],
+            choices: ['pinata', 'infura', 'ipfs-cluster'],
             default: ['infura'],
             describe: `Pinning services to which ${chalk.whiteBright(
               'path'
@@ -107,6 +107,11 @@ async function main() {
       pinata: {
         apiKey: argv.pinata && argv.pinata.apiKey,
         secretApiKey: argv.pinata && argv.pinata.secretApiKey,
+      },
+      ipfsCluster: {
+        host: argv.ipfsCluster && argv.ipfsCluster.host,
+        username: argv.ipfsCluster && argv.ipfsCluster.username,
+        password: argv.ipfsCluster && argv.ipfsCluster.password,
       },
     },
   }
