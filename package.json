@@ -46,7 +46,7 @@
     "ipfs-cluster-api": "0.0.9",
     "ipfs-http-client": "^32.0.1",
     "json-stringify-safe": "^5.0.1",
-    "jsonify-error": "^1.4.5",
+    "jsonify-error": "^2.0.0",
     "lodash": "^4.17.11",
     "multiaddr": "^6.1.0",
     "neat-frame": "https://github.com/agentofuser/neat-frame#wrap-ansi-options",
