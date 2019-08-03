@@ -127,6 +127,11 @@ and record information:
 IPFS_DEPLOY_PINATA__API_KEY=
 IPFS_DEPLOY_PINATA__SECRET_API_KEY=
 
+# ipfs-cluster credentials
+IPFS_DEPLOY_IPFS_CLUSTER__HOST=       # multiaddr
+IPFS_DEPLOY_IPFS_CLUSTER__USERNAME=   # basic auth username
+IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD=   # basic auth password
+
 # cloudflare credentials
 IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=
 IPFS_DEPLOY_CLOUDFLARE__API_KEY=
@@ -225,6 +230,11 @@ const deploy = require('@agentofuser/ipfs-deploy')
         pinata: {
           apiKey: argv.pinata && argv.pinata.apiKey,
           secretApiKey: argv.pinata && argv.pinata.secretApiKey,
+        },
+        ipfsCluster: {
+          host: argv.ipfsCluster && argv.ipfsCluster.host,
+          username: argv.ipfsCluster && argv.ipfsCluster.username,
+          password: argv.ipfsCluster && argv.ipfsCluster.password,
         },
       },
     }

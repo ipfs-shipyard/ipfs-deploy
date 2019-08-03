@@ -5,6 +5,7 @@ const { logError } = require('./logging')
 
 const setupPinata = require('./pinners/pinata')
 const setupInfura = require('./pinners/infura')
+const setupIpfsCluster = require('./pinners/ipfs-cluster')
 
 const updateCloudflareDns = require('./dnslink/cloudflare')
 
@@ -31,6 +32,11 @@ async function deploy({
     pinata: {
       apiKey,
       secretApiKey,
+    },
+    ipfsCluster: {
+      host,
+      username,
+      password,
     },
   },
 } = {}) {
@@ -71,6 +77,18 @@ async function deploy({
     if (pinataHash) {
       successfulRemotePinners = successfulRemotePinners.concat(['pinata'])
       Object.assign(pinnedHashes, { pinataHash })
+    }
+  }
+
+  if (remotePinners.includes('ipfs-cluster')) {
+    const addToCluster = setupIpfsCluster(credentials.ipfsCluster)
+    const ipfsClusterHash = await addToCluster(publicDirPath)
+
+    if (ipfsClusterHash) {
+      successfulRemotePinners = successfulRemotePinners.concat([
+        'ipfs-cluster',
+      ])
+      Object.assign(pinnedHashes, { ipfsClusterHash })
     }
   }
 
