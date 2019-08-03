@@ -127,6 +127,11 @@ and record information:
 IPFS_DEPLOY_PINATA__API_KEY=
 IPFS_DEPLOY_PINATA__SECRET_API_KEY=
 
+# ipfs-cluster credentials
+IPFS_DEPLOY_IPFS_CLUSTER__HOST=       # multiaddr
+IPFS_DEPLOY_IPFS_CLUSTER__USERNAME=   # basic auth username
+IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD=   # basic auth password
+
 # cloudflare credentials
 IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=
 IPFS_DEPLOY_CLOUDFLARE__API_KEY=
@@ -226,6 +231,11 @@ const deploy = require('@agentofuser/ipfs-deploy')
           apiKey: argv.pinata && argv.pinata.apiKey,
           secretApiKey: argv.pinata && argv.pinata.secretApiKey,
         },
+        ipfsCluster: {
+          host: argv.ipfsCluster && argv.ipfsCluster.host,
+          username: argv.ipfsCluster && argv.ipfsCluster.username,
+          password: argv.ipfsCluster && argv.ipfsCluster.password,
+        },
       },
     }
 
@@ -247,6 +257,7 @@ So far, `ipfs-deploy` integrates with these services:
   signup. (Default.)
 - [Pinata.cloud](https://pinata.cloud): freemium pinning service. Gives more
   control over what's uploaded. You can delete, label, and add metadata.
+- [IPFS Cluster](https://cluster.ipfs.io/): self-hosted IPFS pinning service.
 - [Cloudflare DNS](https://cloudflare.com): freemium DNS API. Supports CNAME
   for naked domains and integrates with their IPFS gateway at
   [cloudflare-ipfs.com](https://cloudflare-ipfs.com).
