@@ -1,7 +1,7 @@
 const terminalLink = require('terminal-link')
 const chalk = require('chalk')
 
-const httpGatewayUrl = require('../gateway')
+const httpGatewayUrl = require('./gateway')
 
 function linkCid(cid, gatewayProvider) {
   return `🔗  ${chalk.green(

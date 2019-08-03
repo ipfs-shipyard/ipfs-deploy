@@ -1,5 +1,5 @@
 const test = require('ava')
-const httpGatewayUrl = require('../src/gateway')
+const httpGatewayUrl = require('../src/utils/gateway')
 
 test('get http gateway url for a cid', t => {
   const expected = 'https://ipfs.io/ipfs/fakecid'

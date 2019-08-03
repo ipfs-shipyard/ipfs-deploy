@@ -3,14 +3,14 @@ const fs = require('fs')
 const FormData = require('form-data')
 const recursive = require('recursive-fs')
 const ora = require('ora')
-
-const { logError } = require('./logging')
-const { linkCid } = require('./utils/pure-fns')
-
 const chalk = require('chalk')
+
+const { logError } = require('../logging')
+const { linkCid } = require('../utils/pure-fns')
+
 const white = chalk.whiteBright
 
-module.exports.setupPinata = ({ apiKey, secretApiKey }) => {
+module.exports = ({ apiKey, secretApiKey }) => {
   const url = 'https://api.pinata.cloud/pinning/pinFileToIPFS'
 
   // we gather the files from a local directory in this example, but a valid
@@ -24,7 +24,7 @@ module.exports.setupPinata = ({ apiKey, secretApiKey }) => {
     try {
       const response = await new Promise(resolve => {
         recursive.readdirr(publicDirPath, (_err, _dirs, files) => {
-          let data = new FormData()
+          const data = new FormData()
           files.forEach(file => {
             data.append('file', fs.createReadStream(file), {
               // for each file stream, we need to include the correct
