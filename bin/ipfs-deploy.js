@@ -43,10 +43,16 @@ const parser = yargs
             alias: 'pinner',
             choices: ['pinata', 'infura', 'ipfs-cluster'],
             default: ['infura'],
+            array: true,
             describe: `Pinning services to which ${chalk.whiteBright(
               'path'
             )} will be uploaded`
-          }
+          },
+          u: {
+            alias: 'unique-upload',
+            choices: ['pinata', 'infura'],
+            describe: 'Upload to only one service and pin hash on others',
+          },
         })
         .example(
           '$0',
@@ -97,6 +103,7 @@ async function main () {
     remotePinners: argv.pinner,
     dnsProviders: argv.dns,
     siteDomain: argv.siteDomain,
+    uniqueUpload: argv.uniqueUpload,
     credentials: {
       cloudflare: {
         apiKey: argv.cloudflare && argv.cloudflare.apiKey,

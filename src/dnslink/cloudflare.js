@@ -1,81 +1,59 @@
 const updateCloudflareDnslink = require('dnslink-cloudflare')
-const ora = require('ora')
-const chalk = require('chalk')
 const _ = require('lodash')
 const fp = require('lodash/fp')
 
-const { logError } = require('../logging')
+module.exports = {
+  name: 'Cloudflare',
+  validate: ({ apiEmail, apiKey, zone, record }) => {
+    if (fp.some(_.isEmpty)([apiEmail, apiKey])) {
+      throw new Error(`
+        Missing the following environment variables:
 
-const white = chalk.whiteBright
+        IPFS_DEPLOY_CLOUDFLARE__API_EMAIL
+        IPFS_DEPLOY_CLOUDFLARE__API_KEY
+  
+        (Note the 2 '_' after "CLOUDFLARE".)
+        You can put them in a .env file if you want and they will be picked up.
+      `)
+    }
 
-// returns (sub)domain deployed to or null when error
-module.exports = async (
-  siteDomain,
-  { apiEmail, apiKey, zone, record },
-  hash
-) => {
-  let result
-  const spinner = ora()
+    if (fp.some(_.isEmpty)([zone, record])) {
+      throw new Error(`
+        Missing the following environment variables:
 
-  spinner.start(`📡  Beaming new hash to DNS provider ${white('Cloudflare')}…`)
-  if (fp.some(_.isEmpty)([apiEmail, apiKey])) {
-    spinner.fail('💔  Missing arguments for Cloudflare API.')
-    spinner.warn('🧐  Check if these environment variables are present:')
-    logError(`
-      IPFS_DEPLOY_CLOUDFLARE__API_EMAIL
-      IPFS_DEPLOY_CLOUDFLARE__API_KEY
-
-      (Note the 2 '_' after "CLOUDFLARE".)
-      You can put them in a .env file if you want and they will be picked up.
-    `)
-  }
-  if (_.isEmpty(siteDomain) && fp.some(_.isEmpty)([zone, record])) {
-    spinner.fail('💔  Missing arguments for Cloudflare API.')
-    spinner.warn('🧐  Check if these environment variables are present:')
-    logError(`
-      IPFS_DEPLOY_CLOUDFLARE__ZONE
-      IPFS_DEPLOY_CLOUDFLARE__RECORD
-
-      (Note the 2 '_' after "CLOUDFLARE".)
-      You can put them in a .env file if you want and they will be picked up.
-
-      Example with top-level domain:
-      IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
-      IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.agentofuser.com
-
-      Example with subdomain:
-      IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
-      IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.test.agentofuser.com
-    `)
-    result = null
-  } else {
+        IPFS_DEPLOY_CLOUDFLARE__ZONE
+        IPFS_DEPLOY_CLOUDFLARE__RECORD
+  
+        (Note the 2 '_' after "CLOUDFLARE".)
+        You can put them in a .env file if you want and they will be picked up.
+  
+        Example with top-level domain:
+        IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
+        IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.agentofuser.com
+  
+        Example with subdomain:
+        IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
+        IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.test.agentofuser.com
+      `)
+    }
+  },
+  link: async (domain, hash, { apiEmail, apiKey, zone, record }) => {
     const api = {
       email: apiEmail,
       key: apiKey
     }
 
     const opts = {
-      zone: zone || siteDomain,
-      record: record || `_dnslink.${siteDomain}`,
+      zone: zone || domain,
+      record: record || `_dnslink.${domain}`,
       link: `/ipfs/${hash}`
     }
 
-    try {
-      const content = await updateCloudflareDnslink(api, opts)
-      spinner.succeed('🙌  SUCCESS!')
-      spinner.info(`🔄  Updated DNS TXT ${white(opts.record)} to:`)
-      spinner.info(`🔗  ${white(content)}`)
+    const content = await updateCloudflareDnslink(api, opts)
 
-      result = opts.record
-        .split('.')
-        .slice(1)
-        .join('.')
-    } catch (e) {
-      spinner.fail("💔  Updating Cloudflare DNS didn't work.")
-      logError(e)
-      result = null
+    return {
+      record: opts.record,
+      value: content
     }
   }
-
-  return result
 }
