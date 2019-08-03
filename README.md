@@ -257,6 +257,7 @@ So far, `ipfs-deploy` integrates with these services:
   signup. (Default.)
 - [Pinata.cloud](https://pinata.cloud): freemium pinning service. Gives more
   control over what's uploaded. You can delete, label, and add metadata.
+- [IPFS Cluster](https://cluster.ipfs.io/): self-hosted IPFS pinning service.
 - [Cloudflare DNS](https://cloudflare.com): freemium DNS API. Supports CNAME
   for naked domains and integrates with their IPFS gateway at
   [cloudflare-ipfs.com](https://cloudflare-ipfs.com).
