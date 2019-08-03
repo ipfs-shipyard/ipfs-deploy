@@ -7,7 +7,7 @@ updateNotifier({ pkg, updateCheckInterval: 0 }).notify()
 const chalk = require('chalk')
 const yargs = require('yargs')
 
-const deploy = require('../index')
+const deploy = require('../src')
 
 require('dotenv').config()
 

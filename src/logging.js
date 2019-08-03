@@ -9,6 +9,7 @@ const { stripIndent } = require('common-tags')
 // # Pure functions
 
 function formatError(e) {
+  let eStr
   const prettierJson = obj =>
     prettier.format(stringify(obj), {
       parser: 'json',
