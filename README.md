@@ -19,15 +19,16 @@ The goal of `ipfs-deploy` is to make it as easy as possible to
 1. [Install](#Install)
     1. [No install](#No-install)
 2. [Usage](#Usage)
+    1. [Supported Pinning Services](#supported-pinning-services)
+    2. [Supported DNS Services](#supported-dns-providers)
 3. [API](#API)
 4. [Security](#Security)
-5. [Background](#Background)
-6. [Contributing](#Contributing)
+5. [Contributing](#Contributing)
     1. [Contributors](#Contributors)
     2. [Add a Pinning Service](#add-a-pinning-service)
     3. [Add a DNS Provider](#add-a-dns-provider)
-7. [Users](#Users)
-8. [License](#License)
+6. [Users](#Users)
+7. [License](#License)
 
 ## Install
 
