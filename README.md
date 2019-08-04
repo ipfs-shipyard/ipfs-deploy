@@ -16,7 +16,7 @@ The goal of `ipfs-deploy` is to make it as easy as possible to
 ## Table of Contents
 
 1. [Install](#Install)
-  i. [No install](#No-install)
+    1. [No install](#No-install)
 2. [Usage](#Usage)
 3. [API](#API)
 4. [Security](#Security)
