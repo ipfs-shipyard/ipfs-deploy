@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 const updateNotifier = require('update-notifier')
+const chalk = require('chalk')
+const yargs = require('yargs')
+const deploy = require('../src')
 const pkg = require('../package.json')
 
 updateNotifier({ pkg, updateCheckInterval: 0 }).notify()
 
-const chalk = require('chalk')
-const yargs = require('yargs')
-
-const deploy = require('../src')
-
 require('dotenv').config()
+
+const pinProviders = ['pinata', 'infura', 'ipfs-cluster']
+
+const dnsProviders = ['cloudflare']
 
 const parser = yargs
   .scriptName('ipfs-deploy')
@@ -32,7 +34,8 @@ const parser = yargs
           },
           d: {
             alias: 'dns',
-            choices: ['cloudflare'],
+            choices: dnsProviders,
+            array: true,
             describe: 'DNS provider whose dnslink TXT field will be updated'
           },
           O: {
@@ -41,11 +44,17 @@ const parser = yargs
           },
           p: {
             alias: 'pinner',
-            choices: ['pinata', 'infura', 'ipfs-cluster'],
+            choices: pinProviders,
             default: ['infura'],
+            array: true,
             describe: `Pinning services to which ${chalk.whiteBright(
               'path'
             )} will be uploaded`
+          },
+          u: {
+            alias: 'unique-upload',
+            choices: pinProviders,
+            describe: 'Upload to only one service and pin hash on others'
           }
         })
         .example(
@@ -97,6 +106,7 @@ async function main () {
     remotePinners: argv.pinner,
     dnsProviders: argv.dns,
     siteDomain: argv.siteDomain,
+    uniqueUpload: argv.uniqueUpload,
     credentials: {
       cloudflare: {
         apiKey: argv.cloudflare && argv.cloudflare.apiKey,

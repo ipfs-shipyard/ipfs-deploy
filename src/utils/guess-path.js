@@ -7,7 +7,6 @@ const fp = require('lodash/fp')
 const white = chalk.whiteBright
 
 function guessedPath () {
-  // prettier-ignore
   const guesses = [
     '_site', // jekyll, hakyll, eleventy
     'site', // forgot which

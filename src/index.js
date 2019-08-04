@@ -1,13 +1,6 @@
 const ora = require('ora')
-const fp = require('lodash/fp')
-
+const _ = require('lodash')
 const { logError } = require('./logging')
-
-const setupPinata = require('./pinners/pinata')
-const setupInfura = require('./pinners/infura')
-const setupIpfsCluster = require('./pinners/ipfs-cluster')
-
-const updateCloudflareDns = require('./dnslink/cloudflare')
 
 const httpGatewayUrl = require('./utils/gateway')
 const copyUrlToClipboard = require('./utils/copy-url-clipboard')
@@ -15,30 +8,23 @@ const guessPathIfEmpty = require('./utils/guess-path')
 const openUrl = require('./utils/guess-path')
 const showSize = require('./utils/show-size')
 
+const dnslinkProviders = require('./dnslink')
+const pinnerProviders = require('./pinners')
+
+function sameValues (obj) {
+  const values = Object.values(obj)
+  return values.every((val, i, arr) => val === arr[0])
+}
+
 async function deploy ({
   publicDirPath,
   copyHttpGatewayUrlToClipboard = false,
   open = false,
+  uniqueUpload,
   remotePinners = ['infura'],
   dnsProviders = [],
   siteDomain,
-  credentials = {
-    cloudflare: {
-      apiEmail,
-      apiKey,
-      zone,
-      record
-    },
-    pinata: {
-      apiKey,
-      secretApiKey
-    },
-    ipfsCluster: {
-      host,
-      username,
-      password
-    }
-  }
+  credentials = {}
 } = {}) {
   publicDirPath = guessPathIfEmpty(publicDirPath)
 
@@ -52,90 +38,92 @@ async function deploy ({
     return undefined
   }
 
-  let successfulRemotePinners = []
+  const tag =
+    (credentials.cloudflare && credentials.cloudflare.record) ||
+    siteDomain ||
+    __dirname
+
+  if (uniqueUpload) {
+    if (remotePinners.includes(uniqueUpload)) {
+      remotePinners.splice(remotePinners.indexOf(uniqueUpload), 1)
+    }
+
+    remotePinners.unshift(uniqueUpload)
+  }
+
+  const successfulPinners = []
   const pinnedHashes = {}
+  let lastHash = null
 
-  if (remotePinners.includes('infura')) {
-    const addToInfura = setupInfura()
-    const infuraHash = await addToInfura(publicDirPath)
+  for (const pinnerName of remotePinners) {
+    let pinner
 
-    if (infuraHash) {
-      successfulRemotePinners = successfulRemotePinners.concat(['infura'])
-      Object.assign(pinnedHashes, { infuraHash })
-    }
-  }
-
-  if (remotePinners.includes('pinata')) {
-    const addToPinata = setupPinata(credentials.pinata)
-    const pinataHash = await addToPinata(publicDirPath, {
-      name:
-        (credentials.cloudflare && credentials.cloudflare.record) ||
-        siteDomain ||
-        __dirname
-    })
-
-    if (pinataHash) {
-      successfulRemotePinners = successfulRemotePinners.concat(['pinata'])
-      Object.assign(pinnedHashes, { pinataHash })
-    }
-  }
-
-  if (remotePinners.includes('ipfs-cluster')) {
-    const addToCluster = setupIpfsCluster(credentials.ipfsCluster)
-    const ipfsClusterHash = await addToCluster(publicDirPath)
-
-    if (ipfsClusterHash) {
-      successfulRemotePinners = successfulRemotePinners.concat([
-        'ipfs-cluster'
-      ])
-      Object.assign(pinnedHashes, { ipfsClusterHash })
-    }
-  }
-
-  if (successfulRemotePinners.length > 0) {
-    const pinnedHash = Object.values(pinnedHashes)[0]
-    const isEqual = pinnedHash => pinnedHash === pinnedHash
-    if (!fp.every(isEqual)(Object.values(pinnedHashes))) {
-      const spinner = ora()
-      spinner.fail('≠  Found inconsistency in pinned hashes:')
-      logError(pinnedHashes)
-      return undefined
-    }
-
-    let dnslinkedHostname
-    if (dnsProviders.includes('cloudflare')) {
-      dnslinkedHostname = await updateCloudflareDns(
-        siteDomain,
-        credentials.cloudflare,
-        pinnedHash
+    try {
+      pinner = await pinnerProviders[_.camelCase(pinnerName)](
+        credentials[_.camelCase(pinnerName)] || null
       )
+    } catch (error) {
+      logError(error.toString())
+      return
     }
 
-    const gatewayUrls = successfulRemotePinners.map(pinner =>
-      httpGatewayUrl(pinnedHash, pinner)
-    )
+    if (uniqueUpload && uniqueUpload !== pinnerName) {
+      await pinner.pinHash(lastHash, tag)
+    } else {
+      lastHash = await pinner.pinDir(publicDirPath, tag)
 
-    if (open) {
-      gatewayUrls.forEach(async gatewayUrl => openUrl(gatewayUrl))
-
-      if (dnslinkedHostname) {
-        await openUrl(`https://${dnslinkedHostname}`)
+      if (lastHash) {
+        successfulPinners.push(pinnerName)
+        Object.assign(pinnedHashes, { [pinnerName]: lastHash })
       }
     }
-
-    if (copyHttpGatewayUrlToClipboard) {
-      if (dnslinkedHostname) {
-        copyUrlToClipboard(`https://${dnslinkedHostname}`)
-      } else {
-        copyUrlToClipboard(gatewayUrls[0])
-      }
-    }
-
-    return pinnedHash
-  } else {
-    logError('Failed to deploy.')
-    return undefined
   }
+
+  if (successfulPinners.length === 0) {
+    logError('Failed to deploy.')
+    return
+  }
+
+  if (!sameValues(pinnedHashes)) {
+    const spinner = ora()
+    spinner.fail('≠  Found inconsistency in pinned hashes:')
+    logError(pinnedHashes)
+    return
+  }
+
+  const pinnedHash = Object.values(pinnedHashes)[0]
+
+  let dnslinkedHostname = null
+
+  for (const provider of dnsProviders) {
+    dnslinkedHostname = await dnslinkProviders[_.camelCase(provider)](
+      siteDomain,
+      pinnedHash,
+      credentials[_.camelCase(provider)] || null
+    )
+  }
+
+  const gatewayUrls = successfulPinners.map(pinner =>
+    httpGatewayUrl(pinnedHash, pinner)
+  )
+
+  if (open) {
+    gatewayUrls.forEach(async gatewayUrl => openUrl(gatewayUrl))
+
+    if (dnslinkedHostname) {
+      await openUrl(`https://${dnslinkedHostname}`)
+    }
+  }
+
+  if (copyHttpGatewayUrlToClipboard) {
+    if (dnslinkedHostname) {
+      copyUrlToClipboard(`https://${dnslinkedHostname}`)
+    } else {
+      copyUrlToClipboard(gatewayUrls[0])
+    }
+  }
+
+  return pinnedHash
 }
 
 module.exports = deploy

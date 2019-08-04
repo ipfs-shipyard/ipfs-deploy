@@ -1,59 +1,54 @@
 const fs = require('fs')
 const recursive = require('recursive-fs')
-const ora = require('ora')
-
 const ipfsCluster = require('ipfs-cluster-api')
 const multiaddr = require('multiaddr')
+const _ = require('lodash')
+const fp = require('lodash/fp')
 
-const { logError } = require('../logging')
-const { linkCid } = require('../utils/pure-fns')
-
-const chalk = require('chalk')
-const white = chalk.whiteBright
-
-module.exports = ({ host, username, password }) => {
-  const token = Buffer.from(`${username}:${password}`).toString('base64')
-  const addr = multiaddr(host).nodeAddress()
-
-  const cluster = ipfsCluster({
-    port: addr.port,
-    host: addr.address,
-    protocol: host.includes('/https') ? 'https' : 'http',
-    headers: {
-      Authorization: `Basic ${token}`
+module.exports = {
+  name: 'IPFS Cluster',
+  builder: async ({ host, username, password }) => {
+    if (fp.some(_.isEmpty)([host, username, password])) {
+      throw new Error(`
+IPFS_DEPLOY_IPFS_CLUSTER__HOST,
+IPFS_DEPLOY_IPFS_CLUSTER__USERNAME and
+IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD must be set.'`)
     }
-  })
 
-  return async publicDirPath => {
-    const spinner = ora()
-    spinner.start(
-      `📠  Uploading and pinning via https to ${white('IPFS Cluster')}…`
-    )
+    const token = Buffer.from(`${username}:${password}`).toString('base64')
+    const addr = multiaddr(host).nodeAddress()
 
-    try {
-      const files = await new Promise(resolve => {
-        recursive.readdirr(publicDirPath, (_err, _dirs, files) => {
-          resolve(
-            files.map(f => ({
-              path: f,
-              content: fs.createReadStream(f)
-            }))
-          )
-        })
+    return ipfsCluster({
+      port: addr.port,
+      host: addr.address,
+      protocol: host.includes('/https') ? 'https' : 'http',
+      headers: {
+        Authorization: `Basic ${token}`
+      }
+    })
+  },
+  pinDir: async (cluster, dir, tag) => {
+    const files = await new Promise(resolve => {
+      recursive.readdirr(dir, (_err, _dirs, files) => {
+        resolve(
+          files.map(f => ({
+            path: f,
+            content: fs.createReadStream(f)
+          }))
+        )
       })
+    })
 
-      const response = await cluster.add(files, {
-        recursive: true
-      })
+    const response = await cluster.add(files, {
+      name: tag,
+      recursive: true
+    })
 
-      const pinnedHash = response[response.length - 1].hash
-      spinner.succeed("📌  It's pinned to IPFS Cluster now with hash:")
-      spinner.info(linkCid(pinnedHash, 'ipfs'))
-      return pinnedHash
-    } catch (e) {
-      spinner.fail("💔  Uploading to IPFS Cluster didn't work.")
-      logError(e)
-      return undefined
-    }
+    return response[response.length - 1].hash
+  },
+  pinHash: async (cluster, hash, tag) => {
+    return cluster.pin.add(hash, {
+      name: tag
+    })
   }
 }
