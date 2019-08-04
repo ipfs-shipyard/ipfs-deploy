@@ -36,4 +36,4 @@ pinfree: makePinner(require('./pinfree')),
 ```
 
 Finally, go to `bin/ipfs-deploy.js` and add `pinfree` to the list of supported
-pinners.
+pinners. Also, do not forget to update the README with the new options.

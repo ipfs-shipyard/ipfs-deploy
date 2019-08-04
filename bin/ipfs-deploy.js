@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 const updateNotifier = require('update-notifier')
+const chalk = require('chalk')
+const yargs = require('yargs')
+const deploy = require('../src')
 const pkg = require('../package.json')
 
 updateNotifier({ pkg, updateCheckInterval: 0 }).notify()
 
-const chalk = require('chalk')
-const yargs = require('yargs')
-
-const deploy = require('../src')
-
 require('dotenv').config()
 
-const pinners = ['pinata', 'infura', 'ipfs-cluster']
+const pinProviders = ['pinata', 'infura', 'ipfs-cluster']
+
+const dnsProviders = ['cloudflare']
 
 const parser = yargs
   .scriptName('ipfs-deploy')
@@ -34,7 +34,7 @@ const parser = yargs
           },
           d: {
             alias: 'dns',
-            choices: ['cloudflare'],
+            choices: dnsProviders,
             describe: 'DNS provider whose dnslink TXT field will be updated'
           },
           O: {
@@ -43,7 +43,7 @@ const parser = yargs
           },
           p: {
             alias: 'pinner',
-            choices: pinners,
+            choices: pinProviders,
             default: ['infura'],
             array: true,
             describe: `Pinning services to which ${chalk.whiteBright(
@@ -52,9 +52,9 @@ const parser = yargs
           },
           u: {
             alias: 'unique-upload',
-            choices: pinners,
-            describe: 'Upload to only one service and pin hash on others',
-          },
+            choices: pinProviders,
+            describe: 'Upload to only one service and pin hash on others'
+          }
         })
         .example(
           '$0',
