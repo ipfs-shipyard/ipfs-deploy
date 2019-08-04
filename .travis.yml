@@ -1,23 +1,13 @@
 language: node_js
 cache: npm
 
-stages:
-  - check
-  - test
-
 node_js:
   - '10'
   - '12'
 
-jobs:
-  include:
-    - stage: check
-      script:
-        - npx aegir commitlint --travis
-        - npm run lint
-
-    - stage: test
-      script: npm run test
+script:
+  - npm run lint
+  - npm run test
 
 notifications:
   email: false
