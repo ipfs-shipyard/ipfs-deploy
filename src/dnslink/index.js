@@ -41,5 +41,5 @@ const makeDnslink = ({ name, validate, link }) => async (
 }
 
 module.exports = {
-  cloudflare: makeDnslink(require('./cloudflare')),
+  cloudflare: makeDnslink(require('./cloudflare'))
 }
