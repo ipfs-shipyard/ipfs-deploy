@@ -12,7 +12,7 @@ module.exports = async path => {
   try {
     const size = await trammel(path, {
       stopOnError: true,
-      type: 'raw',
+      type: 'raw'
     })
     const kibi = byteSize(size, { units: 'iec' })
     const readableSize = `${kibi.value} ${kibi.unit}`

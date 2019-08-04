@@ -1,5 +1,5 @@
 {
-  "name": "@agentofuser/ipfs-deploy",
+  "name": "ipfs-deploy",
   "version": "7.9.0",
   "description": "Zero-Config CLI to Deploy Static Websites to IPFS",
   "author": {
@@ -9,12 +9,12 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/agentofuser/ipfs-deploy/issues"
+    "url": "https://github.com/ipfs-shipyard/ipfs-deploy/issues"
   },
-  "homepage": "https://github.com/agentofuser/ipfs-deploy#readme",
+  "homepage": "https://github.com/ipfs-shipyard/ipfs-deploy#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/agentofuser/ipfs-deploy.git"
+    "url": "https://github.com/ipfs-shipyard/ipfs-deploy.git"
   },
   "keywords": [
     "ipfs",
@@ -33,6 +33,10 @@
   },
   "engines": {
     "node": ">=10.15.3"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "ava"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -60,78 +64,8 @@
     "yargs": "^13.2.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.0.0",
-    "@commitlint/config-conventional": "^8.0.0",
-    "@semantic-release/changelog": "^3.0.4",
-    "@semantic-release/commit-analyzer": "^7.0.0-beta.2",
-    "@semantic-release/git": "^7.0.12",
-    "@semantic-release/github": "^5.4.0",
-    "@semantic-release/npm": "^5.1.9",
-    "@semantic-release/release-notes-generator": "^7.2.0",
     "all-contributors-cli": "^6.7.0",
     "ava": "^2.1.0",
-    "commitizen": "^3.1.1",
-    "cz-conventional-changelog": "^2.1.0",
-    "eslint": "^6.0.0-alpha.0",
-    "eslint-config-prettier": "^5.0.0",
-    "eslint-plugin-import": "^2.17.3",
-    "husky": "^2.4.1",
-    "lint-staged": "^8.2.1",
-    "semantic-release": "^15.13.16",
-    "semantic-release-cli": "^5.1.1"
-  },
-  "scripts": {
-    "format": "npx prettier --write ./**/*.{js,json,md,mdx,html,css}",
-    "test": "ava",
-    "commit": "git-cz",
-    "commit:retry": "git-cz --retry",
-    "semantic-release": "./semantic-release-dry-run.bash",
-    "deploy": "./release.bash"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,json,md,mdx,html,css}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
-    "rules": {
-      "header-max-length": [
-        2,
-        "always",
-        50
-      ],
-      "body-max-line-length": [
-        2,
-        "always",
-        72
-      ],
-      "footer-max-line-length": [
-        2,
-        "always",
-        72
-      ],
-      "scope-empty": [
-        2,
-        "never"
-      ]
-    }
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
+    "standard": "^13.1.0"
   }
 }

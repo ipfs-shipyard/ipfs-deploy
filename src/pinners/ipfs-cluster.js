@@ -20,8 +20,8 @@ module.exports = ({ host, username, password }) => {
     host: addr.address,
     protocol: host.includes('/https') ? 'https' : 'http',
     headers: {
-      Authorization: `Basic ${token}`,
-    },
+      Authorization: `Basic ${token}`
+    }
   })
 
   return async publicDirPath => {
@@ -36,14 +36,14 @@ module.exports = ({ host, username, password }) => {
           resolve(
             files.map(f => ({
               path: f,
-              content: fs.createReadStream(f),
+              content: fs.createReadStream(f)
             }))
           )
         })
       })
 
       const response = await cluster.add(files, {
-        recursive: true,
+        recursive: true
       })
 
       const pinnedHash = response[response.length - 1].hash

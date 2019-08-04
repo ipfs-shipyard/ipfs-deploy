@@ -29,7 +29,7 @@ module.exports = ({ apiKey, secretApiKey }) => {
             data.append('file', fs.createReadStream(file), {
               // for each file stream, we need to include the correct
               // relative file path
-              filepath: file,
+              filepath: file
             })
           })
 
@@ -44,8 +44,8 @@ module.exports = ({ apiKey, secretApiKey }) => {
               headers: {
                 'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
                 pinata_api_key: apiKey,
-                pinata_secret_api_key: secretApiKey,
-              },
+                pinata_secret_api_key: secretApiKey
+              }
             })
             .then(resolve)
         })

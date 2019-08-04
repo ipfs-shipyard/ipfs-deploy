@@ -15,7 +15,7 @@ const guessPathIfEmpty = require('./utils/guess-path')
 const openUrl = require('./utils/guess-path')
 const showSize = require('./utils/show-size')
 
-async function deploy({
+async function deploy ({
   publicDirPath,
   copyHttpGatewayUrlToClipboard = false,
   open = false,
@@ -27,18 +27,18 @@ async function deploy({
       apiEmail,
       apiKey,
       zone,
-      record,
+      record
     },
     pinata: {
       apiKey,
-      secretApiKey,
+      secretApiKey
     },
     ipfsCluster: {
       host,
       username,
-      password,
-    },
-  },
+      password
+    }
+  }
 } = {}) {
   publicDirPath = guessPathIfEmpty(publicDirPath)
 
@@ -71,7 +71,7 @@ async function deploy({
       name:
         (credentials.cloudflare && credentials.cloudflare.record) ||
         siteDomain ||
-        __dirname,
+        __dirname
     })
 
     if (pinataHash) {
@@ -86,7 +86,7 @@ async function deploy({
 
     if (ipfsClusterHash) {
       successfulRemotePinners = successfulRemotePinners.concat([
-        'ipfs-cluster',
+        'ipfs-cluster'
       ])
       Object.assign(pinnedHashes, { ipfsClusterHash })
     }

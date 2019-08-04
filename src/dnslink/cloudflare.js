@@ -51,13 +51,13 @@ module.exports = async (
   } else {
     const api = {
       email: apiEmail,
-      key: apiKey,
+      key: apiKey
     }
 
     const opts = {
       zone: zone || siteDomain,
       record: record || `_dnslink.${siteDomain}`,
-      link: `/ipfs/${hash}`,
+      link: `/ipfs/${hash}`
     }
 
     try {

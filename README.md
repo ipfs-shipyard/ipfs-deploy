@@ -1,8 +1,9 @@
-# @agentofuser/ipfs-deploy
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
+# ipfs-deploy
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
+[![Travis CI](https://flat.badgen.net/travis/ipfs-shipyard/ipfs-deploy)](https://travis-ci.com/ipfs-shipyard/ipfs-deploy)
 
 > Upload static website to IPFS pinning services and optionally update DNS.
 
@@ -10,33 +11,31 @@
   <img src="https://cloudflare-ipfs.com/ipns/ipfs-deploy-demo.agentofuser.com/ipfs-deploy-demo.svg">
 </p>
 
-The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
+The goal of `ipfs-deploy` is to make it as easy as possible to
 **deploy a static website to IPFS.**
 
 ## Table of Contents
 
-1. [@agentofuser/ipfs-deploy](#agentofuseripfs-deploy)
-   1. [Table of Contents](#Table-of-Contents)
-   2. [Install](#Install)
-      1. [No install:](#No-install)
-   3. [Usage](#Usage)
-   4. [API](#API)
-   5. [Security](#Security)
-   6. [Background](#Background)
-   7. [Contributors](#Contributors)
-   8. [Users](#Users)
-   9. [License](#License)
+1. [Install](#Install)
+    1. [No install](#No-install)
+2. [Usage](#Usage)
+3. [API](#API)
+4. [Security](#Security)
+5. [Background](#Background)
+6. [Contributors](#Contributors)
+7. [Users](#Users)
+8. [License](#License)
 
 ## Install
 
 ```bash
-npm install -g @agentofuser/ipfs-deploy
+npm install -g ipfs-deploy
 ```
 
 Or
 
 ```bash
-yarn global add @agentofuser/ipfs-deploy
+yarn global add ipfs-deploy
 ```
 
 You can call it either as `ipd` or as `ipfs-deploy`:
@@ -52,7 +51,7 @@ You can run it directly with [npx](https://www.npmjs.com/package/npx 'npx')
 without needing to install anything:
 
 ```bash
-npx @agentofuser/ipfs-deploy _site
+npx ipfs-deploy _site
 ```
 
 It will deploy to a public pinning service and give you a link to
@@ -190,7 +189,7 @@ You can optionally add a deploy command to your `package.json`:
 //  ⋮
   "scripts": {
 //  ⋮
-    "deploy": "npx @agentofuser/ipfs-deploy public",
+    "deploy": "npx ipfs-deploy public",
 //  ⋮
   }
 //  ⋮
@@ -208,7 +207,7 @@ This is still pretty unstable and subject to change, so I will just show how
 the executable currently uses the API.
 
 ```javascript
-const deploy = require('@agentofuser/ipfs-deploy')
+const deploy = require('ipfs-deploy')
 
 ;(async () => {
   try {
@@ -281,18 +280,11 @@ blog, static website, or frontend web app.
 
 ## Contributors
 
-Thanks goes to these wonderful people
-([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+This project was initially started by [@agentofuser](https://github.com/agentofuser),
+who made a lot of awesome work in here. Posteriorly, it was transfered to ipfs-shipyard.
+Thanks for starting this awesome project!
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-<table><tr><td align="center"><a href="https://tableflip.io"><img src="https://avatars3.githubusercontent.com/u/58871?v=4" width="100px;" alt="Oli Evans"/><br /><sub><b>Oli Evans</b></sub></a><br /><a href="https://github.com/agentofuser/ipfs-deploy/commits?author=olizilla" title="Code">💻</a> <a href="#ideas-olizilla" title="Ideas, Planning, & Feedback">🤔</a></td><td align="center"><a href="https://agentofuser.com"><img src="https://avatars1.githubusercontent.com/u/45322175?v=4" width="100px;" alt="Agent of User"/><br /><sub><b>Agent of User</b></sub></a><br /><a href="https://github.com/agentofuser/ipfs-deploy/commits?author=agentofuser" title="Code">💻</a> <a href="#ideas-agentofuser" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/agentofuser/ipfs-deploy/issues?q=author%3Aagentofuser" title="Bug reports">🐛</a> <a href="https://github.com/agentofuser/ipfs-deploy/commits?author=agentofuser" title="Documentation">📖</a></td></tr></table>
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the
-[all-contributors](https://github.com/all-contributors/all-contributors)
-specification. Contributions of any kind welcome!
+Everyone is welcome to contribute and add new features! [See everyone who has contributed](https://github.com/ipfs-shipyard/ipfs-deploy/graphs/contributors)!
 
 ## Users
 
