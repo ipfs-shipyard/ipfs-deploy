@@ -17,9 +17,6 @@ jobs:
         - npm run lint
 
     - stage: test
-      name: chrome
-      addons:
-        chrome: stable
       script: npm run test
 
 notifications:
