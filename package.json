@@ -44,7 +44,7 @@
     "dotenv": "^8.0.0",
     "form-data": "^2.3.3",
     "ipfs-cluster-api": "0.0.9",
-    "ipfs-http-client": "^32.0.1",
+    "ipfs-http-client": "^33.1.1",
     "json-stringify-safe": "^5.0.1",
     "jsonify-error": "^2.0.0",
     "lodash": "^4.17.11",
