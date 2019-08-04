@@ -1,6 +1,6 @@
 {
   "name": "ipfs-deploy",
-  "version": "7.8.0",
+  "version": "7.9.0",
   "description": "Zero-Config CLI to Deploy Static Websites to IPFS",
   "author": {
     "name": "Agent of User",
@@ -48,9 +48,9 @@
     "dotenv": "^8.0.0",
     "form-data": "^2.3.3",
     "ipfs-cluster-api": "0.0.9",
-    "ipfs-http-client": "^32.0.1",
+    "ipfs-http-client": "^33.1.1",
     "json-stringify-safe": "^5.0.1",
-    "jsonify-error": "^1.4.5",
+    "jsonify-error": "^2.0.0",
     "lodash": "^4.17.11",
     "multiaddr": "^6.1.0",
     "neat-frame": "https://github.com/agentofuser/neat-frame#wrap-ansi-options",
