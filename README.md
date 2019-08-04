@@ -1,6 +1,8 @@
 # ipfs-deploy
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 [![Travis CI](https://flat.badgen.net/travis/ipfs-shipyard/ipfs-deploy)](https://travis-ci.com/ipfs-shipyard/ipfs-deploy)
 
 > Upload static website to IPFS pinning services and optionally update DNS.
