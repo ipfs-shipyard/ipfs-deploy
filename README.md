@@ -28,13 +28,13 @@ The goal of `ipfs-deploy` is to make it as easy as possible to
 ## Install
 
 ```bash
-npm install -g @agentofuser/ipfs-deploy
+npm install -g ipfs-deploy
 ```
 
 Or
 
 ```bash
-yarn global add @agentofuser/ipfs-deploy
+yarn global add ipfs-deploy
 ```
 
 You can call it either as `ipd` or as `ipfs-deploy`:
@@ -50,7 +50,7 @@ You can run it directly with [npx](https://www.npmjs.com/package/npx 'npx')
 without needing to install anything:
 
 ```bash
-npx @agentofuser/ipfs-deploy _site
+npx ipfs-deploy _site
 ```
 
 It will deploy to a public pinning service and give you a link to
@@ -188,7 +188,7 @@ You can optionally add a deploy command to your `package.json`:
 //  ⋮
   "scripts": {
 //  ⋮
-    "deploy": "npx @agentofuser/ipfs-deploy public",
+    "deploy": "npx ipfs-deploy public",
 //  ⋮
   }
 //  ⋮
