@@ -9,7 +9,7 @@ const PIN_DIR_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS'
 const PIN_HASH_URL = 'https://api.pinata.cloud/pinning/pinHashToIPFS'
 
 module.exports = {
-  name: 'Piñata',
+  name: 'Pinata',
   builder: async ({ apiKey, secretApiKey }) => {
     if (fp.some(_.isEmpty)([apiKey, secretApiKey])) {
       throw new Error(
