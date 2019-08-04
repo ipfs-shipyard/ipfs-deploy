@@ -35,6 +35,7 @@ const parser = yargs
           d: {
             alias: 'dns',
             choices: dnsProviders,
+            array: true,
             describe: 'DNS provider whose dnslink TXT field will be updated'
           },
           O: {
