@@ -11,7 +11,7 @@ module.exports = () => {
   const api = ipfsClient({
     host: 'ipfs.infura.io',
     port: '5001',
-    protocol: 'https',
+    protocol: 'https'
   })
 
   return async dir => {
@@ -23,7 +23,7 @@ module.exports = () => {
       )
 
       const response = await api.addFromFs(dir, {
-        recursive: true,
+        recursive: true
       })
 
       spinner.succeed("📌  It's pinned to Infura now with hash:")

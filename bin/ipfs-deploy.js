@@ -22,22 +22,22 @@ const parser = yargs
         .positional('path', {
           type: 'string',
           describe: 'The local directory or file to be deployed',
-          normalize: true,
+          normalize: true
         })
         .env('IPFS_DEPLOY')
         .options({
           C: {
             alias: 'no-clipboard',
-            describe: "DON'T copy ipfs.io/ipfs/<hash> to clipboard",
+            describe: "DON'T copy ipfs.io/ipfs/<hash> to clipboard"
           },
           d: {
             alias: 'dns',
             choices: ['cloudflare'],
-            describe: 'DNS provider whose dnslink TXT field will be updated',
+            describe: 'DNS provider whose dnslink TXT field will be updated'
           },
           O: {
             alias: 'no-open',
-            describe: "DON'T open URL after deploying",
+            describe: "DON'T open URL after deploying"
           },
           p: {
             alias: 'pinner',
@@ -45,8 +45,8 @@ const parser = yargs
             default: ['infura'],
             describe: `Pinning services to which ${chalk.whiteBright(
               'path'
-            )} will be uploaded`,
-          },
+            )} will be uploaded`
+          }
         })
         .example(
           '$0',
@@ -75,7 +75,7 @@ const parser = yargs
   .help()
   .alias('h', 'help')
 
-async function main() {
+async function main () {
   const processArgv = process.argv.slice(1)
   const yargsParse = new Promise((resolve, reject) => {
     parser.parse(processArgv, (err, argv, output) => {
@@ -102,18 +102,18 @@ async function main() {
         apiKey: argv.cloudflare && argv.cloudflare.apiKey,
         apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
         zone: argv.cloudflare && argv.cloudflare.zone,
-        record: argv.cloudflare && argv.cloudflare.record,
+        record: argv.cloudflare && argv.cloudflare.record
       },
       pinata: {
         apiKey: argv.pinata && argv.pinata.apiKey,
-        secretApiKey: argv.pinata && argv.pinata.secretApiKey,
+        secretApiKey: argv.pinata && argv.pinata.secretApiKey
       },
       ipfsCluster: {
         host: argv.ipfsCluster && argv.ipfsCluster.host,
         username: argv.ipfsCluster && argv.ipfsCluster.username,
-        password: argv.ipfsCluster && argv.ipfsCluster.password,
-      },
-    },
+        password: argv.ipfsCluster && argv.ipfsCluster.password
+      }
+    }
   }
 
   process.stdout.write(output)

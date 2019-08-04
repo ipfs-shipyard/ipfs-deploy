@@ -8,13 +8,13 @@ const { stripIndent } = require('common-tags')
 
 // # Pure functions
 
-function formatError(e) {
+function formatError (e) {
   let eStr
   const prettierJson = obj =>
     prettier.format(stringify(obj), {
       parser: 'json',
       printWidth: 72,
-      tabWidth: 2,
+      tabWidth: 2
     })
   const beautifyStr = fp.pipe(
     stripIndent,
@@ -33,7 +33,7 @@ function formatError(e) {
 
 // Effectful functions
 
-function logError(e) {
+function logError (e) {
   const errorString = formatError(e)
   console.error(errorString)
   return errorString
