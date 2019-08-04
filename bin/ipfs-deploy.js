@@ -11,6 +11,8 @@ const deploy = require('../src')
 
 require('dotenv').config()
 
+const pinners = ['pinata', 'infura', 'ipfs-cluster']
+
 const parser = yargs
   .scriptName('ipfs-deploy')
   .usage(
@@ -41,7 +43,7 @@ const parser = yargs
           },
           p: {
             alias: 'pinner',
-            choices: ['pinata', 'infura', 'ipfs-cluster'],
+            choices: pinners,
             default: ['infura'],
             array: true,
             describe: `Pinning services to which ${chalk.whiteBright(
@@ -50,7 +52,7 @@ const parser = yargs
           },
           u: {
             alias: 'unique-upload',
-            choices: ['pinata', 'infura', 'ipfs-cluster'],
+            choices: pinners,
             describe: 'Upload to only one service and pin hash on others',
           },
         })
