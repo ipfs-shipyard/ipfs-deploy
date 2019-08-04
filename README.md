@@ -62,83 +62,111 @@ It will deploy to a public pinning service and give you a link to
 
 ## Usage
 
-You can get started just by typing out **ipd** and it will have smart defaults.
+You can get started just by typing out `ipd` and it will have smart defaults.
+By default, it deploys to Infura, which doesn't need signup and you'll get a
+link like `ipfs.io/ipfs/QmHash` that you can use to see if everything went ok.
 
-It deploys to a service that doesn't need signup and gives you a link like
-`ipfs.io/ipfs/hash` that you can use to see if everything went ok.
-
-When you don't specify a path argument to deploy, **ipfs-deploy** tries to
+When you don't specify a path argument to deploy, `ipfs-deploy` tries to
 guess it for you based on the build directories used by the most popular static
-site generators:
+site generators by the following order:
 
-```javascript
-// prettier-ignore
-const guesses = [
-  '_site',         // jekyll, hakyll, eleventy
-  'site',          // forgot which
-  'public',        // gatsby, hugo
-  'dist',          // nuxt
-  'output',        // pelican
-  'out',           // hexo
-  'build',         // create-react-app, metalsmith, middleman
-  'website/build', // docusaurus
-  'docs',          // many others
-]
-```
+| Path            | Static generators                       |
+| --------        | ---------------------------------       |
+| `_site`         | jekyll, hakyll, eleventy                |
+| `site`          | some others                             |
+| `public`        | gatsby, hugo                            |
+| `dist`          | nuxt                                    |
+| `output`        | pelican                                 |
+| `out`           | hexo                                    |
+| `build`         | create-react-app, metalsmith, middleman |
+| `website/build` | docusaurus                              |
+| `docs`          | many others                             |
 
----
+Some pinning services and DNS providers require signup and additional
+environment variables to be set. We support and use `.env` files. Read
+the section bellow to find out about which services are supported and
+how to ensable them.
 
-The `--help` option has some additional usage examples:
+For further information about the CLI, please run `ipfs-deploy --help`.
 
-```
-Examples:
-  ipfs-deploy                               # Deploys relative path "public" to
-                                            ipfs.infura.io/ipfs/hash; doesn't
-                                            update DNS; copies and opens URL.
-                                            These defaults are chosen so as not
-                                            to require signing up for any
-                                            service or setting up environment
-                                            variables on default use.
+### Supported Pinning Services
 
-  ipfs-deploy -p pinata _site               # Deploys path "_site" ONLY to
-                                            pinata and doesn't update DNS
+Some things to keep in mind:
 
-  ipfs-deploy -p infura -p pinata -d        # Deploys path "public" to pinata
-  cloudflare                                and infura, and updates cloudflare
-                                            DNS
-```
+-  Please note the `__` (double underscore) between some words (such as
+after `PINATA` and `CLOUDFLARE`).
+-  **Don't** commit the `.env` file to source control unless you know what
+you're doing.
 
-To use Pinata and Cloudflare you need to sign up for those services. You can
-read up on that over at:
+These services are subject to their terms. Not a decentralization nirvana
+by any stretch of the imagination, but a nice way to get started quickly with a
+blog, static website, or frontend web app.
 
-https://www.cloudflare.com/distributed-web-gateway
+#### [Infura](https://infura.io)
 
-and:
+Infura is a freemium pinning service that doesn't require any additional setup.
+It's the default one used. Please bear in mind that Infura is a free service,
+so there is probably a rate-limiting.
 
-https://pinata.cloud/documentation#GettingStarted
+##### How to enable
 
-(Infura doesn't require creating an account and is therefore the default
-pinning service used.)
+Use flag `-p infura`.
 
-After setting up your Cloudflare and Pinata accounts, in your website's
-repository root, create or edit the file `.env` with your credentials, zone,
-and record information:
+#### [Pinata](https://pinata.cloud)
+
+Pinata is another freemium pinning service. It gives you more control over
+what's uploaded. You can delete, label and add costum metadata. This service
+requires signup.
+
+##### Environment variables
 
 ```bash
-# pinata credentials
-IPFS_DEPLOY_PINATA__API_KEY=
-IPFS_DEPLOY_PINATA__SECRET_API_KEY=
+IPFS_DEPLOY_PINATA__API_KEY=<api key>
+IPFS_DEPLOY_PINATA__SECRET_API_KEY=<secret api key>
+```
 
-# ipfs-cluster credentials
-IPFS_DEPLOY_IPFS_CLUSTER__HOST=       # multiaddr
-IPFS_DEPLOY_IPFS_CLUSTER__USERNAME=   # basic auth username
-IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD=   # basic auth password
+##### How to enable
 
-# cloudflare credentials
+Use flag `-p pinata`.
+
+#### [IPFS Cluster](https://cluster.ipfs.io/)
+
+You can use IPFS Cluster to pin your website. It can be either self-hosted or
+just any IPFS Cluster you want.
+
+##### Environment variables
+
+```bash
+IPFS_DEPLOY_IPFS_CLUSTER__HOST=<multiaddr>
+IPFS_DEPLOY_IPFS_CLUSTER__USERNAME=<basic auth username>
+IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD=<basic auth password>
+```
+
+##### How to enable
+
+Use flag `-p ipfs-cluster`.
+
+### Supported DNS Providers
+
+#### [Cloudflare DNS](https://cloudflare.com)
+
+Cloudflare is a freemium DNS provider. Supports CNAME flattening for
+naked domains and integrates with their IPFS gateway at
+[cloudflare-ipfs.com](https://cloudflare-ipfs.com).
+
+Bear in mind that Cloudflare IPFS doesn't host the content itself
+(it's a cached gateway), so a stable pinning service is needed if you
+don't want to rely on your computer's IPFS daemon's availability to
+serve your website.
+
+##### Environment variables
+
+```bash
+# credentials
 IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=
 IPFS_DEPLOY_CLOUDFLARE__API_KEY=
 
-# cloudflare dns info
+# dns info
 IPFS_DEPLOY_CLOUDFLARE__ZONE=
 IPFS_DEPLOY_CLOUDFLARE__RECORD=
 ```
@@ -159,50 +187,9 @@ IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
 IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.mysubdomain.agentofuser.com
 ```
 
-Important:
+##### How to enable
 
-- Note the 2 `_` after `PINATA` and `CLOUDFLARE`.
-- Remember you have to set the CNAME to `cloudflare-ipfs.com` yourself (only
-  once). ipfs-deploy then creates/updates the \_dnslink record.
-
-**Don't** commit the `.env` file to source control unless you know what you're
-doing.
-
-```
-$ echo '.env' >> .gitignore
-```
-
-Assuming your website's production build is at the `public` subdirectory
-(that's what Gatsby and Hugo use; Jekyll and Hakyll use `_site`), run this at
-the project's root:
-
-```bash
-ipd public
-```
-
-To see more details about command line usage, run:
-
-```bash
-ipd -h
-```
-
-You can optionally add a deploy command to your `package.json`:
-
-```javascript
-//  ⋮
-  "scripts": {
-//  ⋮
-    "deploy": "npx ipfs-deploy public",
-//  ⋮
-  }
-//  ⋮
-```
-
-Then to run it, execute:
-
-```bash
-npm run deploy
-```
+Use flag `-d cloudflare`.
 
 ## API
 
@@ -250,36 +237,6 @@ const deploy = require('ipfs-deploy')
 
 We use `dotenv` to handle credentials. Don't commit your `.env` file to source
 control.
-
-## Background
-
-So far, `ipfs-deploy` integrates with these services:
-
-- [Infura.io](https://infura.io): freemium pinning service. Doesn't require
-  signup. (Default.)
-- [Pinata.cloud](https://pinata.cloud): freemium pinning service. Gives more
-  control over what's uploaded. You can delete, label, and add metadata.
-- [IPFS Cluster](https://cluster.ipfs.io/): self-hosted IPFS pinning service.
-- [Cloudflare DNS](https://cloudflare.com): freemium DNS API. Supports CNAME
-  for naked domains and integrates with their IPFS gateway at
-  [cloudflare-ipfs.com](https://cloudflare-ipfs.com).
-
-Feel free to request or add support to other services and send a PR.
-
-You can start using `ipfs-deploy` without signing up for anything.
-
-Default settings deploy to [infura.io](https://infura.io), which doesn't
-request an account to pin stuff. They probably do some rate-limiting, but
-either way, take it easy on them. Being able to try IPFS out without friction
-and without giving out personal info is a very important smooth on-ramp.
-
-Cloudflare IPFS doesn't host the content itself (it's a cached gateway), so a
-stable pinning service is needed if you don't want to rely on your computer's
-IPFS daemon's availability to serve your website.
-
-These are free services subject to their terms. Not a decentralization nirvana
-by any stretch of the imagination, but a nice way to get started quickly with a
-blog, static website, or frontend web app.
 
 ## Contributing
 
