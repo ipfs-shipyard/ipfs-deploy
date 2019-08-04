@@ -22,7 +22,10 @@ The goal of `ipfs-deploy` is to make it as easy as possible to
 3. [API](#API)
 4. [Security](#Security)
 5. [Background](#Background)
-6. [Contributors](#Contributors)
+6. [Contributing](#Contributing)
+    1. [Contributors](#Contributors)
+    2. [Add a Pinning Service](#add-a-pinning-service)
+    3. [Add a DNS Provider](#add-a-dns-provider)
 7. [Users](#Users)
 8. [License](#License)
 
@@ -45,7 +48,7 @@ ipd public/
 ipfs-deploy public/
 ```
 
-### No install:
+### No install
 
 You can run it directly with [npx](https://www.npmjs.com/package/npx 'npx')
 without needing to install anything:
@@ -278,13 +281,90 @@ These are free services subject to their terms. Not a decentralization nirvana
 by any stretch of the imagination, but a nice way to get started quickly with a
 blog, static website, or frontend web app.
 
-## Contributors
+## Contributing
+
+### Contributors
 
 This project was initially started by [@agentofuser](https://github.com/agentofuser),
 who made a lot of awesome work in here. Posteriorly, it was transfered to ipfs-shipyard.
 Thanks for starting this awesome project!
 
-Everyone is welcome to contribute and add new features! [See everyone who has contributed](https://github.com/ipfs-shipyard/ipfs-deploy/graphs/contributors)!
+Everyone is welcome to contribute and add new features!
+[See everyone who has contributed](https://github.com/ipfs-shipyard/ipfs-deploy/graphs/contributors)!
+
+### Add a Pinning Service
+
+To add support to a new pinning service, you must start by creating a file with
+the name of the pinning service. Let's say it's called PinFree: create a file
+called `src/pinners/pinfree.js` with a content similar to this one:
+
+```javascript
+module.exports = {
+  name: 'PinFree',
+  builder: opts => {
+    // Validate the options. If bad, throw.
+    // Return an api or the options you want to use later.
+
+    return api
+  },
+  pinDir: async (api, dir, tag) => {
+    // Pin a directory asynchronously, using the api
+    // returned by builder and a tag.
+
+    return hash
+  },
+  pinHash: async (api, hash, tag) => {
+    // Pin an hash asynchronously, using the api
+    // returned by builder and a tag.
+    // Just throw an error if the service doesn't
+    // support this action.
+  },
+}
+```
+
+Now, you have your pinner service almost set up. Go to `src/pinners/index.js`
+and add your pinner like this to the exports:
+
+```javascript
+pinfree: makePinner(require('./pinfree')),
+```
+
+Finally, go to `bin/ipfs-deploy.js` and add `pinfree` to the list of supported
+pinners. Also, do not forget to update the README with the new options.
+
+### Add a DNS Provider
+
+To add support to a new DNS service, you must start by creating a file with the
+name of the DNS service. Let's say it's called DNSFree: create a file called
+`dnsfree.js` with a content similar to this one:
+
+```javascript
+module.exports = {
+  name: 'DNSFree',
+  validate: opts => {
+    // Validate the options. If bad, throw.
+  },
+  link: async (domain, hash, opts) => {
+    // DNSLink the domain to the hash using the
+    // validated options.
+
+    return {
+      record: someValue,
+      value: someOtherValue,
+    }
+  },
+}
+```
+
+Now, you have your DNS service almost set up. Go to `src/dnslink/index.js` and
+add your pinner like this to the exports:
+
+```javascript
+dnsfree: makeDnslink(require('./dnsfree')),
+```
+
+Finally, go to `bin/ipfs-deploy.js` and add `dnsfree` to the list of supported
+DNS providers. Also, do not forget to update the README with the new options.
 
 ## Users
 
