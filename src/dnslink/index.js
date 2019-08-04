@@ -8,17 +8,18 @@ const makeDnslink = ({ name, validate, link }) => async (
   hash,
   options
 ) => {
+  name = white(name)
   const spinner = ora()
 
   try {
-    spinner.start(`⚙️  Validating configuration for ${white(name)}…`)
+    spinner.start(`⚙️  Validating configuration for ${name}…`)
     await validate(options)
   } catch (error) {
-    spinner.fail(`💔  Missing arguments for ${white(name)} API.`)
+    spinner.fail(`💔  Missing arguments for ${name} API.`)
     logError(error)
   }
 
-  spinner.info(`📡  Beaming new hash to DNS provider ${white(name)}…`)
+  spinner.info(`📡  Beaming new hash to DNS provider ${name}…`)
   let result = null
 
   try {
