@@ -13,7 +13,7 @@ const pinProviders = ['pinata', 'infura', 'ipfs-cluster']
 
 const dnsProviders = ['cloudflare']
 
-const parser = yargs
+const argv = yargs
   .scriptName('ipfs-deploy')
   .usage(
     '$0 [options] [path]',
@@ -83,21 +83,9 @@ const parser = yargs
   )
   .help()
   .alias('h', 'help')
+  .argv
 
 async function main () {
-  const processArgv = process.argv.slice(1)
-  const yargsParse = new Promise((resolve, reject) => {
-    parser.parse(processArgv, (err, argv, output) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve({ argv, output })
-      }
-    })
-  })
-
-  const { argv, output } = await yargsParse
-
   const deployOptions = {
     publicDirPath: argv.path,
     copyHttpGatewayUrlToClipboard:
@@ -126,31 +114,12 @@ async function main () {
     }
   }
 
-  process.stdout.write(output)
-
-  if (argv.version) {
-    process.stdout.write('\n')
-    process.exit()
-  }
-
-  if (argv.h) {
-    // Had to do this because couldn't get yargs#epilogue() to work
-    process.stdout.write(`
-
-  For help or more information, ping me at
-  https://twitter.com/${chalk.whiteBright('agentofuser')}
-
-`)
+  const pinnedHash = await deploy(deployOptions)
+  if (pinnedHash) {
+    process.stdout.write(pinnedHash + '\n')
   } else {
-    const pinnedHash = await deploy(deployOptions)
-    if (pinnedHash) {
-      process.stdout.write(pinnedHash + '\n')
-    } else {
-      process.exit(1)
-    }
+    process.exit(1)
   }
 }
 
-;(async () => {
-  await main()
-})()
+main()
