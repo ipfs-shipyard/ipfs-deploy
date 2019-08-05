@@ -9,10 +9,11 @@ module.exports = {
   name: 'IPFS Cluster',
   builder: async ({ host, username, password }) => {
     if (fp.some(_.isEmpty)([host, username, password])) {
-      throw new Error(`
-IPFS_DEPLOY_IPFS_CLUSTER__HOST,
-IPFS_DEPLOY_IPFS_CLUSTER__USERNAME and
-IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD must be set.'`)
+      throw new Error(`Missing the following environment variables:
+
+IPFS_DEPLOY_IPFS_CLUSTER__HOST
+IPFS_DEPLOY_IPFS_CLUSTER__USERNAME
+IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD`)
     }
 
     const token = Buffer.from(`${username}:${password}`).toString('base64')

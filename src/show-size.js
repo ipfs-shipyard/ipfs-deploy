@@ -4,7 +4,7 @@ const byteSize = require('byte-size')
 const ora = require('ora')
 const chalk = require('chalk')
 
-const { logError } = require('../logging')
+const { logError } = require('./logging')
 
 module.exports = async path => {
   const spinner = ora()
