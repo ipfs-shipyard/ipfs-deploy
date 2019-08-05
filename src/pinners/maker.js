@@ -1,10 +1,12 @@
 const ora = require('ora')
 const chalk = require('chalk')
+const _ = require('lodash')
 const { logError } = require('../logging')
 const { linkCid } = require('../url-utils')
 const white = chalk.whiteBright
 
 module.exports = ({ name, builder, pinDir, pinHash }) => async options => {
+  const slug = _.toLower(name)
   name = white(name)
   let api
 
@@ -24,7 +26,7 @@ module.exports = ({ name, builder, pinDir, pinHash }) => async options => {
         const hash = await pinDir(api, dir, tag)
 
         spinner.succeed(`📌  Added and pinned to ${name} with hash:`)
-        spinner.info(linkCid(hash, 'infura'))
+        spinner.info(linkCid(hash, slug))
 
         return hash
       } catch (error) {
@@ -41,7 +43,7 @@ module.exports = ({ name, builder, pinDir, pinHash }) => async options => {
         await pinHash(api, hash, tag)
 
         spinner.succeed(`📌  Hash pinned to ${name}:`)
-        spinner.info(linkCid(hash, 'infura'))
+        spinner.info(linkCid(hash, slug))
 
         return hash
       } catch (error) {
