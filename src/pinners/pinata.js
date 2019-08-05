@@ -12,9 +12,11 @@ module.exports = {
   name: 'Pinata',
   builder: async ({ apiKey, secretApiKey }) => {
     if (fp.some(_.isEmpty)([apiKey, secretApiKey])) {
-      throw new Error(
-        'IPFS_DEPLOY_PINATA__API_KEY and IPFS_DEPLOY_PINATA__SECRET_API_KEY must be set.'
-      )
+      throw new Error(`Missing the following environment variables:
+
+IPFS_DEPLOY_PINATA__API_KEY
+IPFS_DEPLOY_PINATA__SECRET_API_KEY
+IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD`)
     }
 
     return { apiKey, secretApiKey }
