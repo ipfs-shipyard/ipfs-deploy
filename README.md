@@ -8,7 +8,7 @@
 > Upload static website to IPFS pinning services and optionally update DNS.
 
 <p align="center">
-  <img src="https://cloudflare-ipfs.com/ipns/ipfs-deploy-demo.agentofuser.com/ipfs-deploy-demo.svg">
+  <img src="https://user-images.githubusercontent.com/5447088/62474715-6a22f300-b79b-11e9-9987-9dadd2c33a7a.gif">
 </p>
 
 The goal of `ipfs-deploy` is to make it as easy as possible to
