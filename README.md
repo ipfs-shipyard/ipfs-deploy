@@ -8,7 +8,7 @@
 > Upload static website to IPFS pinning services and optionally update DNS.
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/5447088/62474715-6a22f300-b79b-11e9-9987-9dadd2c33a7a.gif">
+  <img src="https://user-images.githubusercontent.com/5447088/62481739-220bcc80-b7ab-11e9-8a9e-25f23ed92768.gif">
 </p>
 
 The goal of `ipfs-deploy` is to make it as easy as possible to
