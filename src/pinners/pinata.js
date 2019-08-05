@@ -15,8 +15,7 @@ module.exports = {
       throw new Error(`Missing the following environment variables:
 
 IPFS_DEPLOY_PINATA__API_KEY
-IPFS_DEPLOY_PINATA__SECRET_API_KEY
-IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD`)
+IPFS_DEPLOY_PINATA__SECRET_API_KEY`)
     }
 
     return { apiKey, secretApiKey }
