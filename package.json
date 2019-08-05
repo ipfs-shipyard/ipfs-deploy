@@ -50,7 +50,6 @@
     "ipfs-cluster-api": "0.0.9",
     "ipfs-http-client": "^33.1.1",
     "json-stringify-safe": "^5.0.1",
-    "jsonify-error": "^2.0.0",
     "lodash": "^4.17.11",
     "multiaddr": "^6.1.0",
     "neat-frame": "https://github.com/agentofuser/neat-frame#wrap-ansi-options",
@@ -66,6 +65,12 @@
   "devDependencies": {
     "all-contributors-cli": "^6.7.0",
     "ava": "^2.1.0",
+    "proxyquire": "^2.1.1",
     "standard": "^13.1.0"
+  },
+  "ava": {
+    "helpers": [
+      "**/**/helpers.js"
+    ]
   }
 }

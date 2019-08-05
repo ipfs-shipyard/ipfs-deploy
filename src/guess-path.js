@@ -27,19 +27,13 @@ module.exports = publicPath => {
   const spinner = ora()
 
   if (_.isEmpty(publicPath)) {
-    spinner.info(
-      `🤔  No ${white('path')} argument specified. Looking for common ones…`
-    )
+    spinner.info(`🤔  No ${white('path')} argument specified. Looking for common ones…`)
     result = guessedPath()
     if (result) {
-      spinner.succeed(
-        `📂  Found local ${chalk.blue(result)} directory. Deploying that.`
-      )
+      spinner.succeed(`📂  Found local ${chalk.blue(result)} directory. Deploying that.`)
       return result
     } else {
-      spinner.fail(
-        `🔮  Couldn't guess what to deploy. Please specify a ${white('path')}.`
-      )
+      spinner.fail(`🔮  Couldn't guess what to deploy. Please specify a ${white('path')}.`)
       return undefined
     }
   } else {

@@ -2,7 +2,6 @@ const _ = require('lodash')
 const fp = require('lodash/fp')
 const stringify = require('json-stringify-safe')
 const prettier = require('prettier')
-const jsonifyError = require('jsonify-error')
 const neatFrame = require('neat-frame')
 const { stripIndent } = require('common-tags')
 
@@ -21,7 +20,7 @@ function formatError (e) {
     str => neatFrame(str, { trim: false })
   )
   if (_.isError(e)) {
-    eStr = prettierJson(jsonifyError(e))
+    eStr = e.toString()
   } else if (_.isString(e)) {
     eStr = e
   } else if (_.isObjectLike(e)) {

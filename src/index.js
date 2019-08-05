@@ -2,11 +2,9 @@ const ora = require('ora')
 const _ = require('lodash')
 const { logError } = require('./logging')
 
-const httpGatewayUrl = require('./utils/gateway')
-const copyUrlToClipboard = require('./utils/copy-url-clipboard')
-const guessPathIfEmpty = require('./utils/guess-path')
-const openUrl = require('./utils/guess-path')
-const showSize = require('./utils/show-size')
+const guessPathIfEmpty = require('./guess-path')
+const showSize = require('./show-size')
+const { openUrl, gatewayHttpUrl, copyUrl } = require('./url-utils')
 
 const dnslinkProviders = require('./dnslink')
 const pinnerProviders = require('./pinners')
@@ -56,14 +54,11 @@ async function deploy ({
   let lastHash = null
 
   for (const pinnerName of remotePinners) {
-    let pinner
+    const pinner = await pinnerProviders[_.camelCase(pinnerName)](
+      credentials[_.camelCase(pinnerName)] || null
+    )
 
-    try {
-      pinner = await pinnerProviders[_.camelCase(pinnerName)](
-        credentials[_.camelCase(pinnerName)] || null
-      )
-    } catch (error) {
-      logError(error.toString())
+    if (!pinner) {
       return
     }
 
@@ -104,7 +99,7 @@ async function deploy ({
   }
 
   const gatewayUrls = successfulPinners.map(pinner =>
-    httpGatewayUrl(pinnedHash, pinner)
+    gatewayHttpUrl(pinnedHash, pinner)
   )
 
   if (open) {
@@ -117,9 +112,9 @@ async function deploy ({
 
   if (copyHttpGatewayUrlToClipboard) {
     if (dnslinkedHostname) {
-      copyUrlToClipboard(`https://${dnslinkedHostname}`)
+      copyUrl(`https://${dnslinkedHostname}`)
     } else {
-      copyUrlToClipboard(gatewayUrls[0])
+      copyUrl(gatewayUrls[0])
     }
   }
 
