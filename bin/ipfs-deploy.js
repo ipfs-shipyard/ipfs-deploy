@@ -16,7 +16,7 @@ const dnsProviders = ['cloudflare']
 const argv = yargs
   .scriptName('ipfs-deploy')
   .usage(
-    '$0 [options] [path]',
+    '$0 [path] [options]',
     'Pin path locally, upload to pinning service, and update DNS\n\n' +
       'Prints hash (CID) to stdout so you can pipe to other programs',
     yargs => {
@@ -35,7 +35,6 @@ const argv = yargs
           d: {
             alias: 'dns',
             choices: dnsProviders,
-            array: true,
             describe: 'DNS provider whose dnslink TXT field will be updated'
           },
           O: {
@@ -46,7 +45,6 @@ const argv = yargs
             alias: 'pinner',
             choices: pinProviders,
             default: ['infura'],
-            array: true,
             describe: `Pinning services to which ${chalk.whiteBright(
               'path'
             )} will be uploaded`
@@ -86,7 +84,7 @@ const argv = yargs
   .argv
 
 async function main () {
-  const deployOptions = {
+  const options = {
     publicDirPath: argv.path,
     copyHttpGatewayUrlToClipboard:
       !(argv.clipboard === false) && !argv.C && !argv.noClipboard,
@@ -114,7 +112,15 @@ async function main () {
     }
   }
 
-  const pinnedHash = await deploy(deployOptions)
+  if (typeof options.dnsProviders === 'string') {
+    options.dnsProviders = [options.dnsProviders]
+  }
+
+  if (typeof options.remotePinners === 'string') {
+    options.remotePinners = [options.remotePinners]
+  }
+
+  const pinnedHash = await deploy(options)
   if (pinnedHash) {
     process.stdout.write(pinnedHash + '\n')
   } else {
