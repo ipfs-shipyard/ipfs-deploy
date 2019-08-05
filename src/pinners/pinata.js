@@ -3,6 +3,7 @@ const fs = require('fs')
 const FormData = require('form-data')
 const recursive = require('recursive-fs')
 const _ = require('lodash')
+const path = require('path')
 const fp = require('lodash/fp')
 
 const PIN_DIR_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS'
@@ -21,14 +22,18 @@ IPFS_DEPLOY_PINATA__SECRET_API_KEY`)
     return { apiKey, secretApiKey }
   },
   pinDir: async ({ apiKey, secretApiKey }, dir, tag) => {
+    dir = path.normalize(dir)
+
     const response = await new Promise(resolve => {
       recursive.readdirr(dir, (_err, _dirs, files) => {
         const data = new FormData()
+        const toStrip = path.dirname(dir).length
         files.forEach(file => {
+          file = path.normalize(file)
           data.append('file', fs.createReadStream(file), {
             // for each file stream, we need to include the correct
             // relative file path
-            filepath: file
+            filepath: file.slice(toStrip)
           })
         })
 
