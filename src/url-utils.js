@@ -12,7 +12,7 @@ const GATEWAYS = {
 }
 
 const gatewayHttpUrl = (cid, gatewayProvider = 'ipfs') => {
-  const origin = GATEWAYS[gatewayProvider] || GATEWAYS['ipfs']
+  const origin = GATEWAYS[gatewayProvider] || GATEWAYS.ipfs
 
   if (!cid) {
     return origin
