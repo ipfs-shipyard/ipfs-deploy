@@ -51,7 +51,7 @@
     "ipfs-http-client": "^34.0.0",
     "json-stringify-safe": "^5.0.1",
     "lodash": "^4.17.11",
-    "multiaddr": "^6.1.0",
+    "multiaddr": "^7.0.0",
     "neat-frame": "https://github.com/agentofuser/neat-frame#wrap-ansi-options",
     "open": "^6.3.0",
     "ora": "^3.4.0",
