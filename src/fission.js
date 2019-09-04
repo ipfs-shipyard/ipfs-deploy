@@ -10,8 +10,8 @@ const { linkCid } = require('./utils/pure-fns')
 const chalk = require('chalk')
 const white = chalk.whiteBright
 
-module.exports.setupFission = ({ apiKey, secretApiKey }) => {
-  const url = 'https://hostless.dev/ipfs'
+module.exports.setupFission = ({ username, password }) => {
+  const url = 'https://runfission.com/ipfs'
 
   // we gather the files from a local directory in this example, but a valid
   // readStream is all that's needed for each file in the directory.
@@ -23,7 +23,7 @@ module.exports.setupFission = ({ apiKey, secretApiKey }) => {
 
     try {
       const response = await new Promise(resolve => {
-        recursive.readdirr(publicDirPath, (_err, _dirs, files) => {
+        recursive.readdirr(publicDirPath, async (_err, _dirs, files) => {
           let data = new FormData()
           files.forEach(file => {
             data.append('file', fs.createReadStream(file), {
@@ -33,33 +33,22 @@ module.exports.setupFission = ({ apiKey, secretApiKey }) => {
             })
           })
 
-          // const metadata = JSON.stringify(fissionMetadata)
-          // data.append('fissionMetadata', metadata)
+          const auth = { username, password }
+          const headers = { 'content-type': 'application/octet-stream' }
 
-          // var basicAuth = 'Basic ' + btoa(apiKey + ':' + secretApiKey);
-          var basicAuth = new Buffer(apiKey + ':' + secretApiKey).toString(
-            'base64'
-          )
+          // upload to fission
+          const resp = await axios.post(url, data, {
+            // Infinity is needed to prevent axios from erroring out with
+            // large directories
+            maxContentLength: 'Infinity',
+            auth,
+            headers,
+          })
+          const cid = resp.data
 
-          axios
-            .post(url, data, {
-              // Infinity is needed to prevent axios from erroring out with
-              // large directories
-              maxContentLength: 'Infinity',
-              /*
-
-              // Looking at: https://stackoverflow.com/questions/44072750/how-to-send-basic-auth-with-axios
-               
-              auth: {
-                username: apiKey,
-                password: secretApiKey,
-              }, */
-              headers: {
-                Authorization: basicAuth,
-                'Content-Type': 'application/octet-stream',
-              },
-            })
-            .then(resolve)
+          // request pin
+          await axios.put(`${url}/${cid}`, {}, { auth })
+          resolve(resp)
         })
       })
 

@@ -225,8 +225,8 @@ async function deploy({
       secretApiKey,
     },
     fission: {
-      apiKey,
-      secretApiKey,
+      username,
+      password,
     },
   },
 } = {}) {

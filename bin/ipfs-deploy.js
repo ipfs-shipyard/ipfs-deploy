@@ -109,8 +109,8 @@ async function main() {
         secretApiKey: argv.pinata && argv.pinata.secretApiKey,
       },
       fission: {
-        username: argv.fission && argv.fission.apiKey,
-        password: argv.fission && argv.fission.secretApiKey,
+        username: argv.fission && argv.fission.username,
+        password: argv.fission && argv.fission.password,
       },
     },
   }
