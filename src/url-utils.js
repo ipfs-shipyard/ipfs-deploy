@@ -18,7 +18,7 @@ const gatewayHttpUrl = (cid, gatewayProvider = 'ipfs') => {
     return origin
   }
 
-  return `${origin}/ipfs/${cid}`
+  return `${origin}/ipfs/${cid}/`
 }
 
 const linkCid = (cid, gatewayProvider) => `🔗  ${chalk.green(
