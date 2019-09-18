@@ -3,6 +3,7 @@ function getGatewayUrl(cid, gatewayProvider = 'ipfs') {
     ipfs: 'https://ipfs.io',
     infura: 'https://ipfs.infura.io',
     pinata: 'https://gateway.pinata.cloud',
+    fission: 'https://ipfs.runfission.com',
   }
   const origin = gateways[gatewayProvider] || gateways['ipfs']
   if (!cid) {
