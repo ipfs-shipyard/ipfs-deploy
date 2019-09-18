@@ -17,6 +17,10 @@ module.exports.setupFission = ({ username, password }) => {
     spinner.start(
       `📠  Uploading and pinning via https to ${white('fission.codes')}…`
     )
+    if (!username || !password) {
+      spinner.fail("💔 Can't upload without Fission credentials")
+      return undefined
+    }
 
     const auth = { username, password }
     const headers = { 'content-type': 'application/octet-stream' }
@@ -38,17 +42,16 @@ module.exports.setupFission = ({ username, password }) => {
     }
 
     const walk = async dir => {
+      if (!fs.statSync(dir).isDirectory()) {
+        return uploadFile(dir)
+      }
+
       const files = fs.readdirSync(dir)
       const links = await Promise.all(
         files.map(async file => {
           const filepath = path.join(dir, file)
           const stat = fs.statSync(filepath)
-          let cid
-          if (stat.isDirectory()) {
-            cid = await walk(filepath)
-          } else {
-            cid = await uploadFile(filepath)
-          }
+          let cid = await walk(filepath)
           return {
             Name: file,
             Size: stat.size,
