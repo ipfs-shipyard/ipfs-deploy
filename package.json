@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "byte-size": "^5.0.1",
+    "byte-size": "^6.0.0",
     "chalk": "^2.4.2",
     "clipboardy": "^2.1.0",
     "common-tags": "^2.0.0-alpha.1",
