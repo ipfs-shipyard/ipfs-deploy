@@ -1,0 +1,13 @@
+language: node_js
+cache: npm
+
+node_js:
+  - '10'
+  - '12'
+
+script:
+  - npm run lint
+  - npm run test
+
+notifications:
+  email: false

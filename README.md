@@ -1,42 +1,45 @@
-# @agentofuser/ipfs-deploy
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
+# ipfs-deploy
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
+[![Travis CI](https://flat.badgen.net/travis/ipfs-shipyard/ipfs-deploy)](https://travis-ci.com/ipfs-shipyard/ipfs-deploy)
 
 > Upload static website to IPFS pinning services and optionally update DNS.
 
 <p align="center">
-  <img src="https://cloudflare-ipfs.com/ipns/ipfs-deploy-demo.agentofuser.com/ipfs-deploy-demo.svg">
+  <img src="https://user-images.githubusercontent.com/5447088/62481739-220bcc80-b7ab-11e9-8a9e-25f23ed92768.gif">
 </p>
 
-The goal of `@agentofuser/ipfs-deploy` is to make it as easy as possible to
+The goal of `ipfs-deploy` is to make it as easy as possible to
 **deploy a static website to IPFS.**
 
 ## Table of Contents
 
-1. [@agentofuser/ipfs-deploy](#agentofuseripfs-deploy)
-   1. [Table of Contents](#Table-of-Contents)
-   2. [Install](#Install)
-      1. [No install:](#No-install)
-   3. [Usage](#Usage)
-   4. [API](#API)
-   5. [Security](#Security)
-   6. [Background](#Background)
-   7. [Contributors](#Contributors)
-   8. [Users](#Users)
-   9. [License](#License)
+1. [Install](#Install)
+    1. [No install](#No-install)
+2. [Usage](#Usage)
+    1. [Supported Pinning Services](#supported-pinning-services)
+    2. [Supported DNS Services](#supported-dns-providers)
+3. [API](#API)
+4. [Security](#Security)
+5. [Contributing](#Contributing)
+    1. [Contributors](#Contributors)
+    2. [Add a Pinning Service](#add-a-pinning-service)
+    3. [Add a DNS Provider](#add-a-dns-provider)
+6. [Users](#Users)
+7. [License](#License)
 
 ## Install
 
 ```bash
-npm install -g @agentofuser/ipfs-deploy
+npm install -g ipfs-deploy
 ```
 
 Or
 
 ```bash
-yarn global add @agentofuser/ipfs-deploy
+yarn global add ipfs-deploy
 ```
 
 You can call it either as `ipd` or as `ipfs-deploy`:
@@ -46,13 +49,13 @@ ipd public/
 ipfs-deploy public/
 ```
 
-### No install:
+### No install
 
 You can run it directly with [npx](https://www.npmjs.com/package/npx 'npx')
 without needing to install anything:
 
 ```bash
-npx @agentofuser/ipfs-deploy _site
+npx ipfs-deploy _site
 ```
 
 It will deploy to a public pinning service and give you a link to
@@ -60,78 +63,111 @@ It will deploy to a public pinning service and give you a link to
 
 ## Usage
 
-You can get started just by typing out **ipd** and it will have smart defaults.
+You can get started just by typing out `ipd` and it will have smart defaults.
+By default, it deploys to Infura, which doesn't need signup and you'll get a
+link like `ipfs.io/ipfs/QmHash` that you can use to see if everything went ok.
 
-It deploys to a service that doesn't need signup and gives you a link like
-`ipfs.io/ipfs/hash` that you can use to see if everything went ok.
-
-When you don't specify a path argument to deploy, **ipfs-deploy** tries to
+When you don't specify a path argument to deploy, `ipfs-deploy` tries to
 guess it for you based on the build directories used by the most popular static
-site generators:
+site generators by the following order:
 
-```javascript
-// prettier-ignore
-const guesses = [
-  '_site',         // jekyll, hakyll, eleventy
-  'site',          // forgot which
-  'public',        // gatsby, hugo
-  'dist',          // nuxt
-  'output',        // pelican
-  'out',           // hexo
-  'build',         // create-react-app, metalsmith, middleman
-  'website/build', // docusaurus
-  'docs',          // many others
-]
-```
+| Path            | Static generators                       |
+| --------        | ---------------------------------       |
+| `_site`         | jekyll, hakyll, eleventy                |
+| `site`          | some others                             |
+| `public`        | gatsby, hugo                            |
+| `dist`          | nuxt                                    |
+| `output`        | pelican                                 |
+| `out`           | hexo                                    |
+| `build`         | create-react-app, metalsmith, middleman |
+| `website/build` | docusaurus                              |
+| `docs`          | many others                             |
 
----
+Some pinning services and DNS providers require signup and additional
+environment variables to be set. We support and use `.env` files. Read
+the section bellow to find out about which services are supported and
+how to ensable them.
 
-The `--help` option has some additional usage examples:
+For further information about the CLI, please run `ipfs-deploy --help`.
 
-```
-Examples:
-  ipfs-deploy                               # Deploys relative path "public" to
-                                            ipfs.infura.io/ipfs/hash; doesn't
-                                            update DNS; copies and opens URL.
-                                            These defaults are chosen so as not
-                                            to require signing up for any
-                                            service or setting up environment
-                                            variables on default use.
+### Supported Pinning Services
 
-  ipfs-deploy -p pinata _site               # Deploys path "_site" ONLY to
-                                            pinata and doesn't update DNS
+Some things to keep in mind:
 
-  ipfs-deploy -p infura -p pinata -d        # Deploys path "public" to pinata
-  cloudflare                                and infura, and updates cloudflare
-                                            DNS
-```
+-  Please note the `__` (double underscore) between some words (such as
+after `PINATA` and `CLOUDFLARE`).
+-  **Don't** commit the `.env` file to source control unless you know what
+you're doing.
 
-To use Pinata and Cloudflare you need to sign up for those services. You can
-read up on that over at:
+These services are subject to their terms. Not a decentralization nirvana
+by any stretch of the imagination, but a nice way to get started quickly with a
+blog, static website, or frontend web app.
 
-https://www.cloudflare.com/distributed-web-gateway
+#### [Infura](https://infura.io)
 
-and:
+Infura is a freemium pinning service that doesn't require any additional setup.
+It's the default one used. Please bear in mind that Infura is a free service,
+so there is probably a rate-limiting.
 
-https://pinata.cloud/documentation#GettingStarted
+##### How to enable
 
-(Infura doesn't require creating an account and is therefore the default
-pinning service used.)
+Use flag `-p infura`.
 
-After setting up your Cloudflare and Pinata accounts, in your website's
-repository root, create or edit the file `.env` with your credentials, zone,
-and record information:
+#### [Pinata](https://pinata.cloud)
+
+Pinata is another freemium pinning service. It gives you more control over
+what's uploaded. You can delete, label and add costum metadata. This service
+requires signup.
+
+##### Environment variables
 
 ```bash
-# pinata credentials
-IPFS_DEPLOY_PINATA__API_KEY=
-IPFS_DEPLOY_PINATA__SECRET_API_KEY=
+IPFS_DEPLOY_PINATA__API_KEY=<api key>
+IPFS_DEPLOY_PINATA__SECRET_API_KEY=<secret api key>
+```
 
-# cloudflare credentials
+##### How to enable
+
+Use flag `-p pinata`.
+
+#### [IPFS Cluster](https://cluster.ipfs.io/)
+
+You can use IPFS Cluster to pin your website. It can be either self-hosted or
+just any IPFS Cluster you want.
+
+##### Environment variables
+
+```bash
+IPFS_DEPLOY_IPFS_CLUSTER__HOST=<multiaddr>
+IPFS_DEPLOY_IPFS_CLUSTER__USERNAME=<basic auth username>
+IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD=<basic auth password>
+```
+
+##### How to enable
+
+Use flag `-p ipfs-cluster`.
+
+### Supported DNS Providers
+
+#### [Cloudflare DNS](https://cloudflare.com)
+
+Cloudflare is a freemium DNS provider. Supports CNAME flattening for
+naked domains and integrates with their IPFS gateway at
+[cloudflare-ipfs.com](https://cloudflare-ipfs.com).
+
+Bear in mind that Cloudflare IPFS doesn't host the content itself
+(it's a cached gateway), so a stable pinning service is needed if you
+don't want to rely on your computer's IPFS daemon's availability to
+serve your website.
+
+##### Environment variables
+
+```bash
+# credentials
 IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=
 IPFS_DEPLOY_CLOUDFLARE__API_KEY=
 
-# cloudflare dns info
+# dns info
 IPFS_DEPLOY_CLOUDFLARE__ZONE=
 IPFS_DEPLOY_CLOUDFLARE__RECORD=
 ```
@@ -152,50 +188,9 @@ IPFS_DEPLOY_CLOUDFLARE__ZONE=agentofuser.com
 IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.mysubdomain.agentofuser.com
 ```
 
-Important:
+##### How to enable
 
-- Note the 2 `_` after `PINATA` and `CLOUDFLARE`.
-- Remember you have to set the CNAME to `cloudflare-ipfs.com` yourself (only
-  once). ipfs-deploy then creates/updates the \_dnslink record.
-
-**Don't** commit the `.env` file to source control unless you know what you're
-doing.
-
-```
-$ echo '.env' >> .gitignore
-```
-
-Assuming your website's production build is at the `public` subdirectory
-(that's what Gatsby and Hugo use; Jekyll and Hakyll use `_site`), run this at
-the project's root:
-
-```bash
-ipd public
-```
-
-To see more details about command line usage, run:
-
-```bash
-ipd -h
-```
-
-You can optionally add a deploy command to your `package.json`:
-
-```javascript
-//  ⋮
-  "scripts": {
-//  ⋮
-    "deploy": "npx @agentofuser/ipfs-deploy public",
-//  ⋮
-  }
-//  ⋮
-```
-
-Then to run it, execute:
-
-```bash
-npm run deploy
-```
+Use flag `-d cloudflare`.
 
 ## API
 
@@ -203,7 +198,7 @@ This is still pretty unstable and subject to change, so I will just show how
 the executable currently uses the API.
 
 ```javascript
-const deploy = require('@agentofuser/ipfs-deploy')
+const deploy = require('ipfs-deploy')
 
 ;(async () => {
   try {
@@ -226,6 +221,11 @@ const deploy = require('@agentofuser/ipfs-deploy')
           apiKey: argv.pinata && argv.pinata.apiKey,
           secretApiKey: argv.pinata && argv.pinata.secretApiKey,
         },
+        ipfsCluster: {
+          host: argv.ipfsCluster && argv.ipfsCluster.host,
+          username: argv.ipfsCluster && argv.ipfsCluster.username,
+          password: argv.ipfsCluster && argv.ipfsCluster.password,
+        },
       },
     }
 
@@ -239,49 +239,90 @@ const deploy = require('@agentofuser/ipfs-deploy')
 We use `dotenv` to handle credentials. Don't commit your `.env` file to source
 control.
 
-## Background
+## Contributing
 
-So far, `ipfs-deploy` integrates with these services:
+### Contributors
 
-- [Infura.io](https://infura.io): freemium pinning service. Doesn't require
-  signup. (Default.)
-- [Pinata.cloud](https://pinata.cloud): freemium pinning service. Gives more
-  control over what's uploaded. You can delete, label, and add metadata.
-- [Cloudflare DNS](https://cloudflare.com): freemium DNS API. Supports CNAME
-  for naked domains and integrates with their IPFS gateway at
-  [cloudflare-ipfs.com](https://cloudflare-ipfs.com).
+This project was initially started by [@agentofuser](https://github.com/agentofuser),
+who made a lot of awesome work in here. Posteriorly, it was transfered to ipfs-shipyard.
+Thanks for starting this awesome project!
 
-Feel free to request or add support to other services and send a PR.
+Everyone is welcome to contribute and add new features!
+[See everyone who has contributed](https://github.com/ipfs-shipyard/ipfs-deploy/graphs/contributors)!
 
-You can start using `ipfs-deploy` without signing up for anything.
+### Add a Pinning Service
 
-Default settings deploy to [infura.io](https://infura.io), which doesn't
-request an account to pin stuff. They probably do some rate-limiting, but
-either way, take it easy on them. Being able to try IPFS out without friction
-and without giving out personal info is a very important smooth on-ramp.
+To add support to a new pinning service, you must start by creating a file with
+the name of the pinning service. Let's say it's called PinFree: create a file
+called `src/pinners/pinfree.js` with a content similar to this one:
 
-Cloudflare IPFS doesn't host the content itself (it's a cached gateway), so a
-stable pinning service is needed if you don't want to rely on your computer's
-IPFS daemon's availability to serve your website.
+```javascript
+module.exports = {
+  name: 'PinFree',
+  builder: opts => {
+    // Validate the options. If bad, throw.
+    // Return an api or the options you want to use later.
 
-These are free services subject to their terms. Not a decentralization nirvana
-by any stretch of the imagination, but a nice way to get started quickly with a
-blog, static website, or frontend web app.
+    return api
+  },
+  pinDir: async (api, dir, tag) => {
+    // Pin a directory asynchronously, using the api
+    // returned by builder and a tag.
 
-## Contributors
+    return hash
+  },
+  pinHash: async (api, hash, tag) => {
+    // Pin an hash asynchronously, using the api
+    // returned by builder and a tag.
+    // Just throw an error if the service doesn't
+    // support this action.
+  },
+}
+```
 
-Thanks goes to these wonderful people
-([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Now, you have your pinner service almost set up. Go to `src/pinners/index.js`
+and add your pinner like this to the exports:
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-<table><tr><td align="center"><a href="https://tableflip.io"><img src="https://avatars3.githubusercontent.com/u/58871?v=4" width="100px;" alt="Oli Evans"/><br /><sub><b>Oli Evans</b></sub></a><br /><a href="https://github.com/agentofuser/ipfs-deploy/commits?author=olizilla" title="Code">💻</a> <a href="#ideas-olizilla" title="Ideas, Planning, & Feedback">🤔</a></td><td align="center"><a href="https://agentofuser.com"><img src="https://avatars1.githubusercontent.com/u/45322175?v=4" width="100px;" alt="Agent of User"/><br /><sub><b>Agent of User</b></sub></a><br /><a href="https://github.com/agentofuser/ipfs-deploy/commits?author=agentofuser" title="Code">💻</a> <a href="#ideas-agentofuser" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/agentofuser/ipfs-deploy/issues?q=author%3Aagentofuser" title="Bug reports">🐛</a> <a href="https://github.com/agentofuser/ipfs-deploy/commits?author=agentofuser" title="Documentation">📖</a></td></tr></table>
+```javascript
+pinfree: makePinner(require('./pinfree')),
+```
 
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+Finally, go to `bin/ipfs-deploy.js` and add `pinfree` to the list of supported
+pinners. Also, do not forget to update the README with the new options.
 
-This project follows the
-[all-contributors](https://github.com/all-contributors/all-contributors)
-specification. Contributions of any kind welcome!
+### Add a DNS Provider
+
+To add support to a new DNS service, you must start by creating a file with the
+name of the DNS service. Let's say it's called DNSFree: create a file called
+`dnsfree.js` with a content similar to this one:
+
+```javascript
+module.exports = {
+  name: 'DNSFree',
+  validate: opts => {
+    // Validate the options. If bad, throw.
+  },
+  link: async (domain, hash, opts) => {
+    // DNSLink the domain to the hash using the
+    // validated options.
+
+    return {
+      record: someValue,
+      value: someOtherValue,
+    }
+  },
+}
+```
+
+Now, you have your DNS service almost set up. Go to `src/dnslink/index.js` and
+add your pinner like this to the exports:
+
+```javascript
+dnsfree: makeDnslink(require('./dnsfree')),
+```
+
+Finally, go to `bin/ipfs-deploy.js` and add `dnsfree` to the list of supported
+DNS providers. Also, do not forget to update the README with the new options.
 
 ## Users
 
