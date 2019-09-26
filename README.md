@@ -16,35 +16,19 @@ The goal of `ipfs-deploy` is to make it as easy as possible to
 
 ## Table of Contents
 
-- [ipfs-deploy](#ipfs-deploy)
-  - [Table of Contents](#table-of-contents)
-  - [Install](#install)
-    - [No install](#no-install)
-  - [Usage](#usage)
-    - [Supported Pinning Services](#supported-pinning-services)
-      - [Infura](#infura)
-        - [How to enable](#how-to-enable)
-      - [Pinata](#pinata)
-        - [Environment variables](#environment-variables)
-        - [How to enable](#how-to-enable-1)
-      - [Fission](#fission)
-        - [Environment variables](#environment-variables-1)
-        - [How to enable](#how-to-enable-2)
-      - [IPFS Cluster](#ipfs-cluster)
-        - [Environment variables](#environment-variables-2)
-        - [How to enable](#how-to-enable-3)
-    - [Supported DNS Providers](#supported-dns-providers)
-      - [Cloudflare DNS](#cloudflare-dns)
-        - [Environment variables](#environment-variables-3)
-        - [How to enable](#how-to-enable-4)
-  - [API](#api)
-  - [Security](#security)
-  - [Contributing](#contributing)
-    - [Contributors](#contributors)
-    - [Add a Pinning Service](#add-a-pinning-service)
-    - [Add a DNS Provider](#add-a-dns-provider)
-  - [Users](#users)
-  - [License](#license)
+1. [Install](#Install)
+    1. [No install](#No-install)
+2. [Usage](#Usage)
+    1. [Supported Pinning Services](#supported-pinning-services)
+    2. [Supported DNS Services](#supported-dns-providers)
+3. [API](#API)
+4. [Security](#Security)
+5. [Contributing](#Contributing)
+    1. [Contributors](#Contributors)
+    2. [Add a Pinning Service](#add-a-pinning-service)
+    3. [Add a DNS Provider](#add-a-dns-provider)
+6. [Users](#Users)
+7. [License](#License)
 
 ## Install
 
@@ -132,7 +116,7 @@ Use flag `-p infura`.
 #### [Pinata](https://pinata.cloud)
 
 Pinata is another freemium pinning service. It gives you more control over
-what's uploaded. You can delete, label and add custom metadata. This service
+what's uploaded. You can delete, label and add costum metadata. This service
 requires signup.
 
 ##### Environment variables
