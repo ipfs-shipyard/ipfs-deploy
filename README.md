@@ -116,8 +116,12 @@ Use flag `-p infura`.
 #### [Pinata](https://pinata.cloud)
 
 Pinata is another freemium pinning service. It gives you more control over
-what's uploaded. You can delete, label and add costum metadata. This service
+what's uploaded. You can delete, label and add custom metadata. This service
 requires signup.
+
+#### [Fission](https://fission.codes)
+
+Fission is a backend-as-a-service that uses IPFS and supports pinning. This service requires signup.
 
 ##### Environment variables
 
@@ -134,6 +138,10 @@ Use flag `-p pinata`.
 
 You can use IPFS Cluster to pin your website. It can be either self-hosted or
 just any IPFS Cluster you want.
+
+##### How to enable
+
+Use flag `-p fission`.
 
 ##### Environment variables
 
