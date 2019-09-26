@@ -111,8 +111,8 @@ async function main () {
       },
       fission: {
         username: argv.fission && argv.fission.username,
-        password: argv.fission && argv.fission.password,
-      },
+        password: argv.fission && argv.fission.password
+      }
     }
   }
 

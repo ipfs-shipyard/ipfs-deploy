@@ -10,7 +10,7 @@ const headers = { 'content-type': 'application/octet-stream' }
 const uploadFile = async (auth, filepath) => {
   const resp = await axios.post(BASE_URL, fs.createReadStream(filepath), {
     auth,
-    headers,
+    headers
   })
   return resp.data
 }
@@ -18,7 +18,7 @@ const uploadFile = async (auth, filepath) => {
 const putDAGObj = async (auth, node) => {
   const resp = await axios.post(`${BASE_URL}/dag`, JSON.stringify(node), {
     auth,
-    headers,
+    headers
   })
   return resp.data
 }
@@ -35,19 +35,19 @@ const walk = async (auth, dir) => {
     files.map(async file => {
       const filepath = path.join(dir, file)
       const stat = fs.statSync(filepath)
-      let cid = await walk(auth, filepath)
+      const cid = await walk(auth, filepath)
       return {
         Name: file,
         Size: stat.size,
         CID: {
-          '/': cid,
-        },
+          '/': cid
+        }
       }
     })
   )
   const node = {
     data: 'CAE=',
-    links,
+    links
   }
   return putDAGObj(auth, node)
 }

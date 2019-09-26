@@ -15,7 +15,7 @@ const getBuiltFission = async (fission) => {
 const mockFS = {
   statSync: (path) => ({
     size: 1000,
-    isDirectory: () => path === 'dir' ? true: false
+    isDirectory: () => path === 'dir'
   }),
   readdirSync: () => ([]),
   createReadStream: () => {
@@ -27,7 +27,7 @@ const mockFS = {
 
 const mockAxios = {
   post: async (url) => {
-    if(url.indexOf('dag') > 0) {
+    if (url.indexOf('dag') > 0) {
       return { data: 'QmDirHash' }
     } else {
       return { data: 'QmFileHash' }
