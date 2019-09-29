@@ -9,7 +9,7 @@ updateNotifier({ pkg, updateCheckInterval: 0 }).notify()
 
 require('dotenv').config()
 
-const pinProviders = ['pinata', 'infura', 'ipfs-cluster']
+const pinProviders = ['pinata', 'infura', 'ipfs-cluster', 'fission']
 
 const dnsProviders = ['cloudflare']
 
@@ -108,6 +108,10 @@ async function main () {
         host: argv.ipfsCluster && argv.ipfsCluster.host,
         username: argv.ipfsCluster && argv.ipfsCluster.username,
         password: argv.ipfsCluster && argv.ipfsCluster.password
+      },
+      fission: {
+        username: argv.fission && argv.fission.username,
+        password: argv.fission && argv.fission.password
       }
     }
   }

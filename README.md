@@ -130,6 +130,21 @@ IPFS_DEPLOY_PINATA__SECRET_API_KEY=<secret api key>
 
 Use flag `-p pinata`.
 
+#### [Fission](https://fission.codes)
+
+Fission is a backend-as-a-service that uses IPFS and supports pinning. This service requires signup.
+
+##### Environment variables
+
+```bash
+IPFS_DEPLOY_FISSION__USERNAME=<username>
+IPFS_DEPLOY_FISSION__PASSWORD=<password>
+```
+
+##### How to enable
+
+Use flag `-p fission`.
+
 #### [IPFS Cluster](https://cluster.ipfs.io/)
 
 You can use IPFS Cluster to pin your website. It can be either self-hosted or
@@ -220,6 +235,10 @@ const deploy = require('ipfs-deploy')
         pinata: {
           apiKey: argv.pinata && argv.pinata.apiKey,
           secretApiKey: argv.pinata && argv.pinata.secretApiKey,
+        },
+        fission: {
+          username: argv.fission && argv.fission.username,
+          password: argv.fission && argv.fission.password,
         },
         ipfsCluster: {
           host: argv.ipfsCluster && argv.ipfsCluster.host,

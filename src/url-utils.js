@@ -8,7 +8,8 @@ const { logError } = require('./logging')
 const GATEWAYS = {
   ipfs: 'https://ipfs.io',
   infura: 'https://ipfs.infura.io',
-  pinata: 'https://gateway.pinata.cloud'
+  pinata: 'https://gateway.pinata.cloud',
+  fission: 'https://ipfs.runfission.com'
 }
 
 const gatewayHttpUrl = (cid, gatewayProvider = 'ipfs') => {

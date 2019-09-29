@@ -20,6 +20,12 @@ test('get http gateway url for a cid on pinata', t => {
   t.is(actual, expected)
 })
 
+test('get http gateway url for a cid on fission', t => {
+  const expected = 'https://ipfs.runfission.com/ipfs/fakecid/'
+  const actual = gatewayHttpUrl('fakecid', 'fission')
+  t.is(actual, expected)
+})
+
 test('get just the http gateway url if no cid', t => {
   const expected = 'https://ipfs.io'
   const actual = gatewayHttpUrl()
