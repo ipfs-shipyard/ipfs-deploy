@@ -1,7 +1,7 @@
 const ora = require('ora')
-const chalk = require('chalk')
+const colors = require('colors/safe')
 const { logError } = require('../logging')
-const white = chalk.whiteBright
+const white = colors.brightWhite
 
 module.exports = ({ name, validate, link }) => async (
   domain,

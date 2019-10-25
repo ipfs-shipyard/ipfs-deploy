@@ -1,9 +1,9 @@
 const ora = require('ora')
-const chalk = require('chalk')
+const colors = require('colors/safe')
 const _ = require('lodash')
 const { logError } = require('../logging')
 const { linkCid } = require('../url-utils')
-const white = chalk.whiteBright
+const white = colors.brightWhite
 
 module.exports = ({ name, builder, pinDir, pinHash }) => async options => {
   const slug = _.toLower(name)

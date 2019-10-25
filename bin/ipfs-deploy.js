@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const updateNotifier = require('update-notifier')
-const chalk = require('chalk')
+const colors = require('colors/safe')
 const yargs = require('yargs')
 const deploy = require('../src')
 const pkg = require('../package.json')
@@ -45,7 +45,7 @@ const argv = yargs
             alias: 'pinner',
             choices: pinProviders,
             default: ['infura'],
-            describe: `Pinning services to which ${chalk.whiteBright(
+            describe: `Pinning services to which ${colors.brightWhite(
               'path'
             )} will be uploaded`
           },
@@ -57,23 +57,23 @@ const argv = yargs
         })
         .example(
           '$0',
-          `# Deploys relative path "${chalk.whiteBright('public')}" to
-            ${chalk.whiteBright('ipfs.infura.io/ipfs/<hash>')}; doesn't ` +
+          `# Deploys relative path "${colors.brightWhite('public')}" to
+            ${colors.brightWhite('ipfs.infura.io/ipfs/<hash>')}; doesn't ` +
             'update DNS; copies and opens URL. These defaults are chosen ' +
             'so as not to require signing up for any service or ' +
             'setting up environment variables on default use.'
         )
         .example(
           '$0 -p pinata _site',
-          `# Deploys path "${chalk.whiteBright(
+          `# Deploys path "${colors.brightWhite(
             '_site'
-          )}" ONLY to ${chalk.whiteBright('pinata')} and doesn't update DNS`
+          )}" ONLY to ${colors.brightWhite('pinata')} and doesn't update DNS`
         )
         .example(
           '$0 -p infura -p pinata -d cloudflare',
-          `# Deploys path "${chalk.whiteBright(
+          `# Deploys path "${colors.brightWhite(
             'public'
-          )}" to ${chalk.whiteBright('pinata')} and ${chalk.whiteBright(
+          )}" to ${colors.brightWhite('pinata')} and ${colors.brightWhite(
             'infura'
           )}, and updates cloudflare DNS`
         )

@@ -1,10 +1,10 @@
 const { existsSync } = require('fs')
 const ora = require('ora')
-const chalk = require('chalk')
+const colors = require('colors/safe')
 const _ = require('lodash')
 const fp = require('lodash/fp')
 
-const white = chalk.whiteBright
+const white = colors.brightWhite
 
 function guessedPath () {
   const guesses = [
@@ -30,7 +30,7 @@ module.exports = publicPath => {
     spinner.info(`🤔  No ${white('path')} argument specified. Looking for common ones…`)
     result = guessedPath()
     if (result) {
-      spinner.succeed(`📂  Found local ${chalk.blue(result)} directory. Deploying that.`)
+      spinner.succeed(`📂  Found local ${colors.blue(result)} directory. Deploying that.`)
       return result
     } else {
       spinner.fail(`🔮  Couldn't guess what to deploy. Please specify a ${white('path')}.`)
