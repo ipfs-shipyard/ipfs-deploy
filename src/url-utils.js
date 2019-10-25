@@ -1,5 +1,5 @@
 const terminalLink = require('terminal-link')
-const chalk = require('chalk')
+const colors = require('colors/safe')
 const ora = require('ora')
 const clipboardy = require('clipboardy')
 const doOpen = require('open')
@@ -14,19 +14,14 @@ const GATEWAYS = {
 
 const gatewayHttpUrl = (cid, gatewayProvider = 'ipfs') => {
   const origin = GATEWAYS[gatewayProvider] || GATEWAYS.ipfs
-
-  if (!cid) {
-    return origin
-  }
-
-  return `${origin}/ipfs/${cid}/`
+  return cid ? `${origin}/ipfs/${cid}/` : origin
 }
 
-const linkCid = (cid, gatewayProvider) => `🔗  ${chalk.green(
+const linkCid = (cid, gatewayProvider) => `🔗  ${colors.green(
   terminalLink(cid, gatewayHttpUrl(cid, gatewayProvider))
 )}`
 
-const linkUrl = (url) => `🔗  ${chalk.green(terminalLink(url, url))}`
+const linkUrl = (url) => `🔗  ${colors.green(terminalLink(url, url))}`
 
 const openUrl = async (url) => {
   const spinner = ora()
