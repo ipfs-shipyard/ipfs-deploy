@@ -180,7 +180,11 @@ serve your website.
 ```bash
 # credentials
 IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=
+
+# api key
 IPFS_DEPLOY_CLOUDFLARE__API_KEY=
+# or...
+IPFS_DEPLOY_CLOUDFLARE__API_TOKEN=
 
 # dns info
 IPFS_DEPLOY_CLOUDFLARE__ZONE=
@@ -228,6 +232,7 @@ const deploy = require('ipfs-deploy')
       credentials: {
         cloudflare: {
           apiKey: argv.cloudflare && argv.cloudflare.apiKey,
+          apiToken: argv.cloudflare && argv.cloudflare.apiToken,
           apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
           zone: argv.cloudflare && argv.cloudflare.zone,
           record: argv.cloudflare && argv.cloudflare.record,
