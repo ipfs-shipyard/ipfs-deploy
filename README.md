@@ -180,8 +180,6 @@ serve your website.
 ```bash
 # credentials
 IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=
-
-# api key
 IPFS_DEPLOY_CLOUDFLARE__API_KEY=
 # or...
 IPFS_DEPLOY_CLOUDFLARE__API_TOKEN=

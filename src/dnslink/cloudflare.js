@@ -5,7 +5,7 @@ const fp = require('lodash/fp')
 module.exports = {
   name: 'Cloudflare',
   validate: ({ apiEmail, apiKey, apiToken, zone, record } = {}) => {
-    if (fp.all(_.isEmpty)([apiToken, apiKey]) || fp.some(_.isEmpty)([apiEmail])) {
+    if (fp.all(_.isEmpty)([apiKey, apiEmail]) && _.isEmpty(apiToken)) {
       throw new Error(`Missing the following environment variables:
 
 IPFS_DEPLOY_CLOUDFLARE__API_EMAIL
@@ -21,13 +21,12 @@ IPFS_DEPLOY_CLOUDFLARE__RECORD`)
     }
   },
   link: async (domain, hash, { apiEmail, apiKey, apiToken, zone, record }) => {
-    const api = {
-      email: apiEmail
-    }
+    const api = {}
 
     if (_.isEmpty(apiKey)) {
       api.token = apiToken
     } else {
+      api.email = apiEmail
       api.key = apiKey
     }
 
