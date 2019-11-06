@@ -11,7 +11,7 @@ require('dotenv').config()
 
 const pinProviders = ['pinata', 'infura', 'ipfs-cluster', 'fission']
 
-const dnsProviders = ['cloudflare']
+const dnsProviders = ['cloudflare', 'dnsimple']
 
 const argv = yargs
   .scriptName('ipfs-deploy')
@@ -99,6 +99,11 @@ async function main () {
         apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
         zone: argv.cloudflare && argv.cloudflare.zone,
         record: argv.cloudflare && argv.cloudflare.record
+      },
+      dnsimple: {
+        token: argv.dnsimple && argv.dnsimple.token,
+        zone: argv.dnsimple && argv.dnsimple.zone,
+        record: argv.dnsimple && argv.dnsimple.record
       },
       pinata: {
         apiKey: argv.pinata && argv.pinata.apiKey,

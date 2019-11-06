@@ -207,6 +207,42 @@ IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.mysubdomain.agentofuser.com
 
 Use flag `-d cloudflare`.
 
+#### [DNSimple](https://dnsimple.com)
+
+DNSimple is a paid-for DNS provider. They have no specific IPFS support,
+but allow the setting of DNS TXT records which underlies [IPFS DNSLink](https://docs.ipfs.io/guides/concepts/dnslink/).
+
+##### Environment variables
+
+```bash
+# credentials
+IPFS_DEPLOY_DNSIMPLE__TOKEN=
+
+# dns info
+IPFS_DEPLOY_DNSIMPLE__ZONE=
+IPFS_DEPLOY_DNSIMPLE__RECORD=
+```
+
+Example with top-level domain:
+
+```bash
+# dnsimple dns info
+IPFS_DEPLOY_DNSIMPLE__ZONE=agentofuser.com
+IPFS_DEPLOY_DNSIMPLE__RECORD=_dnslink.agentofuser.com
+```
+
+Example with subdomain:
+
+```bash
+# dnsimple dns info
+IPFS_DEPLOY_DNSIMPLE__ZONE=agentofuser.com
+IPFS_DEPLOY_DNSIMPLE__RECORD=_dnslink.mysubdomain.agentofuser.com
+```
+
+##### How to enable
+
+Use flag `-d dnsimple`.
+
 ## API
 
 This is still pretty unstable and subject to change, so I will just show how
@@ -231,6 +267,11 @@ const deploy = require('ipfs-deploy')
           apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
           zone: argv.cloudflare && argv.cloudflare.zone,
           record: argv.cloudflare && argv.cloudflare.record,
+        },
+        dnsimple: {
+          token: argv.dnsimple && argv.dnsimple.token,
+          zone: argv.dnsimple && argv.dnsimple.zone,
+          record: argv.dnsimple && argv.dnsimple.record
         },
         pinata: {
           apiKey: argv.pinata && argv.pinata.apiKey,
