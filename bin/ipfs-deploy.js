@@ -9,7 +9,7 @@ updateNotifier({ pkg, updateCheckInterval: 0 }).notify()
 
 require('dotenv').config()
 
-const pinProviders = ['pinata', 'infura', 'ipfs-cluster', 'fission']
+const pinProviders = ['pinata', 'infura', 'ipfs-cluster', 'fission', 'dappnode']
 
 const dnsProviders = ['cloudflare', 'dnsimple']
 
