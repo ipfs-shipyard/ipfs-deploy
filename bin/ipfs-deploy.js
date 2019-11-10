@@ -96,6 +96,7 @@ async function main () {
     credentials: {
       cloudflare: {
         apiKey: argv.cloudflare && argv.cloudflare.apiKey,
+        apiToken: argv.cloudflare && argv.cloudflare.apiToken,
         apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
         zone: argv.cloudflare && argv.cloudflare.zone,
         record: argv.cloudflare && argv.cloudflare.record
