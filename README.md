@@ -116,7 +116,7 @@ Use flag `-p infura`.
 #### [Pinata](https://pinata.cloud)
 
 Pinata is another freemium pinning service. It gives you more control over
-what's uploaded. You can delete, label and add costum metadata. This service
+what's uploaded. You can delete, label and add custom metadata. This service
 requires signup.
 
 ##### Environment variables
@@ -161,6 +161,17 @@ IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD=<basic auth password>
 ##### How to enable
 
 Use flag `-p ipfs-cluster`.
+
+#### [DAppNode](https://dappnode.io)
+
+DAppNode is not a centralized IPFS provider. It is an operation system that
+allows you to effortless host a number of decentralized apps on your own hardware.
+Default installation of DAppNode includes an IPFS node, available via VPN at `ipfs.dappnode`. 
+If you can't reach the node make sure that you are connected to your DAppNode VPN.
+
+##### How to enable
+
+Use flag `-p dappnode`.
 
 ### Supported DNS Providers
 
