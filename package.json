@@ -1,6 +1,6 @@
 {
   "name": "ipfs-deploy",
-  "version": "7.12.0",
+  "version": "7.13.0",
   "description": "Zero-Config CLI to Deploy Static Websites to IPFS",
   "author": {
     "name": "Agent of User",
