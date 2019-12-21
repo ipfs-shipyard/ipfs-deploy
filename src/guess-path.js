@@ -10,13 +10,13 @@ function guessedPath () {
   const guesses = [
     '_site', // jekyll, hakyll, eleventy
     'site', // forgot which
-    'public', // gatsby, hugo
+    'public', // gatsby, hugo, hexo
     'dist', // nuxt
     'output', // pelican
-    'out', // hexo
     'build', // create-react-app, metalsmith, middleman
     'website/build', // docusaurus
-    'docs' // many others
+    'docs', // many others
+    'out' // unknown others
   ]
 
   return fp.filter(existsSync)(guesses)[0]

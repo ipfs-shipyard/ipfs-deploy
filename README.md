@@ -75,10 +75,9 @@ site generators by the following order:
 | --------        | ---------------------------------       |
 | `_site`         | jekyll, hakyll, eleventy                |
 | `site`          | some others                             |
-| `public`        | gatsby, hugo                            |
+| `public`        | gatsby, hugo, hexo                      |
 | `dist`          | nuxt                                    |
 | `output`        | pelican                                 |
-| `out`           | hexo                                    |
 | `build`         | create-react-app, metalsmith, middleman |
 | `website/build` | docusaurus                              |
 | `docs`          | many others                             |
