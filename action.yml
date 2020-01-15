@@ -1,0 +1,24 @@
+name: 'IPFS Deploy'
+description: 'Deploys code & content to IPFS pinning service'
+inputs: # TODO: Add support for more pinning services & DNS
+  pinning-service:
+    description: 'The pinning service to use'
+    required: true
+    default: 'pinata'
+  pinata-api-key:
+    description: 'API key for Piñata pinning service'
+    required: false
+  pinata-secret-api-key:
+    description: 'Secret API key for Piñata pinning service'
+    required: false
+runs:
+  using: 'node12'
+  main: 'bin/ipfs-deploy.js'
+  args:
+    - -p ${{ inputs.pinning-service }}
+  env:
+    IPFS_DEPLOY_PINATA__API_KEY: ${{ inputs.pinata-api-key }}
+    IPFS_DEPLOY_PINATA__SECRET_API_KEY: ${{ inputs.pinata-secret-api-key }}
+branding:
+  icon: 'box'
+  color: 'blue'
