@@ -22,7 +22,8 @@ async function deploy ({
   remotePinners = ['infura'],
   dnsProviders = [],
   siteDomain,
-  credentials = {}
+  credentials = {},
+  friendlyName
 } = {}) {
   publicDirPath = guessPathIfEmpty(publicDirPath)
 
@@ -37,6 +38,7 @@ async function deploy ({
   }
 
   const tag =
+    friendlyName ||
     (credentials.cloudflare && credentials.cloudflare.record) ||
     siteDomain ||
     __dirname
