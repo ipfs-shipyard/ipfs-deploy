@@ -37,10 +37,6 @@ const argv = yargs
             choices: dnsProviders,
             describe: 'DNS provider whose dnslink TXT field will be updated'
           },
-          f: {
-            alias: 'friendly-name',
-            describe: 'Name to pass through to pinning service. Useful when not wanting to use folder name.'
-          },
           O: {
             alias: 'no-open',
             describe: "DON'T open URL after deploying"
@@ -123,8 +119,7 @@ async function main () {
         username: argv.fission && argv.fission.username,
         password: argv.fission && argv.fission.password
       }
-    },
-    friendlyName: argv.friendlyName
+    }
   }
 
   if (typeof options.dnsProviders === 'string') {
