@@ -49,6 +49,10 @@ const argv = yargs
               'path'
             )} will be uploaded`
           },
+          s: {
+            alias: 'site-domain',
+            describe: "Can be used as pin name in pinning services"
+          },
           u: {
             alias: 'unique-upload',
             choices: pinProviders,
