@@ -51,7 +51,7 @@ const argv = yargs
           },
           s: {
             alias: 'site-domain',
-            describe: "Can be used as pin name in pinning services"
+            describe: `Can be used as pin name in pinning services`
           },
           u: {
             alias: 'unique-upload',
