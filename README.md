@@ -407,6 +407,7 @@ DNS providers. Also, do not forget to update the README with the new options.
 
 - [agentofuser.com](https://agentofuser.com)
 - [interplanetarygatsby.com](https://interplanetarygatsby.com)
+- [jaack.me](ipfs.jaack.me)
 - _Your website here_
 
 If you use this package to deploy your website, please send a pull request so I
