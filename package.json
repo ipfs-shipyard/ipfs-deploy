@@ -49,7 +49,7 @@
     "dotenv": "^8.2.0",
     "form-data": "^3.0.0",
     "ipfs-cluster-api": "0.0.9",
-    "ipfs-http-client": "^40.2.1",
+    "ipfs-http-client": "^41.0.1",
     "lodash": "^4.17.15",
     "multiaddr": "^7.1.0",
     "neat-frame": "https://github.com/agentofuser/neat-frame#wrap-ansi-options",
