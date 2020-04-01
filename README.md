@@ -406,7 +406,6 @@ DNS providers. Also, do not forget to update the README with the new options.
 ## Users
 
 - [agentofuser.com](https://agentofuser.com)
-- [interplanetarygatsby.com](https://interplanetarygatsby.com)
 - [jaack.me](ipfs.jaack.me)
 - _Your website here_
 
