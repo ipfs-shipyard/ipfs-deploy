@@ -55,7 +55,7 @@
     "neat-frame": "https://github.com/agentofuser/neat-frame#wrap-ansi-options",
     "open": "^7.0.0",
     "ora": "^4.0.3",
-    "recursive-fs": "^1.1.2",
+    "recursive-fs": "^2.1.0",
     "terminal-link": "^2.1.1",
     "trammel": "^3.0.1",
     "update-notifier": "^3.0.1",
