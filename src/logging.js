@@ -30,12 +30,12 @@ function logError (e) {
 }
 
 const logger = (options) => {
-  if (!(options.logError && options.logMessage)) {
+  if (!(options.writeError && options.writeLog)) {
     return ora()
   }
 
-  const stderr = options.logError ? options.logError : logError
-  const stdout = options.logMessage
+  const stderr = options.writeError ? options.writeError : logError
+  const stdout = options.writeLog
 
   return {
     fail: stderr,
