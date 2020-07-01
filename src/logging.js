@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const fp = require('lodash/fp')
 const neatFrame = require('neat-frame')
+const ora = require('ora')
 const { stripIndent } = require('common-tags')
 
 function formatError (e) {
@@ -28,4 +29,20 @@ function logError (e) {
   return errorString
 }
 
-module.exports = { formatError, logError }
+const logger = (options) => {
+  if (!(options.logError && options.logMessage)) {
+    return ora()
+  }
+
+  const stderr = options.logError ? options.logError : logError
+  const stdout = options.logMessage
+
+  return {
+    fail: stderr,
+    succeed: stdout,
+    info: stdout,
+    start: stdout
+  }
+}
+
+module.exports = { formatError, logError, logger }
