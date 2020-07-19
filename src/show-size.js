@@ -1,14 +1,13 @@
 const util = require('util')
 const trammel = util.promisify(require('trammel'))
 const byteSize = require('byte-size')
-const ora = require('ora')
 const colors = require('colors/safe')
 
-const { logError } = require('./logging')
+const { logger, logError } = require('./logging')
 
-module.exports = async path => {
-  const spinner = ora()
-  spinner.start(`📦  Calculating size of ${colors.blue(path)}…`)
+module.exports = async (path, options) => {
+  const log = logger(options)
+  log.start(`📦  Calculating size of ${colors.blue(path)}…`)
   try {
     const size = await trammel(path, {
       stopOnError: true,
@@ -16,12 +15,12 @@ module.exports = async path => {
     })
     const kibi = byteSize(size, { units: 'iec' })
     const readableSize = `${kibi.value} ${kibi.unit}`
-    spinner.succeed(
+    log.succeed(
       `🚚  Directory ${colors.blue(path)} weighs ${readableSize}.`
     )
     return readableSize
   } catch (e) {
-    spinner.fail("⚖  Couldn't calculate website size.")
+    log.fail("⚖  Couldn't calculate website size.")
     logError(e)
     return undefined
   }

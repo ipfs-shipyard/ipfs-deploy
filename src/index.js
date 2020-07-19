@@ -1,6 +1,5 @@
-const ora = require('ora')
 const _ = require('lodash')
-const { logError } = require('./logging')
+const { logger, logError } = require('./logging')
 
 const guessPathIfEmpty = require('./guess-path')
 const showSize = require('./show-size')
@@ -22,7 +21,9 @@ async function deploy ({
   remotePinners = ['infura'],
   dnsProviders = [],
   siteDomain,
-  credentials = {}
+  credentials = {},
+  writeLog = null,
+  writeError = null
 } = {}) {
   publicDirPath = guessPathIfEmpty(publicDirPath)
 
@@ -30,7 +31,7 @@ async function deploy ({
     return undefined
   }
 
-  const readableSize = await showSize(publicDirPath)
+  const readableSize = await showSize(publicDirPath, { writeLog, writeError })
 
   if (!readableSize) {
     return undefined
@@ -54,9 +55,11 @@ async function deploy ({
   let lastHash = null
 
   for (const pinnerName of remotePinners) {
-    const pinner = await pinnerProviders[_.camelCase(pinnerName)](
-      credentials[_.camelCase(pinnerName)] || null
-    )
+    const pinner = await pinnerProviders[_.camelCase(pinnerName)]({
+      ...credentials[_.camelCase(pinnerName)],
+      writeLog,
+      writeError
+    })
 
     if (!pinner) {
       return
@@ -80,8 +83,8 @@ async function deploy ({
   }
 
   if (!sameValues(pinnedHashes)) {
-    const spinner = ora()
-    spinner.fail('≠  Found inconsistency in pinned hashes:')
+    const log = logger({ writeLog, writeError })
+    log.fail('≠  Found inconsistency in pinned hashes:')
     logError(pinnedHashes)
     return
   }
