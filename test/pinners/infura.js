@@ -2,17 +2,21 @@ const test = require('ava')
 const { hasRightFormat } = require('./helpers')
 const proxyquire = require('proxyquire').noCallThru()
 
+const IpfsHttpClientMock = () => ({
+  addAll: () => [
+    { cid: 'thing' },
+    { cid: 'oneMore' },
+    { cid: 'QmHash' }
+  ],
+  pin: {
+    add: () => {}
+  }
+})
+
+IpfsHttpClientMock.globSource = () => {}
+
 const infura = proxyquire('../../src/pinners/infura', {
-  'ipfs-http-client': () => ({
-    addFromFs: () => [
-      { hash: 'thing' },
-      { hash: 'oneMore' },
-      { hash: 'QmHash' }
-    ],
-    pin: {
-      add: () => {}
-    }
-  })
+  'ipfs-http-client': IpfsHttpClientMock
 })
 
 test('infura has right format', t => {
