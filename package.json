@@ -44,7 +44,7 @@
     "clipboardy": "^2.3.0",
     "colors": "^1.4.0",
     "common-tags": "^2.0.0-alpha.1",
-    "dnslink-cloudflare": "^2.0.4",
+    "dnslink-cloudflare": "^3.0.0",
     "dnslink-dnsimple": "^1.0.1",
     "dotenv": "^8.2.0",
     "form-data": "^3.0.0",
