@@ -55,7 +55,7 @@
     "multiaddr": "^7.5.0",
     "neat-frame": "https://github.com/agentofuser/neat-frame#wrap-ansi-options",
     "open": "^7.0.4",
-    "ora": "^4.0.5",
+    "ora": "^5.0.0",
     "recursive-fs": "^2.1.0",
     "terminal-link": "^2.1.1",
     "trammel": "^4.0.0",
