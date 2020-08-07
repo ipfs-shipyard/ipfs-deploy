@@ -52,7 +52,7 @@
     "ipfs-http-client": "^45.0.0",
     "it-all": "^1.0.2",
     "lodash": "^4.17.19",
-    "multiaddr": "^7.5.0",
+    "multiaddr": "^8.0.0",
     "neat-frame": "https://github.com/agentofuser/neat-frame#wrap-ansi-options",
     "open": "^7.0.4",
     "ora": "^4.0.5",
