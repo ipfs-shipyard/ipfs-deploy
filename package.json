@@ -39,7 +39,7 @@
     "test": "ava"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "byte-size": "^7.0.0",
     "clipboardy": "^2.3.0",
     "colors": "^1.4.0",
