@@ -60,7 +60,7 @@
     "terminal-link": "^2.1.1",
     "trammel": "^4.0.0",
     "update-notifier": "^4.1.0",
-    "yargs": "^15.4.1"
+    "yargs": "^16.0.0"
   },
   "devDependencies": {
     "all-contributors-cli": "^6.16.1",
