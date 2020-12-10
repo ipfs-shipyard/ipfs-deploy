@@ -26,7 +26,7 @@ IPFS_DEPLOY_PINATA__SECRET_API_KEY`)
   pinDir: async ({ apiKey, secretApiKey }, dir, tag) => {
     dir = path.normalize(dir)
 
-    const { dirs, files } = await recursive.read(dir)
+    const { files } = await recursive.read(dir)
     const data = new FormData()
     const toStrip = path.dirname(dir).length
     files.forEach(file => {
