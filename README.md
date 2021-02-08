@@ -406,7 +406,8 @@ DNS providers. Also, do not forget to update the README with the new options.
 ## Users
 
 - [agentofuser.com](https://agentofuser.com)
-- [jaack.me](ipfs.jaack.me)
+- [jaack.me](https://ipfs.jaack.me)
+- [kevincox.ca](https://kevincox.ca)
 - _Your website here_
 
 If you use this package to deploy your website, please send a pull request so I
