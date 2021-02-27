@@ -261,6 +261,38 @@ IPFS_DEPLOY_DNSIMPLE__RECORD=_dnslink.mysubdomain.agentofuser.com
 
 Use flag `-d dnsimple`.
 
+#### [DreamHost](https://dreamhost.com)
+
+DreamHost is a paid-for web host. They have no specific IPFS support, but provide DNS services with API control. [DreamHost API](https://help.dreamhost.com/hc/en-us/sections/203903178-API-Application-Programming-Interface-).
+
+##### Environment variables
+
+```bash
+# credentials
+IPFS_DEPLOY_DREAMHOST__KEY=
+
+# dns info
+IPFS_DEPLOY_DREAMHOST__RECORD=
+```
+
+Example with top-level domain:
+
+```bash
+# dreamhost dns info
+IPFS_DEPLOY_DREAMHOST__RECORD=_dnslink.agentofuser.com
+```
+
+Example with subdomain:
+
+```bash
+# dreamhost dns info
+IPFS_DEPLOY_DNSIMPLE__RECORD=_dnslink.mysubdomain.agentofuser.com
+```
+
+##### How to enable
+
+Use flag `-d dreamhost`.
+
 ## API
 
 This is still pretty unstable and subject to change, so I will just show how
