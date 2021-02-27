@@ -286,7 +286,7 @@ Example with subdomain:
 
 ```bash
 # dreamhost dns info
-IPFS_DEPLOY_DNSIMPLE__RECORD=_dnslink.mysubdomain.agentofuser.com
+IPFS_DEPLOY_DREAMHOST__RECORD=_dnslink.mysubdomain.agentofuser.com
 ```
 
 ##### How to enable
