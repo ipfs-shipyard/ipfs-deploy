@@ -4,7 +4,7 @@ const fp = require('lodash/fp')
 
 module.exports = {
   name: 'DreamHost',
-  validate: ({ key, zone, record } = {}) => {
+  validate: ({ key, record } = {}) => {
     if (_.isEmpty(key)) {
       throw new Error(`Missing the following environment variables:
 
@@ -26,7 +26,6 @@ IPFS_DEPLOY_DREAMHOST__RECORD`)
         value: link,
         comment: 'Added by ipfs-deploy.',
     };
-
     const dreamHost = new DreamHost({ key });
     const records = await dreamHost.dns.listRecords();
     const forDomain = _.filter(records, (o) => {
@@ -41,11 +40,21 @@ IPFS_DEPLOY_DREAMHOST__RECORD`)
             value: o.value
         });
     });
-    const content = await dreamHost.dns.addRecord(options);
 
-    return {
-      record: record,
-      value: options.value
-    }
+    // Sometimes the deletes take a little while to settle.
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            dreamHost.dns
+                .addRecord(options)
+                .then(() => {
+                    resolve({
+                        record: record,
+                        value: options.value
+                    });
+                })
+                .catch(reject);
+        }, 100);
+    });
+
   }
 }
