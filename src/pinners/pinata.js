@@ -7,7 +7,7 @@ const path = require('path')
 const fp = require('lodash/fp')
 
 const PIN_DIR_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS'
-const PIN_HASH_URL = 'https://api.pinata.cloud/pinning/pinHashToIPFS'
+const PIN_HASH_URL = 'https://api.pinata.cloud/pinning/pinByHash'
 
 module.exports = {
   name: 'Pinata',
