@@ -41,8 +41,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "byte-size": "^7.0.1",
+    "chalk": "^4.1.1",
     "clipboardy": "^2.3.0",
-    "colors": "^1.4.0",
     "dnslink-cloudflare": "^3.0.0",
     "dnslink-dnsimple": "^1.0.1",
     "dotenv": "^10.0.0",

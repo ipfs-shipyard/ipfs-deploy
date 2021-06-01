@@ -1,11 +1,10 @@
-const colors = require('colors/safe')
+const chalk = require('chalk')
 const { logger, logError } = require('../logging')
 const { linkCid } = require('../url-utils')
-const white = colors.brightWhite
 
 module.exports = ({ name, builder, pinDir, pinHash }) => async options => {
   const slug = name.toLowerCase()
-  name = white(name)
+  name = chalk.whiteBright(name)
   let api
 
   try {

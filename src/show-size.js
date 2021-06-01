@@ -1,12 +1,12 @@
 const trammel = require('trammel')
 const byteSize = require('byte-size')
-const colors = require('colors/safe')
+const chalk = require('chalk')
 
 const { logger, logError } = require('./logging')
 
 module.exports = async (path, options) => {
   const log = logger(options)
-  log.start(`📦  Calculating size of ${colors.blue(path)}…`)
+  log.start(`📦  Calculating size of ${chalk.blueBright(path)}…`)
   try {
     const size = await trammel(path, {
       stopOnError: true,
@@ -15,7 +15,7 @@ module.exports = async (path, options) => {
     const kibi = byteSize(size, { units: 'iec' })
     const readableSize = `${kibi.value} ${kibi.unit}`
     log.succeed(
-      `🚚  Directory ${colors.blue(path)} weighs ${readableSize}.`
+      `🚚  Directory ${chalk.blueBright(path)} weighs ${readableSize}.`
     )
     return readableSize
   } catch (e) {

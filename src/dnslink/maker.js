@@ -1,14 +1,13 @@
 const ora = require('ora')
-const colors = require('colors/safe')
+const chalk = require('chalk')
 const { logError } = require('../logging')
-const white = colors.brightWhite
 
 module.exports = ({ name, validate, link }) => async (
   domain,
   hash,
   options
 ) => {
-  name = white(name)
+  name = chalk.whiteBright(name)
   const spinner = ora()
 
   try {
@@ -25,8 +24,8 @@ module.exports = ({ name, validate, link }) => async (
   try {
     const { record, value } = await link(domain, hash, options)
     spinner.succeed('🙌  SUCCESS!')
-    spinner.info(`🔄  Updated DNS TXT ${white(record)} to:`)
-    spinner.info(`🔗  ${white(value)}`)
+    spinner.info(`🔄  Updated DNS TXT ${chalk.whiteBright(record)} to:`)
+    spinner.info(`🔗  ${chalk.whiteBright(value)}`)
 
     return record
       .split('.')
