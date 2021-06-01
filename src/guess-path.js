@@ -1,7 +1,7 @@
 const { existsSync } = require('fs')
 const ora = require('ora')
 const colors = require('colors/safe')
-const _ = require('lodash')
+const isEmpty = require('lodash.isempty')
 
 const white = colors.brightWhite
 
@@ -25,7 +25,7 @@ module.exports = publicPath => {
   let result
   const spinner = ora()
 
-  if (_.isEmpty(publicPath)) {
+  if (isEmpty(publicPath)) {
     spinner.info(`🤔  No ${white('path')} argument specified. Looking for common ones…`)
     result = guessedPath()
     if (result) {

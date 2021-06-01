@@ -1,11 +1,10 @@
 const dnslink = require('dnslink-cloudflare')
-const _ = require('lodash')
-const fp = require('lodash/fp')
+const isEmpty = require('lodash.isempty')
 
 module.exports = {
   name: 'Cloudflare',
   validate: ({ apiEmail, apiKey, apiToken, zone, record } = {}) => {
-    if (fp.all(_.isEmpty)([apiKey, apiEmail, apiToken])) {
+    if ([apiKey, apiEmail, apiToken].every(isEmpty)) {
       throw new Error(`Missing the following environment variables:
 
 IPFS_DEPLOY_CLOUDFLARE__API_EMAIL
@@ -13,7 +12,7 @@ IPFS_DEPLOY_CLOUDFLARE__API_KEY // or...
 IPFS_DEPLOY_CLOUDFLARE__API_TOKEN`)
     }
 
-    if (fp.some(_.isEmpty)([zone, record])) {
+    if ([zone, record].some(isEmpty)) {
       throw new Error(`Missing the following environment variables:
 
 IPFS_DEPLOY_CLOUDFLARE__ZONE
@@ -23,7 +22,7 @@ IPFS_DEPLOY_CLOUDFLARE__RECORD`)
   link: async (domain, hash, { apiEmail, apiKey, apiToken, zone, record }) => {
     const api = {}
 
-    if (_.isEmpty(apiKey)) {
+    if (isEmpty(apiKey)) {
       api.token = apiToken
     } else {
       api.email = apiEmail

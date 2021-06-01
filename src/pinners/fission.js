@@ -1,8 +1,7 @@
 const axios = require('axios')
 const fs = require('fs')
-const _ = require('lodash')
+const isEmpty = require('lodash.isempty')
 const path = require('path')
-const fp = require('lodash/fp')
 
 const BASE_URL = 'https://runfission.com/ipfs'
 const headers = { 'content-type': 'application/octet-stream' }
@@ -56,7 +55,7 @@ const walk = async (auth, dir) => {
 module.exports = {
   name: 'Fission',
   builder: async ({ username, password }) => {
-    if (fp.some(_.isEmpty)([username, password])) {
+    if ([username, password].some(isEmpty)) {
       throw new Error(`Missing the following environment variables:
 
 IPFS_DEPLOY_FISSION__USERNAME

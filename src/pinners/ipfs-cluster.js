@@ -2,13 +2,12 @@ const { globSource } = require('ipfs-http-client')
 const path = require('path')
 const ipfsCluster = require('ipfs-cluster-api')
 const { Multiaddr } = require('multiaddr')
-const _ = require('lodash')
-const fp = require('lodash/fp')
+const isEmpty = require('lodash.isempty')
 
 module.exports = {
   name: 'IPFS Cluster',
   builder: async ({ host, username, password }) => {
-    if (fp.some(_.isEmpty)([host, username, password])) {
+    if ([host, username, password].some(isEmpty)) {
       throw new Error(`Missing the following environment variables:
 
 IPFS_DEPLOY_IPFS_CLUSTER__HOST

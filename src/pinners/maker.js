@@ -1,11 +1,10 @@
 const colors = require('colors/safe')
-const _ = require('lodash')
 const { logger, logError } = require('../logging')
 const { linkCid } = require('../url-utils')
 const white = colors.brightWhite
 
 module.exports = ({ name, builder, pinDir, pinHash }) => async options => {
-  const slug = _.toLower(name)
+  const slug = name.toLowerCase()
   name = white(name)
   let api
 

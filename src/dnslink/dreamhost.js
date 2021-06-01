@@ -1,16 +1,16 @@
 const DreamHost = require('dreamhost')
-const _ = require('lodash')
+const isEmpty = require('lodash.isempty')
 
 module.exports = {
   name: 'DreamHost',
   validate: ({ key, record } = {}) => {
-    if (_.isEmpty(key)) {
+    if (isEmpty(key)) {
       throw new Error(`Missing the following environment variables:
 
 IPFS_DEPLOY_DREAMHOST__KEY`)
     }
 
-    if (_.isEmpty(record)) {
+    if (isEmpty(record)) {
       throw new Error(`Missing the following environment variables:
   
 IPFS_DEPLOY_DREAMHOST__RECORD`)
@@ -27,18 +27,19 @@ IPFS_DEPLOY_DREAMHOST__RECORD`)
     }
     const dreamHost = new DreamHost({ key })
     const records = await dreamHost.dns.listRecords()
-    const forDomain = _.filter(records, (o) => {
+    const forDomain = records.filter(o => {
       return (o.record === options.record &&
-              o.type === options.type &&
-              o.value.startsWith('/ipfs/'))
+        o.type === options.type &&
+        o.value.startsWith('/ipfs/'))
     })
-    _.each(forDomain, async (o) => {
+
+    for (const o of forDomain) {
       await dreamHost.dns.removeRecord({
         type: o.type,
         record: o.record,
         value: o.value
       })
-    })
+    }
 
     // Sometimes the deletes take a little while to settle.
     return new Promise((resolve, reject) => {
