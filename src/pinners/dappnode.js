@@ -1,20 +1,21 @@
-const { create: ipfsHttp, globSource } = require('ipfs-http-client')
-const all = require('it-all')
+const IpfsNode = require('./ipfs-node')
 
-module.exports = {
-  name: 'DAppNode',
-  builder: async () => {
-    return ipfsHttp({
+class DAppNode extends IpfsNode {
+  constructor () {
+    super({
       host: 'ipfs.dappnode',
       port: '5001',
       protocol: 'http'
     })
-  },
-  pinDir: async (api, dir) => {
-    const response = await all(api.addAll(globSource(dir, { recursive: true })))
-    return response.pop().cid.toString()
-  },
-  pinHash: async (api, hash) => {
-    return api.pin.add(hash)
+  }
+
+  static get name () {
+    return 'DAppNode'
+  }
+
+  static get slug () {
+    return 'dappnode'
   }
 }
+
+module.exports = DAppNode

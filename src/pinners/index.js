@@ -1,9 +1,25 @@
-const make = require('./maker')
+const DAppNode = require('./dappnode')
+const Fission = require('./fission')
+const Infura = require('./infura')
+const IpfsCluster = require('./ipfs-cluster')
+const IpfsNode = require('./ipfs-node')
+const Pinata = require('./pinata')
+
+const pinners = [
+  DAppNode,
+  Fission,
+  Infura,
+  IpfsCluster,
+  IpfsNode,
+  Pinata
+]
+
+const pinnersMap = pinners.reduce((map, pinner) => {
+  map.set(pinner.slug, pinner)
+  return map
+}, new Map())
 
 module.exports = {
-  infura: make(require('./infura')),
-  pinata: make(require('./pinata')),
-  ipfsCluster: make(require('./ipfs-cluster')),
-  fission: make(require('./fission')),
-  dappnode: make(require('./dappnode'))
+  pinners,
+  pinnersMap
 }

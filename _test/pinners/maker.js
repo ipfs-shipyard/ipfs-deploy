@@ -6,7 +6,7 @@ test('returns undefined when has wrong options', async t => {
     name: 'Test',
     builder: () => { throw new Error() },
     pinDir: () => {},
-    pinHash: () => {}
+    pinCid: () => {}
   })
 
   t.is(await setupPinner({}), undefined)
@@ -17,14 +17,14 @@ test('returns pinner when has correct options', async t => {
     name: 'Test',
     builder: () => {},
     pinDir: () => {},
-    pinHash: () => {}
+    pinCid: () => {}
   })
 
   const pinner = await setupPinner({})
 
   t.is(typeof pinner, 'object')
   t.is(typeof pinner.pinDir, 'function')
-  t.is(typeof pinner.pinHash, 'function')
+  t.is(typeof pinner.pinCid, 'function')
 })
 
 test('returns undefined when fails to pin dir ', async t => {
@@ -32,7 +32,7 @@ test('returns undefined when fails to pin dir ', async t => {
     name: 'Test',
     builder: () => {},
     pinDir: () => { throw new Error() },
-    pinHash: () => {}
+    pinCid: () => {}
   })
 
   const pinner = await setupPinner({})
@@ -44,7 +44,7 @@ test('returns hash when succeeds to pin dir ', async t => {
     name: 'Test',
     builder: () => {},
     pinDir: () => { return 'QmHash' },
-    pinHash: () => {}
+    pinCid: () => {}
   })
 
   const pinner = await setupPinner({})
@@ -56,11 +56,11 @@ test('returns undefined when fails to pin hash ', async t => {
     name: 'Test',
     builder: () => {},
     pinDir: () => {},
-    pinHash: () => { throw new Error() }
+    pinCid: () => { throw new Error() }
   })
 
   const pinner = await setupPinner({})
-  t.is(await pinner.pinHash('dir', 'tag'), undefined)
+  t.is(await pinner.pinCid('dir', 'tag'), undefined)
 })
 
 test('returns hash when succeeds to pin hash ', async t => {
@@ -68,9 +68,9 @@ test('returns hash when succeeds to pin hash ', async t => {
     name: 'Test',
     builder: () => {},
     pinDir: () => {},
-    pinHash: () => { return 'QmHash' }
+    pinCid: () => { return 'QmHash' }
   })
 
   const pinner = await setupPinner({})
-  t.is(await pinner.pinHash('QmHash', 'tag'), 'QmHash')
+  t.is(await pinner.pinCid('QmHash', 'tag'), 'QmHash')
 })
