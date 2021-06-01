@@ -12,9 +12,9 @@ const getBuiltPinata = async (pinata) => {
 }
 
 const getPinataNoThrow = () => proxyquire('../../src/pinners/pinata', {
-  'recursive-fs': {
-    read: async (_) => {
-      return { files: [] }
+  'ipfs-http-client': {
+    globSource: function * () {
+      yield {}
     }
   },
   axios: {
@@ -33,11 +33,6 @@ const getBuiltPinataNoThrow = async () => {
 
 const getBuiltPinataThrowAxios = async () => {
   const pinata = proxyquire('../../src/pinners/pinata', {
-    'recursive-fs': {
-      readdirr: (_, cb) => {
-        cb(null, null, [])
-      }
-    },
     axios: {
       post: () => { throw new Error() }
     }
@@ -88,11 +83,6 @@ test('pinata pinHash throws on HTTP request failure', async t => {
 
 test('pinata pinDir throws on file system failure', async t => {
   const { pinata, api } = await getBuiltPinata(proxyquire('../../src/pinners/pinata', {
-    'recursive-fs': {
-      readdirr: () => {
-        throw new Error()
-      }
-    },
     axios: {
       post: async () => {}
     }

@@ -13,9 +13,9 @@ const ipfsCluster = proxyquire('../../src/pinners/ipfs-cluster', {
       add: () => {}
     }
   }),
-  'recursive-fs': {
-    readdirr: (_, cb) => {
-      cb(null, null, [])
+  'ipfs-http-client': {
+    globSource: function * () {
+      yield {}
     }
   }
 })

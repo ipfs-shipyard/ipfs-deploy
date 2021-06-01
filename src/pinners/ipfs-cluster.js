@@ -1,6 +1,5 @@
-const fs = require('fs')
+const { globSource } = require('ipfs-http-client')
 const path = require('path')
-const recursive = require('recursive-fs')
 const ipfsCluster = require('ipfs-cluster-api')
 const { Multiaddr } = require('multiaddr')
 const _ = require('lodash')
@@ -31,17 +30,11 @@ IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD`)
   },
   pinDir: async (cluster, dir, tag) => {
     dir = path.normalize(dir)
-    const toStrip = path.dirname(dir).length
-    const files = await new Promise(resolve => {
-      recursive.readdirr(dir, (_err, _dirs, files) => {
-        resolve(
-          files.map(file => ({
-            path: file.slice(toStrip),
-            content: fs.createReadStream(file)
-          }))
-        )
-      })
-    })
+    const files = []
+
+    for await (const file of globSource(dir, { recursive: true })) {
+      files.push(file)
+    }
 
     const response = await cluster.add(files, {
       name: tag,

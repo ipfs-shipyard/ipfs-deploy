@@ -1,10 +1,9 @@
 const axios = require('axios')
-const fs = require('fs')
 const FormData = require('form-data')
-const recursive = require('recursive-fs')
 const _ = require('lodash')
 const path = require('path')
 const fp = require('lodash/fp')
+const { globSource } = require('ipfs-http-client')
 
 const MAX_RETRIES = 3
 const RETRY_CODES = [429]
@@ -26,17 +25,15 @@ IPFS_DEPLOY_PINATA__SECRET_API_KEY`)
   pinDir: async ({ apiKey, secretApiKey }, dir, tag) => {
     dir = path.normalize(dir)
 
-    const { files } = await recursive.read(dir)
     const data = new FormData()
-    const toStrip = path.dirname(dir).length
-    files.forEach(file => {
-      file = path.normalize(file)
-      data.append('file', fs.createReadStream(file), {
-        // for each file stream, we need to include the correct
-        // relative file path
-        filepath: file.slice(toStrip)
-      })
-    })
+
+    for await (const file of globSource(dir, { recursive: true })) {
+      if (file.content) {
+        data.append('file', file.content, {
+          filepath: path.normalize(file.path)
+        })
+      }
+    }
 
     const metadata = JSON.stringify({ name: tag })
     data.append('pinataMetadata', metadata)
