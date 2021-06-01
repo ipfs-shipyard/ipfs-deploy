@@ -1,6 +1,6 @@
 const test = require('ava')
 const proxyquire = require('proxyquire').noCallThru()
-const { gatewayHttpUrl } = require('../src/url-utils')
+const { gatewayHttpUrl } = require('../src/cli/url-utils')
 
 test('get http gateway url for a cid', t => {
   const expected = 'https://ipfs.io/ipfs/fakecid/'
@@ -35,7 +35,7 @@ test('get just the http gateway url if no cid', t => {
 const exampleDotCom = 'https://example.com'
 
 test('successfully copies url to clipboard', t => {
-  const { copyUrl } = proxyquire('../src/url-utils', {
+  const { copyUrl } = proxyquire('../src/cli/url-utils', {
     clipboardy: {
       writeSync: url => url
     }
@@ -45,7 +45,7 @@ test('successfully copies url to clipboard', t => {
 })
 
 test('errored copy url to clipboard', t => {
-  const { copyUrl } = proxyquire('../src/url-utils', {
+  const { copyUrl } = proxyquire('../src/cli/url-utils', {
     clipboardy: {
       writeSync: () => { throw new Error() }
     }

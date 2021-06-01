@@ -2,7 +2,7 @@ const test = require('ava')
 const proxyquire = require('proxyquire').noCallThru()
 const { hasRightFormat } = require('./helpers')
 
-const dnsimple = proxyquire('../../src/dnslink/dnsimple', {
+const dnsimple = proxyquire('../../src/lib/dnslink/dnsimple', {
   'dnslink-dnsimple': (_token, { link }) => {
     return { record: { content: `dnslink=${link}` } }
   }

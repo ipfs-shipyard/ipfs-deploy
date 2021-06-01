@@ -2,7 +2,7 @@
 const updateNotifier = require('update-notifier')
 const colors = require('colors/safe')
 const yargs = require('yargs')
-const deploy = require('../src')
+const deploy = require('../src/cli')
 const pkg = require('../package.json')
 
 updateNotifier({ pkg, updateCheckInterval: 0 }).notify()

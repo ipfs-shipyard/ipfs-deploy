@@ -5,8 +5,11 @@ const guessPathIfEmpty = require('./guess-path')
 const showSize = require('./show-size')
 const { openUrl, gatewayHttpUrl, copyUrl } = require('./url-utils')
 
-const dnslinkProviders = require('./dnslink')
-const pinnerProviders = require('./pinners')
+const dnslinkProviders = require('../lib/dnslink')
+const pinnerProviders = require('../lib/pinners')
+
+const dnslinkRunner = require('./dnslink-runner')
+const pinnerRunner = require('./pinner-runner')
 
 function sameValues (obj) {
   const values = Object.values(obj)
@@ -55,11 +58,14 @@ async function deploy ({
   let lastHash = null
 
   for (const pinnerName of remotePinners) {
-    const pinner = await pinnerProviders[_.camelCase(pinnerName)]({
-      ...credentials[_.camelCase(pinnerName)],
-      writeLog,
-      writeError
-    })
+    const pinner = await pinnerRunner(
+      await pinnerProviders[_.camelCase(pinnerName)],
+      {
+        ...credentials[_.camelCase(pinnerName)],
+        writeLog,
+        writeError
+      }
+    )
 
     if (!pinner) {
       return
@@ -94,7 +100,8 @@ async function deploy ({
   let dnslinkedHostname = null
 
   for (const provider of dnsProviders) {
-    dnslinkedHostname = await dnslinkProviders[_.camelCase(provider)](
+    dnslinkedHostname = await dnslinkRunner(
+      dnslinkProviders[_.camelCase(provider)],
       siteDomain,
       pinnedHash,
       credentials[_.camelCase(provider)] || null

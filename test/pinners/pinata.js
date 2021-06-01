@@ -11,7 +11,7 @@ const getBuiltPinata = async (pinata) => {
   return { pinata, api }
 }
 
-const getPinataNoThrow = () => proxyquire('../../src/pinners/pinata', {
+const getPinataNoThrow = () => proxyquire('../../src/lib/pinners/pinata', {
   'ipfs-http-client': {
     globSource: function * () {
       yield {}
@@ -32,7 +32,7 @@ const getBuiltPinataNoThrow = async () => {
 }
 
 const getBuiltPinataThrowAxios = async () => {
-  const pinata = proxyquire('../../src/pinners/pinata', {
+  const pinata = proxyquire('../../src/lib/pinners/pinata', {
     axios: {
       post: () => { throw new Error() }
     }
@@ -82,7 +82,7 @@ test('pinata pinHash throws on HTTP request failure', async t => {
 })
 
 test('pinata pinDir throws on file system failure', async t => {
-  const { pinata, api } = await getBuiltPinata(proxyquire('../../src/pinners/pinata', {
+  const { pinata, api } = await getBuiltPinata(proxyquire('../../src/lib/pinners/pinata', {
     axios: {
       post: async () => {}
     }

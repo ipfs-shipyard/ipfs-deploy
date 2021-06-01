@@ -2,7 +2,7 @@ const test = require('ava')
 const proxyquire = require('proxyquire').noCallThru()
 
 test('returns undefined when cannot find any guessable path', t => {
-  const guessPath = proxyquire('../src/guess-path', {
+  const guessPath = proxyquire('../src/cli/guess-path', {
     fs: {
       existsSync: () => false
     }
@@ -12,7 +12,7 @@ test('returns undefined when cannot find any guessable path', t => {
 })
 
 test('returns first guessable path that exists', t => {
-  const guessPath = proxyquire('../src/guess-path', {
+  const guessPath = proxyquire('../src/cli/guess-path', {
     fs: {
       existsSync: (path) => {
         switch (path) {
@@ -31,7 +31,7 @@ test('returns first guessable path that exists', t => {
 })
 
 test('returns path if not empty', t => {
-  const guessPath = proxyquire('../src/guess-path', {
+  const guessPath = proxyquire('../src/cli/guess-path', {
     _: {
       isEmpty: () => false
     }

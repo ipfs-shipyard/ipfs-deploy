@@ -2,7 +2,7 @@ const test = require('ava')
 const { hasRightFormat } = require('./helpers')
 const proxyquire = require('proxyquire').noCallThru()
 
-const ipfsCluster = proxyquire('../../src/pinners/ipfs-cluster', {
+const ipfsCluster = proxyquire('../../src/lib/pinners/ipfs-cluster', {
   'ipfs-cluster-api': () => ({
     add: () => [
       { hash: 'thing' },

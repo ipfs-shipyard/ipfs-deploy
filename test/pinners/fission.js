@@ -36,7 +36,7 @@ const mockAxios = {
   put: async () => ({})
 }
 
-const getFissionNoThrow = () => proxyquire('../../src/pinners/fission', {
+const getFissionNoThrow = () => proxyquire('../../src/lib/pinners/fission', {
   fs: mockFS,
   axios: mockAxios
 })
@@ -47,7 +47,7 @@ const getBuiltFissionNoThrow = async () => {
 }
 
 const getBuiltFissionThrowAxios = async () => {
-  const fission = proxyquire('../../src/pinners/fission', {
+  const fission = proxyquire('../../src/lib/pinners/fission', {
     fs: mockFS,
     axios: {
       post: async () => { throw new Error() },
@@ -104,7 +104,7 @@ test('fission pinHash throws on HTTP request failure', async t => {
 })
 
 test('fission pinDir throws on file system failure', async t => {
-  const { fission, auth } = await getBuiltFission(proxyquire('../../src/pinners/fission', {
+  const { fission, auth } = await getBuiltFission(proxyquire('../../src/lib/pinners/fission', {
     fs: {
       statSync: () => {
         throw new Error()

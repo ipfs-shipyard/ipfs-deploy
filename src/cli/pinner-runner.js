@@ -1,16 +1,16 @@
 const colors = require('colors/safe')
 const _ = require('lodash')
-const { logger, logError } = require('../logging')
-const { linkCid } = require('../url-utils')
+const { logger, logError } = require('./logging')
+const { linkCid } = require('./url-utils')
 const white = colors.brightWhite
 
-module.exports = ({ name, builder, pinDir, pinHash }) => async options => {
-  const slug = _.toLower(name)
-  name = white(name)
+module.exports = async (provider, options) => {
+  const slug = _.toLower(provider.name)
+  const name = white(provider.name)
   let api
 
   try {
-    api = await builder(options)
+    api = await provider.builder(options)
   } catch (e) {
     logError(e)
     return
@@ -22,7 +22,7 @@ module.exports = ({ name, builder, pinDir, pinHash }) => async options => {
       log.start(`📠  Uploading and pinning to ${name}…`)
 
       try {
-        const hash = await pinDir(api, dir, tag)
+        const hash = await provider.pinDir(api, dir, tag)
 
         log.succeed(`📌  Added and pinned to ${name} with hash:`)
         log.info(linkCid(hash, slug))
@@ -39,7 +39,7 @@ module.exports = ({ name, builder, pinDir, pinHash }) => async options => {
       log.start(`📠  Pinning hash to ${name}…`)
 
       try {
-        await pinHash(api, hash, tag)
+        await provider.pinHash(api, hash, tag)
 
         log.succeed(`📌  Hash pinned to ${name}:`)
         log.info(linkCid(hash, slug))

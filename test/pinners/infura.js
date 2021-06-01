@@ -17,7 +17,7 @@ const IpfsHttpClientMock = {
 
 IpfsHttpClientMock.globSource = () => {}
 
-const infura = proxyquire('../../src/pinners/infura', {
+const infura = proxyquire('../../src/lib/pinners/infura', {
   'ipfs-http-client': IpfsHttpClientMock
 })
 

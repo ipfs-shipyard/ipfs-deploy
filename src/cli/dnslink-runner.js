@@ -1,19 +1,15 @@
 const ora = require('ora')
 const colors = require('colors/safe')
-const { logError } = require('../logging')
+const { logError } = require('./logging')
 const white = colors.brightWhite
 
-module.exports = ({ name, validate, link }) => async (
-  domain,
-  hash,
-  options
-) => {
-  name = white(name)
+module.exports = async (provider, domain, hash, options) => {
+  const name = white(provider.name)
   const spinner = ora()
 
   try {
     spinner.start(`⚙️  Validating configuration for ${name}…`)
-    await validate(options)
+    await provider.validate(options)
   } catch (error) {
     spinner.fail(`💔  Missing arguments for ${name} API.`)
     logError(error)
@@ -23,7 +19,7 @@ module.exports = ({ name, validate, link }) => async (
   spinner.info(`📡  Beaming new hash to DNS provider ${name}…`)
 
   try {
-    const { record, value } = await link(domain, hash, options)
+    const { record, value } = await provider.link(domain, hash, options)
     spinner.succeed('🙌  SUCCESS!')
     spinner.info(`🔄  Updated DNS TXT ${white(record)} to:`)
     spinner.info(`🔗  ${white(value)}`)

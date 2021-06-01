@@ -2,7 +2,7 @@ const test = require('ava')
 const proxyquire = require('proxyquire').noCallThru()
 const { hasRightFormat } = require('./helpers')
 
-const cloudflare = proxyquire('../../src/dnslink/cloudflare', {
+const cloudflare = proxyquire('../../src/lib/dnslink/cloudflare', {
   'dnslink-cloudflare': () => 'value'
 })
 
