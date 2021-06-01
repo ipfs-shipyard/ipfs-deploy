@@ -38,8 +38,8 @@ async function deploy ({
   }
 
   const tag =
-    (credentials.cloudflare && credentials.cloudflare.record) ||
     siteDomain ||
+    (credentials.cloudflare && credentials.cloudflare.record) ||
     __dirname
 
   if (uniqueUpload) {
