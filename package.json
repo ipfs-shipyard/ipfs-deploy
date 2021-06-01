@@ -32,7 +32,7 @@
     "ipd": "bin/ipfs-deploy.js"
   },
   "engines": {
-    "node": ">=10.15.3"
+    "node": ">=14.0.0"
   },
   "scripts": {
     "lint": "standard",
