@@ -2,7 +2,6 @@ const { existsSync } = require('fs')
 const ora = require('ora')
 const colors = require('colors/safe')
 const _ = require('lodash')
-const fp = require('lodash/fp')
 
 const white = colors.brightWhite
 
@@ -19,7 +18,7 @@ function guessedPath () {
     'out' // unknown others
   ]
 
-  return fp.filter(existsSync)(guesses)[0]
+  return guesses.filter(existsSync)[0]
 }
 
 module.exports = publicPath => {

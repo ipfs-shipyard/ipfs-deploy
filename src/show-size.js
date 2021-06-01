@@ -1,5 +1,4 @@
-const util = require('util')
-const trammel = util.promisify(require('trammel'))
+const trammel = require('trammel')
 const byteSize = require('byte-size')
 const colors = require('colors/safe')
 
