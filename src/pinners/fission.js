@@ -23,49 +23,62 @@ const putDAGObj = async (auth, node) => {
   return resp.data
 }
 
-const walk = async (auth, dir) => {
-  dir = path.normalize(dir)
-
-  if (!fs.statSync(dir).isDirectory()) {
-    return uploadFile(auth, dir)
-  }
-
-  const files = fs.readdirSync(dir)
-  const links = await Promise.all(
-    files.map(async file => {
-      const filepath = path.join(dir, file)
-      const stat = fs.statSync(filepath)
-      const cid = await walk(auth, filepath)
-      return {
-        Name: file,
-        Size: stat.size,
-        CID: {
-          '/': cid
-        }
-      }
-    })
-  )
-  const node = {
-    data: 'CAE=',
-    links
-  }
-  return putDAGObj(auth, node)
-}
-
-module.exports = {
-  name: 'Fission',
-  builder: async ({ username, password }) => {
+class Fission {
+  constructor ({ username, password } = {}) {
     if ([username, password].some(isEmpty)) {
-      throw new Error(`Missing the following environment variables:
-
-IPFS_DEPLOY_FISSION__USERNAME
-IPFS_DEPLOY_FISSION__PASSWORD `)
+      throw new Error('username and password are required for Fission')
     }
 
-    return { username, password }
-  },
-  pinDir: walk,
-  pinHash: async (auth, hash) => {
-    return axios.put(`${BASE_URL}/${hash}`, {}, { auth })
+    this.auth = {
+      username,
+      password
+    }
+  }
+
+  async pinDir (dir, tag) {
+    if (!fs.statSync(dir).isDirectory()) {
+      return uploadFile(this.auth, dir)
+    }
+
+    const files = fs.readdirSync(dir)
+    const links = await Promise.all(
+      files.map(async file => {
+        const filepath = path.join(dir, file)
+        const stat = fs.statSync(filepath)
+        const cid = await this.walk(filepath, tag)
+        return {
+          Name: file,
+          Size: stat.size,
+          CID: {
+            '/': cid
+          }
+        }
+      })
+    )
+
+    const node = {
+      data: 'CAE=',
+      links
+    }
+
+    return putDAGObj(this.auth, node)
+  }
+
+  async pinCid (cid, tag) {
+    await axios.put(`${BASE_URL}/${cid}`, {}, { auth: this.auth })
+  }
+
+  static get name () {
+    return 'Fission'
+  }
+
+  static get slug () {
+    return 'fission'
+  }
+
+  static get gateway () {
+    return 'https://ipfs.runfission.com'
   }
 }
+
+module.exports = Fission

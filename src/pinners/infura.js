@@ -1,20 +1,25 @@
-const { create: ipfsHttp, globSource } = require('ipfs-http-client')
-const all = require('it-all')
+const IpfsNode = require('./ipfs-node')
 
-module.exports = {
-  name: 'Infura',
-  builder: async () => {
-    return ipfsHttp({
+class Infura extends IpfsNode {
+  constructor () {
+    super({
       host: 'ipfs.infura.io',
       port: '5001',
       protocol: 'https'
     })
-  },
-  pinDir: async (api, dir) => {
-    const response = await all(api.addAll(globSource(dir, { recursive: true })))
-    return response.pop().cid.toString()
-  },
-  pinHash: async (api, hash) => {
-    return api.pin.add(hash)
+  }
+
+  static get name () {
+    return 'Infura'
+  }
+
+  static get slug () {
+    return 'infura'
+  }
+
+  static get gateway () {
+    return 'https://ipfs.infura.io'
   }
 }
+
+module.exports = Infura

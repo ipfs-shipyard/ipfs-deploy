@@ -34,7 +34,7 @@ test('infura pinDir gets correct hash', async t => {
   t.is(await infura.pinDir(api, 'dir'), 'QmHash')
 })
 
-test('infura pinHash succeeds', async t => {
+test('infura pinCid succeeds', async t => {
   const api = await infura.builder()
-  await t.notThrowsAsync(() => infura.pinHash(api))
+  await t.notThrowsAsync(() => infura.pinCid(api))
 })

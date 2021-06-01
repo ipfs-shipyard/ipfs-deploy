@@ -88,9 +88,9 @@ test('fission pinDir gets correct hash when pinning a dir', async t => {
   t.is(await fission.pinDir(auth, 'dir'), 'QmDirHash')
 })
 
-test('fission pinHash succeeds', async t => {
+test('fission pinCid succeeds', async t => {
   const { fission, auth } = await getBuiltFissionNoThrow()
-  await t.notThrowsAsync(() => fission.pinHash(auth))
+  await t.notThrowsAsync(() => fission.pinCid(auth))
 })
 
 test('fission pinDir throws on HTTP request failure', async t => {
@@ -98,9 +98,9 @@ test('fission pinDir throws on HTTP request failure', async t => {
   await t.throwsAsync(() => fission.pinDir(auth))
 })
 
-test('fission pinHash throws on HTTP request failure', async t => {
+test('fission pinCid throws on HTTP request failure', async t => {
   const { fission, auth } = await getBuiltFissionThrowAxios()
-  await t.throwsAsync(() => fission.pinHash(auth))
+  await t.throwsAsync(() => fission.pinCid(auth))
 })
 
 test('fission pinDir throws on file system failure', async t => {

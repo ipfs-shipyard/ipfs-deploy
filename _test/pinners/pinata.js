@@ -66,9 +66,9 @@ test('pinata pinDir gets correct hash', async t => {
   t.is(await pinata.pinDir(api, 'dir'), 'QmHash')
 })
 
-test('pinata pinHash succeeds', async t => {
+test('pinata pinCid succeeds', async t => {
   const { pinata, api } = await getBuiltPinataNoThrow()
-  await t.notThrowsAsync(() => pinata.pinHash(api))
+  await t.notThrowsAsync(() => pinata.pinCid(api))
 })
 
 test('pinata pinDir throws on HTTP request failure', async t => {
@@ -76,9 +76,9 @@ test('pinata pinDir throws on HTTP request failure', async t => {
   await t.throwsAsync(() => pinata.pinDir(api))
 })
 
-test('pinata pinHash throws on HTTP request failure', async t => {
+test('pinata pinCid throws on HTTP request failure', async t => {
   const { pinata, api } = await getBuiltPinataThrowAxios()
-  await t.throwsAsync(() => pinata.pinHash(api))
+  await t.throwsAsync(() => pinata.pinCid(api))
 })
 
 test('pinata pinDir throws on file system failure', async t => {

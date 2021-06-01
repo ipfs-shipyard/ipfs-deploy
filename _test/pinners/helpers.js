@@ -3,7 +3,7 @@ const hasRightFormat = (obj) => {
     typeof obj.name === 'string' &&
     typeof obj.builder === 'function' &&
     typeof obj.pinDir === 'function' &&
-    typeof obj.pinHash === 'function'
+    typeof obj.pinCid === 'function'
 }
 
 module.exports = {

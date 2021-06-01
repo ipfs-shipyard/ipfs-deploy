@@ -1,32 +1,27 @@
-const DreamHost = require('dreamhost')
+const DreamHostClient = require('dreamhost')
 const isEmpty = require('lodash.isempty')
 
-module.exports = {
-  name: 'DreamHost',
-  validate: ({ key, record } = {}) => {
-    if (isEmpty(key)) {
-      throw new Error(`Missing the following environment variables:
-
-IPFS_DEPLOY_DREAMHOST__KEY`)
+class DreamHost {
+  constructor ({ key, record } = {}) {
+    if ([key, record].some(isEmpty)) {
+      throw new Error('key and record are required for DreamHost')
     }
 
-    if (isEmpty(record)) {
-      throw new Error(`Missing the following environment variables:
-  
-IPFS_DEPLOY_DREAMHOST__RECORD`)
-    }
-  },
-  link: async (_domain, hash, { key, record }) => {
-    const link = `/ipfs/${hash}`
+    this.record = record
+    this.client = new DreamHostClient({ key })
+  }
+
+  async link (cid) {
+    const link = `/ipfs/${cid}`
 
     const options = {
       type: 'TXT',
-      record: record,
+      record: this.record,
       value: link,
       comment: 'Added by ipfs-deploy.'
     }
-    const dreamHost = new DreamHost({ key })
-    const records = await dreamHost.dns.listRecords()
+
+    const records = await this.client.dns.listRecords()
     const forDomain = records.filter(o => {
       return (o.record === options.record &&
         o.type === options.type &&
@@ -34,7 +29,7 @@ IPFS_DEPLOY_DREAMHOST__RECORD`)
     })
 
     for (const o of forDomain) {
-      await dreamHost.dns.removeRecord({
+      await this.client.dns.removeRecord({
         type: o.type,
         record: o.record,
         value: o.value
@@ -44,11 +39,11 @@ IPFS_DEPLOY_DREAMHOST__RECORD`)
     // Sometimes the deletes take a little while to settle.
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        dreamHost.dns
+        this.client.dns
           .addRecord(options)
           .then(() => {
             resolve({
-              record: record,
+              record: options.record,
               value: options.value
             })
           })
@@ -56,4 +51,14 @@ IPFS_DEPLOY_DREAMHOST__RECORD`)
       }, 100)
     })
   }
+
+  static get name () {
+    return 'DreamHost'
+  }
+
+  static get slug () {
+    return 'dreamhost'
+  }
 }
+
+module.exports = DreamHost

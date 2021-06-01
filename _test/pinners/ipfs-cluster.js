@@ -56,12 +56,12 @@ test('ipfs-cluster pinDir gets correct hash', async t => {
   t.is(await ipfsCluster.pinDir(api, 'dir'), 'QmHash')
 })
 
-test('ipfs-cluster pinHash succeeds', async t => {
+test('ipfs-cluster pinCid succeeds', async t => {
   const api = await ipfsCluster.builder({
     host: '/ip4/0.0.0.0/tcp/8000/https',
     username: 'user',
     password: 'pwd'
   })
 
-  await t.notThrowsAsync(() => ipfsCluster.pinHash(api))
+  await t.notThrowsAsync(() => ipfsCluster.pinCid(api))
 })
