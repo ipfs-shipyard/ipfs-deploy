@@ -2,16 +2,18 @@ const test = require('ava')
 const { hasRightFormat } = require('./helpers')
 const proxyquire = require('proxyquire').noCallThru()
 
-const IpfsHttpClientMock = () => ({
-  addAll: () => [
-    { cid: 'thing' },
-    { cid: 'oneMore' },
-    { cid: 'QmHash' }
-  ],
-  pin: {
-    add: () => {}
-  }
-})
+const IpfsHttpClientMock = {
+  create: () => ({
+    addAll: () => [
+      { cid: 'thing' },
+      { cid: 'oneMore' },
+      { cid: 'QmHash' }
+    ],
+    pin: {
+      add: () => {}
+    }
+  })
+}
 
 IpfsHttpClientMock.globSource = () => {}
 
