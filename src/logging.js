@@ -1,14 +1,11 @@
-const neatFrame = require('neat-frame')
 const ora = require('ora')
-const { stripIndent } = require('common-tags')
 const isString = require('lodash.isstring')
 const isError = require('lodash.iserror')
 const isObjectLike = require('lodash.isobjectlike')
+const indentString = require('indent-string')
 
 function formatError (e) {
   let eStr
-
-  const beautifyStr = str => neatFrame(stripIndent(str), { trim: false })
 
   if (isError(e)) {
     eStr = e.toString()
@@ -17,8 +14,8 @@ function formatError (e) {
   } else if (isObjectLike(e)) {
     eStr = JSON.stringify(e, null, '  ')
   }
-  const beautifulErrorString = '\n' + beautifyStr(eStr)
-  return beautifulErrorString
+
+  return '\n' + indentString(eStr, 2) + '\n'
 }
 
 function logError (e) {
@@ -43,4 +40,4 @@ const logger = (options) => {
   }
 }
 
-module.exports = { formatError, logError, logger }
+module.exports = { logError, logger }
