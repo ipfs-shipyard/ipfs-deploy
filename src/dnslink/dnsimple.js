@@ -1,17 +1,16 @@
 const dnslink = require('dnslink-dnsimple')
-const _ = require('lodash')
-const fp = require('lodash/fp')
+const isEmpty = require('lodash.isempty')
 
 module.exports = {
   name: 'DNSimple',
   validate: ({ token, zone, record } = {}) => {
-    if (_.isEmpty(token)) {
+    if (isEmpty(token)) {
       throw new Error(`Missing the following environment variables:
 
 IPFS_DEPLOY_DNSIMPLE__TOKEN`)
     }
 
-    if (fp.some(_.isEmpty)([zone, record])) {
+    if ([zone, record].some(isEmpty)) {
       throw new Error(`Missing the following environment variables:
   
 IPFS_DEPLOY_DNSIMPLE__ZONE

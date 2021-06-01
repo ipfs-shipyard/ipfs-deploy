@@ -1,22 +1,20 @@
-const _ = require('lodash')
-const fp = require('lodash/fp')
 const neatFrame = require('neat-frame')
 const ora = require('ora')
 const { stripIndent } = require('common-tags')
+const isString = require('lodash.isstring')
+const isError = require('lodash.iserror')
+const isObjectLike = require('lodash.isobjectlike')
 
 function formatError (e) {
   let eStr
 
-  const beautifyStr = fp.pipe(
-    stripIndent,
-    str => neatFrame(str, { trim: false })
-  )
+  const beautifyStr = str => neatFrame(stripIndent(str), { trim: false })
 
-  if (_.isError(e)) {
+  if (isError(e)) {
     eStr = e.toString()
-  } else if (_.isString(e)) {
+  } else if (isString(e)) {
     eStr = e
-  } else if (_.isObjectLike(e)) {
+  } else if (isObjectLike(e)) {
     eStr = JSON.stringify(e, null, '  ')
   }
   const beautifulErrorString = '\n' + beautifyStr(eStr)

@@ -1,8 +1,7 @@
 const axios = require('axios')
 const FormData = require('form-data')
-const _ = require('lodash')
 const path = require('path')
-const fp = require('lodash/fp')
+const isEmpty = require('lodash.isempty')
 const { globSource } = require('ipfs-http-client')
 
 const MAX_RETRIES = 3
@@ -13,7 +12,7 @@ const PIN_HASH_URL = 'https://api.pinata.cloud/pinning/pinHashToIPFS'
 module.exports = {
   name: 'Pinata',
   builder: async ({ apiKey, secretApiKey }) => {
-    if (fp.some(_.isEmpty)([apiKey, secretApiKey])) {
+    if ([apiKey, secretApiKey].some(isEmpty)) {
       throw new Error(`Missing the following environment variables:
 
 IPFS_DEPLOY_PINATA__API_KEY

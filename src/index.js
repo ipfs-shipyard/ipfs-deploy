@@ -1,4 +1,4 @@
-const _ = require('lodash')
+const camelCase = require('lodash.camelcase')
 const { logger, logError } = require('./logging')
 
 const guessPathIfEmpty = require('./guess-path')
@@ -55,8 +55,8 @@ async function deploy ({
   let lastHash = null
 
   for (const pinnerName of remotePinners) {
-    const pinner = await pinnerProviders[_.camelCase(pinnerName)]({
-      ...credentials[_.camelCase(pinnerName)],
+    const pinner = await pinnerProviders[camelCase(pinnerName)]({
+      ...credentials[camelCase(pinnerName)],
       writeLog,
       writeError
     })
@@ -94,10 +94,10 @@ async function deploy ({
   let dnslinkedHostname = null
 
   for (const provider of dnsProviders) {
-    dnslinkedHostname = await dnslinkProviders[_.camelCase(provider)](
+    dnslinkedHostname = await dnslinkProviders[camelCase(provider)](
       siteDomain,
       pinnedHash,
-      credentials[_.camelCase(provider)] || null
+      credentials[camelCase(provider)] || null
     )
   }
 
