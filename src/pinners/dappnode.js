@@ -1,11 +1,10 @@
-const IpfsHttpClient = require('ipfs-http-client')
-const { globSource } = IpfsHttpClient
+const { create: ipfsHttp, globSource } = require('ipfs-http-client')
 const all = require('it-all')
 
 module.exports = {
   name: 'DAppNode',
   builder: async () => {
-    return IpfsHttpClient({
+    return ipfsHttp({
       host: 'ipfs.dappnode',
       port: '5001',
       protocol: 'http'

@@ -1,11 +1,10 @@
-const IpfsHttpClient = require('ipfs-http-client')
-const { globSource } = IpfsHttpClient
+const { create: ipfsHttp, globSource } = require('ipfs-http-client')
 const all = require('it-all')
 
 module.exports = {
   name: 'Infura',
   builder: async () => {
-    return IpfsHttpClient({
+    return ipfsHttp({
       host: 'ipfs.infura.io',
       port: '5001',
       protocol: 'https'

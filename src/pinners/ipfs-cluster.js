@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const recursive = require('recursive-fs')
 const ipfsCluster = require('ipfs-cluster-api')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const _ = require('lodash')
 const fp = require('lodash/fp')
 
@@ -18,7 +18,7 @@ IPFS_DEPLOY_IPFS_CLUSTER__PASSWORD`)
     }
 
     const token = Buffer.from(`${username}:${password}`).toString('base64')
-    const addr = multiaddr(host).nodeAddress()
+    const addr = new Multiaddr(host).nodeAddress()
 
     return ipfsCluster({
       port: addr.port,
