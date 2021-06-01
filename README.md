@@ -3,7 +3,7 @@
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
-[![Travis CI](https://flat.badgen.net/travis/ipfs-shipyard/ipfs-deploy)](https://travis-ci.com/ipfs-shipyard/ipfs-deploy)
+[![](https://img.shields.io/github/workflow/status/ipfs-shipyard/ipfs-deploy/Node.js%20CI/master?style=flat-square)](https://github.com/ipfs-shipyard/ipfs-deploy/actions/workflows/ci.yaml)
 
 > Upload static website to IPFS pinning services and optionally update DNS.
 
