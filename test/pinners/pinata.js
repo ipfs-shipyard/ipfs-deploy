@@ -13,8 +13,8 @@ const getBuiltPinata = async (pinata) => {
 
 const getPinataNoThrow = () => proxyquire('../../src/pinners/pinata', {
   'recursive-fs': {
-    readdirr: (_, cb) => {
-      cb(null, null, [])
+    read: async (_) => {
+      return { files: [] }
     }
   },
   axios: {
