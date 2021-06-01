@@ -37,9 +37,10 @@ const argv = yargs
             choices: dnsProviders,
             describe: 'DNS provider whose dnslink TXT field will be updated'
           },
-          O: {
-            alias: 'no-open',
-            describe: "DON'T open URL after deploying"
+          o: {
+            alias: 'open',
+            describe: 'Open gateway URL(s) after deploying',
+            type: 'boolean'
           },
           p: {
             alias: 'pinner',
@@ -92,7 +93,7 @@ async function main () {
     publicDirPath: argv.path,
     copyHttpGatewayUrlToClipboard:
       !(argv.clipboard === false) && !argv.C && !argv.noClipboard,
-    open: !(argv.open === false) && !argv.O && !argv.noOpen,
+    open: argv.open,
     remotePinners: argv.pinner,
     dnsProviders: argv.dns,
     siteDomain: argv.siteDomain,
