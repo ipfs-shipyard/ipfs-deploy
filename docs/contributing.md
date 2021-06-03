@@ -7,6 +7,12 @@ Thanks for starting this awesome project!
 Everyone is welcome to contribute and add new features!
 [See everyone who has contributed](https://github.com/ipfs-shipyard/ipfs-deploy/graphs/contributors)!
 
+## Note about SDKs
+
+Most services offer Node.js SDKs in the format of a library that we can just import.
+Although they are extremely handy, we recommend to try relying on pure HTTP APIs
+to avoid the growth of this repository in size.
+
 ## Adding a Pinning Service
 
 To add support for a new pinning service, you should start by creating a file with the
