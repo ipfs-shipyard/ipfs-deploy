@@ -1,5 +1,9 @@
 # Contributing
 
+- [Note about SDKs](#note-about-sdks)
+- [Adding a Pinning Service](#adding-a-pinning-service)
+- [Adding a DNS Provider](#adding-a-dns-provider)
+
 This project was initially started by [@agentofuser](https://github.com/agentofuser),
 who made a lot of awesome work in here. Posteriorly, it was transferred to ipfs-shipyard.
 Thanks for starting this awesome project!
