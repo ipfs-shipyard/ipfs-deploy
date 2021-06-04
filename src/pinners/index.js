@@ -1,3 +1,5 @@
+'use strict'
+
 const DAppNode = require('./dappnode')
 const Fission = require('./fission')
 const Infura = require('./infura')

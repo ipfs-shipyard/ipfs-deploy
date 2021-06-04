@@ -1,3 +1,5 @@
+'use strict'
+
 const FormData = require('form-data')
 const path = require('path')
 const { globSource } = require('ipfs-http-client')

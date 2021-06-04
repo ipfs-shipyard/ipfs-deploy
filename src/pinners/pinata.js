@@ -1,3 +1,5 @@
+'use strict'
+
 const axios = require('axios')
 const isEmpty = require('lodash.isempty')
 const { getDirFormData } = require('./utils')
@@ -45,7 +47,6 @@ class Pinata {
         if (err && err.response && RETRY_CODES.includes(err.response.status)) {
           retries += 1
           lastErrorCode = err.response.status
-          continue
         } else {
           throw err
         }

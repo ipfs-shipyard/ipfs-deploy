@@ -1,3 +1,5 @@
+'use strict'
+
 const axios = require('axios')
 const path = require('path')
 const isEmpty = require('lodash.isempty')

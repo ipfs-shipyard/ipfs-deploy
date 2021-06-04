@@ -1,3 +1,5 @@
+'use strict'
+
 const DreamHostClient = require('dreamhost')
 const isEmpty = require('lodash.isempty')
 

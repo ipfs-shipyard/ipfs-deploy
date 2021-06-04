@@ -1,3 +1,5 @@
+'use strict'
+
 const colors = require('colors/safe')
 const open = require('open')
 const path = require('path')
@@ -58,9 +60,29 @@ async function dnsLink ({ services, cid, logger }) {
   return hostnames
 }
 
+function copyToClipboard ({ hostnames, gatewayUrls, logger }) {
+  let toCopy
+  if (hostnames.length > 0) {
+    toCopy = hostnames[hostnames.length - 1]
+  } else {
+    toCopy = gatewayUrls[gatewayUrls.length - 1]
+  }
+
+  logger.info('📋  Copying HTTP gateway URL to clipboard…')
+
+  try {
+    clipboardy.writeSync(toCopy)
+    logger.info('📋  Copied HTTP gateway URL to clipboard:')
+    logger.info(terminalUrl(toCopy, toCopy))
+  } catch (e) {
+    logger.info('⚠️  Could not copy URL to clipboard.')
+    logger.error(e)
+  }
+}
+
 const dummyLogger = {
   info: () => {},
-  error: console.error
+  error: () => {}
 }
 
 async function deploy ({
@@ -172,23 +194,7 @@ async function deploy ({
   }
 
   if (copyUrl) {
-    let toCopy
-    if (hostnames.length > 0) {
-      toCopy = hostnames[hostnames.length - 1]
-    } else {
-      toCopy = gatewayUrls[gatewayUrls.length - 1]
-    }
-
-    logger.info('📋  Copying HTTP gateway URL to clipboard…')
-
-    try {
-      clipboardy.writeSync(toCopy)
-      logger.info('📋  Copied HTTP gateway URL to clipboard:')
-      logger.info(terminalUrl(toCopy, toCopy))
-    } catch (e) {
-      logger.info('⚠️  Could not copy URL to clipboard.')
-      logger.error(e)
-    }
+    copyToClipboard({ hostnames, gatewayUrls, logger })
   }
 
   return cid

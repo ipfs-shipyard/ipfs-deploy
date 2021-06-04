@@ -1,3 +1,5 @@
+'use strict'
+
 const { existsSync } = require('fs')
 const trammel = require('trammel')
 const byteSize = require('byte-size')

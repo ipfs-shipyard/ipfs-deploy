@@ -1,3 +1,5 @@
+'use strict'
+
 const IpfsNode = require('./ipfs-node')
 
 class Infura extends IpfsNode {
