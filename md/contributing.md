@@ -24,29 +24,31 @@ name of the pinning service. Let's say it's called `PinningService`: create a fi
 `src/pinners/pinning-service.js` with the following contents:
 
 ```javascript
+'use strict'
+
 class PinningService {
-  constructor (options) {
+  constructor () {
     // TODO
   }
 
-  async pinDir (dir, tag) {
-    // TODO: return string CID
+  /**
+   * @param {string} cid
+   * @returns string
+   */
+  gatewayUrl (cid) {
+    return `https://ipfs.io/ipfs/${cid}`
   }
 
-  async pinCid (cid, tag) {
-    // TODO
-  }
-
-  static get name () {
+  static get displayName () {
     return 'Pinning Service'
+  }
+
+  get displayName () {
+    return PinningService.displayName
   }
 
   static get slug () {
     return 'pinning-service'
-  }
-
-  static get gateway () {
-    return 'https://your.gateway.io'
   }
 }
 
@@ -67,25 +69,28 @@ name of the DNS provider. Let's say it's called `DNS Provider`: create a file at
 
 ```javascript
 class DNSProvider {
-  constructor (options) {
+  constructor () {
     // TODO
   }
 
+  /**
+   * @param {string} cid
+   * @returns {Promise<DNSRecord>}
+   */
   async link (cid) {
     // TODO
-
-    return {
-      record: `dns record value`,
-      value: `dns record content`
-    }
   }
 
-  static get name () {
-    return 'Cloudflare'
+  static get displayName () {
+    return 'DNS Provider'
+  }
+
+  get displayName () {
+    return DNSProvider.displayName
   }
 
   static get slug () {
-    return 'cloudflare'
+    return 'dns-provider'
   }
 }
 
