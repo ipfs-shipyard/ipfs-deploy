@@ -52,7 +52,7 @@ class DreamHost {
     })
   }
 
-  static get name () {
+  static get displayName () {
     return 'DreamHost'
   }
 

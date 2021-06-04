@@ -13,7 +13,7 @@ async function pinCidOrDir ({ services, cid, dir, tag, logger }) {
   const gatewayUrls = []
 
   for (const service of services) {
-    const serviceName = colors.brightWhite(service.constructor.name)
+    const serviceName = colors.brightWhite(service.constructor.displayName)
     let lastCid
 
     if (cid) {
@@ -44,7 +44,7 @@ async function dnsLink ({ services, cid, logger }) {
   const hostnames = []
 
   for (const provider of services) {
-    const providerName = colors.brightWhite(provider.constructor.name)
+    const providerName = colors.brightWhite(provider.constructor.displayName)
     logger.info(`📡  Beaming new CID to DNS provider ${providerName}…`)
 
     const { record, value } = await provider.link(cid)

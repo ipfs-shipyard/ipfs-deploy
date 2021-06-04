@@ -73,7 +73,7 @@ class Pinata {
     await axios.post(PIN_HASH_URL, body, config)
   }
 
-  static get name () {
+  static get displayName () {
     return 'Pinata'
   }
 
