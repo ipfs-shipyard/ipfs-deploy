@@ -9,7 +9,7 @@ class Infura extends IpfsNode {
     })
   }
 
-  static get name () {
+  static get displayName () {
     return 'Infura'
   }
 

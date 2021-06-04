@@ -55,7 +55,7 @@ class Fission {
     await axios.put(`${BASE_URL}/${cid}`, {}, { auth: this.auth })
   }
 
-  static get name () {
+  static get displayName () {
     return 'Fission'
   }
 

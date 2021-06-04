@@ -18,7 +18,7 @@ class IpfsNode {
     await this.ipfs.pin.add(cid)
   }
 
-  static get name () {
+  static get displayName () {
     return 'IPFS Node'
   }
 

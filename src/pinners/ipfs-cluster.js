@@ -46,7 +46,7 @@ class IpfsCluster {
       })
   }
 
-  static get name () {
+  static get displayName () {
     return 'IPFS Cluster'
   }
 

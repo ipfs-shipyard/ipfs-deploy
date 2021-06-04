@@ -36,7 +36,7 @@ class DNSimple {
     }
   }
 
-  static get name () {
+  static get displayName () {
     return 'DNSimple'
   }
 
