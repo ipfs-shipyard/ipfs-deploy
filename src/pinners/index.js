@@ -2,7 +2,6 @@ const DAppNode = require('./dappnode')
 const Fission = require('./fission')
 const Infura = require('./infura')
 const IpfsCluster = require('./ipfs-cluster')
-const IpfsNode = require('./ipfs-node')
 const Pinata = require('./pinata')
 
 const pinners = [
@@ -10,7 +9,6 @@ const pinners = [
   Fission,
   Infura,
   IpfsCluster,
-  IpfsNode,
   Pinata
 ]
 
