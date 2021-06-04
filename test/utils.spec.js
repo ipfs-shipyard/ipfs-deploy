@@ -8,12 +8,7 @@ test('throws when cannot find any guessable path', t => {
     }
   })
 
-  try {
-    guessPath()
-    t.fail('should have thrown')
-  } catch (e) {
-    t.pass()
-  }
+  t.throws(guessPath)
 })
 
 test('throws if more than one guessable path is available', t => {
@@ -32,12 +27,7 @@ test('throws if more than one guessable path is available', t => {
     }
   })
 
-  try {
-    guessPath()
-    t.fail('should have thrown')
-  } catch (e) {
-    t.pass()
-  }
+  t.throws(guessPath)
 })
 
 test('return guessable path', t => {
