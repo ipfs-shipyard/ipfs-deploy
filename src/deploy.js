@@ -6,7 +6,7 @@ const clipboardy = require('clipboardy')
 
 const { dnsLinkersMap } = require('./dnslinkers')
 const { pinnersMap } = require('./pinners')
-const { guessPath, getReadableSize, gatewayUrl, terminalUrl } = require('./utils')
+const { guessPath, getReadableSize, terminalUrl } = require('./utils')
 
 async function pinCidOrDir ({ services, cid, dir, tag, logger }) {
   const pinnedCids = []
@@ -27,7 +27,7 @@ async function pinCidOrDir ({ services, cid, dir, tag, logger }) {
       logger.info(`📌  Added and pinned to ${serviceName} with CID:`)
     }
 
-    const url = gatewayUrl(lastCid, service.constructor.gateway)
+    const url = service.gatewayUrl(lastCid)
     logger.info(terminalUrl(lastCid, url))
 
     gatewayUrls.push(url)

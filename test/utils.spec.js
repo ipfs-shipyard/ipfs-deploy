@@ -56,30 +56,3 @@ test('return guessable path', t => {
 
   t.is(guessPath(), '_site')
 })
-
-test('gatewayUrl throws if no origin provided', t => {
-  const { gatewayUrl } = require('../src/utils')
-
-  try {
-    gatewayUrl('QmHash')
-    t.fail('should have thrown')
-  } catch (e) {
-    t.pass()
-  }
-})
-
-test('gatewayUrl throws if no cid provided', t => {
-  const { gatewayUrl } = require('../src/utils')
-
-  try {
-    gatewayUrl(null, 'origin')
-    t.fail('should have thrown')
-  } catch (e) {
-    t.pass()
-  }
-})
-
-test('gatewayUrl returns correct URL', t => {
-  const { gatewayUrl } = require('../src/utils')
-  t.is(gatewayUrl('QmHash', 'https://ipfs.io'), 'https://ipfs.io/ipfs/QmHash/')
-})

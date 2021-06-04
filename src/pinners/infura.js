@@ -9,16 +9,16 @@ class Infura extends IpfsNode {
     })
   }
 
+  gatewayUrl (cid) {
+    return `https://ipfs.infura.io/ipfs/${cid}`
+  }
+
   static get displayName () {
     return 'Infura'
   }
 
   static get slug () {
     return 'infura'
-  }
-
-  static get gateway () {
-    return 'https://ipfs.infura.io'
   }
 }
 

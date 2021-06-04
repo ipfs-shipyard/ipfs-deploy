@@ -46,16 +46,16 @@ class IpfsCluster {
       })
   }
 
+  gatewayUrl (cid) {
+    return `https://ipfs.io/ipfs/${cid}`
+  }
+
   static get displayName () {
     return 'IPFS Cluster'
   }
 
   static get slug () {
     return 'ipfs-cluster'
-  }
-
-  static get gateway () {
-    return 'https://ipfs.io'
   }
 }
 
