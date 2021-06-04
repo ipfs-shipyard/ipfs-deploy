@@ -1,3 +1,12 @@
+## [9.0.3](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v9.0.2...v9.0.3) (2021-06-04)
+
+
+### Bug Fixes
+
+* max content and body length set to infinity ([ca880a2](https://github.com/ipfs-shipyard/ipfs-deploy/commit/ca880a2751e72feb7a0a0066d23c7505c1ad5e2c))
+
+
+
 ## [9.0.2](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v9.0.1...v9.0.2) (2021-06-04)
 
 
