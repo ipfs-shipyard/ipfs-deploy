@@ -42,7 +42,7 @@ npx ipfs-deploy _site
 ```
 
 It will deploy to a public pinning service and give you a link to
-`ipfs.io/ipfs/your-hash` so you can check it out.
+`ipfs.io/ipfs/QmHash` so you can check it out.
 
 ## Usage
 
@@ -66,6 +66,7 @@ Please check [docs/contributing.md](docs/contributing.md) for further informatio
 - [agentofuser.com](https://agentofuser.com)
 - [jaack.me](https://ipfs.jaack.me)
 - [kevincox.ca](https://kevincox.ca)
+- [xkcd.hacdias.com](https://xkcd.hacdias.com)
 - _Your website here_
 
 If you use this package to deploy your website, please send a pull request so I
