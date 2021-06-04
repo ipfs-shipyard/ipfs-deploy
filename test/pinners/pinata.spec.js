@@ -66,7 +66,7 @@ it('pinata constructor does not throw with correct options', () => {
   })).to.not.throw()
 })
 
-// it('Pinata pinDir gets correct CID', async () => {
+// it('pinata pinDir gets correct CID', async () => {
 //   const pinata = await getBuiltPinataNoThrow()
 //   const cid = await pinata.pinDir('dir')
 //   await expect(cid).to.be.equal('QmHash')
@@ -82,12 +82,7 @@ it('pinata pinCid throws on HTTP request failure', async () => {
   await expect(pinata.pinCid('QmHash')).to.be.rejected()
 })
 
-// test('pinata pinDir throws on file system failure', async t => {
-//   const { pinata, api } = await getBuiltPinata(proxyquire('../../src/pinners/pinata', {
-//     axios: {
-//       post: async () => {}
-//     }
-//   }))
-
-//   await t.throwsAsync(() => pinata.pinDir(api))
-// })
+it('pinata pinDir throws on file system failure', async () => {
+  const pinata = await getBuiltPinata(require('../../src/pinners/pinata'))
+  await expect(pinata.pinDir('dir')).to.be.rejected()
+})
