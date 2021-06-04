@@ -1,10 +1,19 @@
 'use strict'
 
+// @ts-ignore
 const dnslink = require('dnslink-dnsimple')
 const isEmpty = require('lodash.isempty')
 
+/**
+ * @typedef {import('./types').DNSRecord} DNSRecord
+ * @typedef {import('./types').DNSimpleOptions} DNSimpleOptions
+ */
+
 class DNSimple {
-  constructor ({ token, zone, record } = {}) {
+  /**
+   * @param {DNSimpleOptions} options
+   */
+  constructor ({ token, zone, record }) {
     if (isEmpty(token)) {
       throw new Error('token is required for DNSimple')
     }
@@ -18,6 +27,10 @@ class DNSimple {
     this.record = record
   }
 
+  /**
+   * @param {string} cid
+   * @returns {Promise<DNSRecord>}
+   */
   async link (cid) {
     const recordWithoutZone = this.record.replace(`.${this.zone}`, '')
 
@@ -40,6 +53,10 @@ class DNSimple {
 
   static get displayName () {
     return 'DNSimple'
+  }
+
+  get displayName () {
+    return DNSimple.displayName
   }
 
   static get slug () {

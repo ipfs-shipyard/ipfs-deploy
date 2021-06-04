@@ -23,6 +23,18 @@
     "dist"
   ],
   "main": "src/index.js",
+  "types": "dist/src/index.d.ts",
+  "typesVersions": {
+    "*": { 
+      "src/*": [
+        "dist/src/*", 
+        "dist/src/*/index"
+      ],
+      "src/": [
+        "dist/src/index"
+      ]
+    }
+  },
   "bin": {
     "ipfs-deploy": "src/cli.js",
     "ipd": "src/cli.js"
@@ -32,11 +44,26 @@
     "url": "https://github.com/ipfs-shipyard/ipfs-deploy.git"
   },
   "scripts": {
-    "lint": "aegir lint",
-    "test": "aegir test -t node",
-    "release": "aegir release -t node --no-build",
-    "release-minor": "aegir release -t node --type minor --no-build",
-    "release-major": "aegir-release -t node --type major --no-build"
+    "lint": "aegir lint && aegir ts -p check",
+    "test": "aegir test",
+    "types": "aegir ts -p types",
+    "release": "aegir release -t node",
+    "release-minor": "aegir release --type minor",
+    "release-major": "aegir-release --type major"
+  },
+  "aegir": {
+    "test": {
+      "target": [
+        "node"
+      ]
+    },
+    "build": {
+      "bundle": false,
+      "types": true
+    },
+    "release": {
+      "build": false
+    }
   },
   "pre-push": [
     "lint"
@@ -44,8 +71,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "byte-size": "^7.0.1",
+    "chalk": "^4.1.1",
     "clipboardy": "^2.3.0",
-    "colors": "^1.4.0",
     "dnslink-cloudflare": "^3.0.0",
     "dnslink-dnsimple": "^1.0.1",
     "dotenv": "^10.0.0",
@@ -67,6 +94,7 @@
     "yargs": "^17.0.1"
   },
   "devDependencies": {
+    "@types/lodash.isempty": "^4.4.6",
     "aegir": "^33.2.0",
     "proxyquire": "^2.1.3"
   },

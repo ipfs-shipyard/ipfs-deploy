@@ -1,6 +1,6 @@
 'use strict'
 
-const colors = require('colors/safe')
+const chalk = require('chalk')
 const open = require('open')
 const path = require('path')
 const fs = require('fs')
@@ -10,12 +10,30 @@ const { dnsLinkersMap } = require('./dnslinkers')
 const { pinnersMap } = require('./pinners')
 const { guessPath, getReadableSize, terminalUrl } = require('./utils')
 
-async function pinCidOrDir ({ services, cid, dir, tag, logger }) {
+/**
+ * @typedef {import('./dnslinkers/types').DNSLinker} DNSLinker
+ * @typedef {import('./pinners/types').PinningService} PinningService
+ * @typedef {import('./types').DeployOptions} DeployOptions
+ * @typedef {import('./types').Logger} Logger
+ */
+
+/**
+ * @param {PinningService[]} services
+ * @param {string|undefined} cid
+ * @param {string|undefined} dir
+ * @param {string|undefined} tag
+ * @param {Logger} logger
+ */
+async function pinCidOrDir (services, cid, dir, tag, logger) {
   const pinnedCids = []
   const gatewayUrls = []
 
+  if (!cid && !dir) {
+    throw new Error('either cid or dir is required')
+  }
+
   for (const service of services) {
-    const serviceName = colors.brightWhite(service.constructor.displayName)
+    const serviceName = chalk.whiteBright(service.displayName)
     let lastCid
 
     if (cid) {
@@ -25,6 +43,7 @@ async function pinCidOrDir ({ services, cid, dir, tag, logger }) {
       logger.info(`📌  CID pinned to ${serviceName}:`)
     } else {
       logger.info(`📠  Uploading and pinning to ${serviceName}…`)
+      // @ts-ignore
       lastCid = await service.pinDir(dir, tag)
       logger.info(`📌  Added and pinned to ${serviceName} with CID:`)
     }
@@ -42,17 +61,22 @@ async function pinCidOrDir ({ services, cid, dir, tag, logger }) {
   }
 }
 
-async function dnsLink ({ services, cid, logger }) {
+/**
+ * @param {DNSLinker[]} services
+ * @param {string} cid
+ * @param {Logger} logger
+ */
+async function dnsLink (services, cid, logger) {
   const hostnames = []
 
   for (const provider of services) {
-    const providerName = colors.brightWhite(provider.constructor.displayName)
+    const providerName = chalk.whiteBright(provider.displayName)
     logger.info(`📡  Beaming new CID to DNS provider ${providerName}…`)
 
     const { record, value } = await provider.link(cid)
 
-    logger.info(`🔄  Updated DNS TXT ${colors.brightWhite(record)} to:`)
-    logger.info(`🔗  ${colors.brightWhite(value)}`)
+    logger.info(`🔄  Updated DNS TXT ${chalk.whiteBright(record)} to:`)
+    logger.info(`🔗  ${chalk.whiteBright(value)}`)
 
     hostnames.push(record.split('.').slice(1).join('.'))
   }
@@ -60,7 +84,12 @@ async function dnsLink ({ services, cid, logger }) {
   return hostnames
 }
 
-function copyToClipboard ({ hostnames, gatewayUrls, logger }) {
+/**
+ * @param {string[]} hostnames
+ * @param {string[]} gatewayUrls
+ * @param {Logger} logger
+ */
+function copyToClipboard (hostnames, gatewayUrls, logger) {
   let toCopy
   if (hostnames.length > 0) {
     toCopy = hostnames[hostnames.length - 1]
@@ -80,46 +109,47 @@ function copyToClipboard ({ hostnames, gatewayUrls, logger }) {
   }
 }
 
-const dummyLogger = {
-  info: () => {},
-  error: () => {}
+/**
+ * @param {string[]} gatewayUrls
+ * @param {string[]} hostnames
+ * @param {Logger} logger
+ */
+function openUrlsBrowser (gatewayUrls, hostnames, logger) {
+  logger.info('🏄  Opening URLs on web browser...')
+  gatewayUrls.forEach(url => { open(url) })
+  hostnames.forEach(hostname => open(`https://${hostname}`))
+  logger.info('🏄  All URLs opened.')
 }
 
-async function deploy ({
-  dir,
-  cid,
-  tag,
+const dummyLogger = /** @type {Logger} */({
+  info: () => {},
+  error: () => {}
+})
 
-  copyUrl = false,
-  openUrls = false,
-
-  uploadServices = [],
-  pinningServices = [],
-  dnsProviders = [],
-
-  dnsProvidersCredentials = {},
-  pinningServicesCredentials = {},
-
-  logger = dummyLogger
-} = {}) {
+/**
+ * @param {string|undefined} dir
+ * @param {string|undefined} cid
+ * @param {Logger} logger
+ */
+async function checkDirAndCid (dir, cid, logger) {
   if (dir && cid) {
     throw new Error('cannot deploy a directory and a CID at the same time')
   }
 
   if (!dir && !cid) {
-    logger.info(`🤔  No ${colors.brightWhite('path')} argument specified. Looking for common ones…`)
+    logger.info(`🤔  No ${chalk.whiteBright('path')} argument specified. Looking for common ones…`)
     dir = guessPath()
-    logger.info(`📂  Found local ${colors.blue(dir)} directory. Deploying that.`)
-  } else if (!cid) {
-    logger.info(`📂  Deploying ${colors.blue(dir)} directory.`)
-  } else {
-    logger.info(`📂  Deploying ${colors.blue(cid)}.`)
+    logger.info(`📂  Found local ${chalk.blueBright(dir)} directory. Deploying that.`)
+  } else if (dir) {
+    logger.info(`📂  Deploying ${chalk.blueBright(dir)} directory.`)
+  } else if (cid) {
+    logger.info(`📂  Deploying ${chalk.blueBright(cid)}.`)
   }
 
   if (dir) {
-    logger.info(`📦  Calculating size of ${colors.blue(dir)}…`)
+    logger.info(`📦  Calculating size of ${chalk.blueBright(dir)}…`)
     const readableSize = await getReadableSize(dir)
-    logger.info(`🚚  Directory ${colors.blue(dir)} weighs ${readableSize}.`)
+    logger.info(`🚚  Directory ${chalk.blueBright(dir)} weighs ${readableSize}.`)
 
     dir = path.normalize(dir)
 
@@ -128,45 +158,73 @@ async function deploy ({
     }
   }
 
+  return { cid, dir }
+}
+
+/**
+ * @param {DeployOptions} options
+ * @returns {Promise<string>}
+ */
+async function deploy ({
+  dir,
+  cid,
+  tag,
+
+  copyUrl = false,
+  openUrls = false,
+
+  uploadServices: uploadServicesIds = [],
+  pinningServices: pinningServicesIds = [],
+  dnsProviders: dnsProvidersIds = [],
+
+  dnsProvidersCredentials = {},
+  pinningServicesCredentials = {},
+
+  logger = dummyLogger
+}) {
+  const res = await checkDirAndCid(dir, cid, logger)
+  dir = res.dir
+  cid = res.cid
+
   tag = tag || __dirname
 
   // In the case we only set pinning services and we're deploying a directory,
   // then call those upload services.
-  if (pinningServices.length > 0 && uploadServices.length === 0 && dir) {
-    uploadServices = pinningServices
-    pinningServices = []
+  if (pinningServicesIds.length > 0 && uploadServicesIds.length === 0 && dir) {
+    uploadServicesIds = pinningServicesIds
+    pinningServicesIds = []
   }
 
-  if (uploadServices.length + pinningServices.length === 0) {
+  if (uploadServicesIds.length + pinningServicesIds.length === 0) {
     throw new Error('an upload or pinning service is required to deploy')
   }
 
-  if (cid && uploadServices.length > 0) {
+  if (cid && uploadServicesIds.length > 0) {
     throw new Error('cannot use uploading services to deploy CIDs')
   }
 
   logger.info('⚙️   Validating pinners configurations…')
-  uploadServices = uploadServices.map(name => {
+  const uploadServices = uploadServicesIds.map(name => {
     const Pinner = pinnersMap.get(name)
     return new Pinner(pinningServicesCredentials[name])
   })
 
-  pinningServices = pinningServices.map(name => {
+  const pinningServices = pinningServicesIds.map(name => {
     const Pinner = pinnersMap.get(name)
     return new Pinner(pinningServicesCredentials[name])
   })
 
   logger.info('⚙️   Validating DNS providers configurations…')
-  dnsProviders = dnsProviders.map(name => {
+  const dnsProviders = dnsProvidersIds.map(name => {
     const DNSLinker = dnsLinkersMap.get(name)
     return new DNSLinker(dnsProvidersCredentials[name])
   })
 
-  const pinnedCids = []
-  const gatewayUrls = []
+  const pinnedCids = /** @type {string[]} */([])
+  const gatewayUrls = /** @type {string[]} */([])
 
   if (uploadServices.length > 0) {
-    const res = await pinCidOrDir({ services: uploadServices, dir, tag, logger })
+    const res = await pinCidOrDir(uploadServices, undefined, dir, tag, logger)
     pinnedCids.push(...res.pinnedCids)
     gatewayUrls.push(...res.gatewayUrls)
   }
@@ -179,22 +237,19 @@ async function deploy ({
 
   cid = cid || pinnedCids[0]
   if (pinningServices.length > 0) {
-    const res = await pinCidOrDir({ services: pinningServices, cid, tag, logger })
+    const res = await pinCidOrDir(pinningServices, cid, undefined, tag, logger)
     pinnedCids.push(...res.pinnedCids)
     gatewayUrls.push(...res.gatewayUrls)
   }
 
-  const hostnames = await dnsLink({ services: dnsProviders, cid, logger })
+  const hostnames = await dnsLink(dnsProviders, cid, logger)
 
   if (openUrls) {
-    logger.info('🏄  Opening URLs on web browser...')
-    gatewayUrls.forEach(open)
-    hostnames.forEach(hostname => open(`https://${hostname}`))
-    logger.info('🏄  All URLs opened.')
+    openUrlsBrowser(gatewayUrls, hostnames, logger)
   }
 
   if (copyUrl) {
-    copyToClipboard({ hostnames, gatewayUrls, logger })
+    copyToClipboard(hostnames, gatewayUrls, logger)
   }
 
   return cid
