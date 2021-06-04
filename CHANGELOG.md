@@ -1,3 +1,7 @@
+## [9.0.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v9.0.0...v9.0.1) (2021-06-04)
+
+
+
 # [9.0.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v8.1.0...v9.0.0) (2021-06-04)
 
 
