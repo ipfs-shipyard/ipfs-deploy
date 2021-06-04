@@ -1,19 +1,27 @@
-const test = require('ava')
+/* eslint max-nested-callbacks: ["error", 8] */
+/* eslint-env mocha */
+'use strict'
+
+const { expect } = require('aegir/utils/chai')
 const proxyquire = require('proxyquire').noCallThru()
 
-test('throws when cannot find any guessable path', t => {
+it('guessPath throws when cannot find any guessable path', () => {
   const { guessPath } = proxyquire('../src/utils', {
     fs: {
       existsSync: () => false
     }
   })
 
-  t.throws(guessPath)
+  expect(guessPath).to.throw()
 })
 
-test('throws if more than one guessable path is available', t => {
+it('guessPath throws if more than one guessable path is available', () => {
   const { guessPath } = proxyquire('../src/utils', {
     fs: {
+      /**
+       * @param {string} path
+       * @returns {boolean}
+       */
       existsSync: (path) => {
         switch (path) {
           case '_site':
@@ -27,12 +35,16 @@ test('throws if more than one guessable path is available', t => {
     }
   })
 
-  t.throws(guessPath)
+  expect(guessPath).to.throw()
 })
 
-test('return guessable path', t => {
+it('guessPath returns guessable path', () => {
   const { guessPath } = proxyquire('../src/utils', {
     fs: {
+      /**
+       * @param {string} path
+       * @returns {boolean}
+       */
       existsSync: (path) => {
         switch (path) {
           case '_site':
@@ -44,5 +56,5 @@ test('return guessable path', t => {
     }
   })
 
-  t.is(guessPath(), '_site')
+  expect(guessPath()).to.equal('_site')
 })
