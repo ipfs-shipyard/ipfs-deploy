@@ -6,15 +6,6 @@ const path = require('path')
 const BASE_URL = 'https://runfission.com/ipfs'
 const headers = { 'content-type': 'application/octet-stream' }
 
-const uploadFile = async (auth, filepath) => {
-  const resp = await axios.post(BASE_URL, fs.createReadStream(filepath), {
-    maxContentLength: 'Infinity',
-    auth,
-    headers
-  })
-  return resp.data
-}
-
 const putDAGObj = async (auth, node) => {
   const resp = await axios.post(`${BASE_URL}/dag`, JSON.stringify(node), {
     auth,
@@ -36,10 +27,6 @@ class Fission {
   }
 
   async pinDir (dir, tag) {
-    if (!fs.statSync(dir).isDirectory()) {
-      return uploadFile(this.auth, dir)
-    }
-
     const files = fs.readdirSync(dir)
     const links = await Promise.all(
       files.map(async file => {
