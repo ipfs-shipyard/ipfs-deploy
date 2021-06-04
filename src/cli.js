@@ -168,7 +168,8 @@ async function main () {
     if (!argv.quiet) console.log() // Add an empty line
     console.log(cid)
   } catch (e) {
-    console.error(`❌  ${e.toString()}`)
+    console.error('❌  An error has occurred:\n')
+    console.error(e.stack || e.toString())
     process.exit(1)
   }
 }
