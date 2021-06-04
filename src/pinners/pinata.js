@@ -73,16 +73,16 @@ class Pinata {
     await axios.post(PIN_HASH_URL, body, config)
   }
 
+  gatewayUrl (cid) {
+    return `https://gateway.pinata.cloud/ipfs/${cid}`
+  }
+
   static get displayName () {
     return 'Pinata'
   }
 
   static get slug () {
     return 'pinata'
-  }
-
-  static get gateway () {
-    return 'https://gateway.pinata.cloud'
   }
 }
 

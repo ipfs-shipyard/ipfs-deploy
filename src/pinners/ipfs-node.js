@@ -18,16 +18,16 @@ class IpfsNode {
     await this.ipfs.pin.add(cid)
   }
 
+  gatewayUrl (cid) {
+    return `https://ipfs.io/ipfs/${cid}`
+  }
+
   static get displayName () {
     return 'IPFS Node'
   }
 
   static get slug () {
     return 'ipfs-node'
-  }
-
-  static get gateway () {
-    return 'https://ipfs.io'
   }
 }
 

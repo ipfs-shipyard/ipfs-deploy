@@ -62,28 +62,8 @@ function terminalUrl (title, link) {
   return `🔗  ${colors.green(terminalLink(title, link))}`
 }
 
-/**
- * Get the gateway URL for a certain CID and origin.
- *
- * @param {string} cid
- * @param {string} origin
- * @returns {string}
- */
-function gatewayUrl (cid, origin) {
-  if (!origin) {
-    throw new Error('no origin provided')
-  }
-
-  if (!cid) {
-    throw new Error('no cid provided')
-  }
-
-  return cid ? `${origin}/ipfs/${cid}/` : origin
-}
-
 module.exports = {
   guessPath,
   getReadableSize,
-  gatewayUrl,
   terminalUrl
 }

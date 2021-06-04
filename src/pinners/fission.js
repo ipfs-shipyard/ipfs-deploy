@@ -55,16 +55,16 @@ class Fission {
     await axios.put(`${BASE_URL}/${cid}`, {}, { auth: this.auth })
   }
 
+  gatewayUrl (cid) {
+    return `https://ipfs.runfission.com/ipfs/${cid}`
+  }
+
   static get displayName () {
     return 'Fission'
   }
 
   static get slug () {
     return 'fission'
-  }
-
-  static get gateway () {
-    return 'https://ipfs.runfission.com'
   }
 }
 
