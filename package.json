@@ -25,9 +25,9 @@
   "main": "src/index.js",
   "types": "dist/src/index.d.ts",
   "typesVersions": {
-    "*": { 
+    "*": {
       "src/*": [
-        "dist/src/*", 
+        "dist/src/*",
         "dist/src/*/index"
       ],
       "src/": [
@@ -80,14 +80,8 @@
     "form-data": "^4.0.0",
     "ipfs-http-client": "^50.1.0",
     "it-all": "^1.0.5",
-    "lodash.camelcase": "^4.3.0",
     "lodash.isempty": "^4.4.0",
-    "lodash.iserror": "^3.1.1",
-    "lodash.isobjectlike": "^4.0.0",
-    "lodash.isstring": "^4.0.1",
-    "multiaddr": "^9.0.1",
     "open": "^8.2.0",
-    "ora": "^5.4.0",
     "terminal-link": "^2.1.1",
     "trammel": "^5.0.0",
     "update-notifier": "^5.1.0",
