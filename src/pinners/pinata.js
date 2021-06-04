@@ -45,9 +45,8 @@ class Pinata {
       try {
         const res = await axios
           .post(PIN_DIR_URL, data, {
-            // Infinity is needed to prevent axios from erroring out with
-            // large directories
-            maxContentLength: Infinity,
+            // @ts-ignore
+            maxContentLength: 'Infinity',
             headers: {
               'Content-Type': `multipart/form-data; boundary=${data.getBoundary()}`,
               ...this.auth

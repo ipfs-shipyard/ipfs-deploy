@@ -35,7 +35,8 @@ class IpfsCluster {
 
     const res = await axios
       .post(`${this.host}/add?name=${tag}`, data, {
-        maxContentLength: Infinity,
+        // @ts-ignore
+        maxContentLength: 'Infinity',
         headers: {
           'Content-Type': `multipart/form-data; boundary=${data.getBoundary()}`,
           ...this.headers
