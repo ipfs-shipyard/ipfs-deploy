@@ -70,6 +70,14 @@ function terminalUrl (title, link) {
  * @returns {string}
  */
 function gatewayUrl (cid, origin) {
+  if (!origin) {
+    throw new Error('no origin provided')
+  }
+
+  if (!cid) {
+    throw new Error('no cid provided')
+  }
+
   return cid ? `${origin}/ipfs/${cid}/` : origin
 }
 
