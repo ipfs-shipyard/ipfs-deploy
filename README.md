@@ -46,11 +46,11 @@ It will deploy to a public pinning service and give you a link to
 
 ## Usage
 
-Please check [docs/usage.md](docs/usage.md) for further information!
+Please check [md/usage.md](md/usage.md) for further information!
 
 ## API
 
-There is an API so, however it is somewhat unstable and subject to change. Please check [docs/api.md](docs/api.md) for further information!
+There is an API so, however it is somewhat unstable and subject to change. Please check [md/api.md](md/api.md) for further information!
 
 ## Security
 
@@ -59,7 +59,7 @@ control.
 
 ## Contributing
 
-Please check [docs/contributing.md](docs/contributing.md) for further information!
+Please check [md/contributing.md](md/contributing.md) for further information!
 
 ## Users
 
