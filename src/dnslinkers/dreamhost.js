@@ -1,10 +1,19 @@
 'use strict'
 
+// @ts-ignore
 const DreamHostClient = require('dreamhost')
 const isEmpty = require('lodash.isempty')
 
+/**
+ * @typedef {import('./types').DNSRecord} DNSRecord
+ * @typedef {import('./types').DreamHostOptions} DreamHostOptions
+ */
+
 class DreamHost {
-  constructor ({ key, record } = {}) {
+  /**
+   * @param {DreamHostOptions} options
+   */
+  constructor ({ key, record }) {
     if ([key, record].some(isEmpty)) {
       throw new Error('key and record are required for DreamHost')
     }
@@ -13,6 +22,10 @@ class DreamHost {
     this.client = new DreamHostClient({ key })
   }
 
+  /**
+   * @param {string} cid
+   * @returns {Promise<DNSRecord>}
+   */
   async link (cid) {
     const link = `/ipfs/${cid}`
 
@@ -24,6 +37,7 @@ class DreamHost {
     }
 
     const records = await this.client.dns.listRecords()
+    // @ts-ignore
     const forDomain = records.filter(o => {
       return (o.record === options.record &&
         o.type === options.type &&
@@ -56,6 +70,10 @@ class DreamHost {
 
   static get displayName () {
     return 'DreamHost'
+  }
+
+  get displayName () {
+    return DreamHost.displayName
   }
 
   static get slug () {

@@ -1,8 +1,12 @@
 'use strict'
 
-const axios = require('axios')
+const { default: axios } = require('axios')
 const isEmpty = require('lodash.isempty')
 const { getDirFormData } = require('./utils')
+
+/**
+ * @typedef {import('./types').PinataOptions} PinataOptions
+ */
 
 const MAX_RETRIES = 3
 const RETRY_CODES = [429]
@@ -10,6 +14,9 @@ const PIN_DIR_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS'
 const PIN_HASH_URL = 'https://api.pinata.cloud/pinning/pinByHash'
 
 class Pinata {
+  /**
+   * @param {PinataOptions} options
+   */
   constructor ({ apiKey, secretApiKey }) {
     if ([apiKey, secretApiKey].some(isEmpty)) {
       throw new Error('apiKey and secretApiKey are required for Pinata')
@@ -21,6 +28,11 @@ class Pinata {
     }
   }
 
+  /**
+   * @param {string} dir
+   * @param {string|undefined} tag
+   * @returns {Promise<string>}
+   */
   async pinDir (dir, tag) {
     const data = await getDirFormData(dir)
     const metadata = JSON.stringify({ name: tag })
@@ -35,9 +47,9 @@ class Pinata {
           .post(PIN_DIR_URL, data, {
             // Infinity is needed to prevent axios from erroring out with
             // large directories
-            maxContentLength: 'Infinity',
+            maxContentLength: Infinity,
             headers: {
-              'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+              'Content-Type': `multipart/form-data; boundary=${data.getBoundary()}`,
               ...this.auth
             }
           })
@@ -56,6 +68,11 @@ class Pinata {
     throw new Error(`Max retries exceeded. (${lastErrorCode})`)
   }
 
+  /**
+   * @param {string} cid
+   * @param {string|undefined} tag
+   * @returns {Promise<void>}
+   */
   async pinCid (cid, tag) {
     const body = JSON.stringify({
       hashToPin: cid,
@@ -74,12 +91,20 @@ class Pinata {
     await axios.post(PIN_HASH_URL, body, config)
   }
 
+  /**
+   * @param {string} cid
+   * @returns string
+   */
   gatewayUrl (cid) {
     return `https://gateway.pinata.cloud/ipfs/${cid}`
   }
 
   static get displayName () {
     return 'Pinata'
+  }
+
+  get displayName () {
+    return Pinata.displayName
   }
 
   static get slug () {

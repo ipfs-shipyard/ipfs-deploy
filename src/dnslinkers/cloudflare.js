@@ -1,10 +1,19 @@
 'use strict'
 
+// @ts-ignore
 const dnslink = require('dnslink-cloudflare')
 const isEmpty = require('lodash.isempty')
 
+/**
+ * @typedef {import('./types').DNSRecord} DNSRecord
+ * @typedef {import('./types').CloudflareOptions} CloudflareOptions
+ */
+
 class Cloudflare {
-  constructor ({ apiEmail, apiKey, apiToken, zone, record } = {}) {
+  /**
+   * @param {CloudflareOptions} options
+   */
+  constructor ({ apiEmail, apiKey, apiToken, zone, record }) {
     if ([apiKey, apiEmail, apiToken].every(isEmpty)) {
       throw new Error('apiEmail and apiKey or apiToken are required for Cloudflare')
     }
@@ -13,18 +22,22 @@ class Cloudflare {
       throw new Error('zone and record are required for CloudFlare')
     }
 
-    this.api = {}
-
     if (isEmpty(apiKey)) {
-      this.api.token = apiToken
+      this.api = { token: apiToken }
     } else {
-      this.api.email = apiEmail
-      this.api.key = apiKey
+      this.api = {
+        email: apiEmail,
+        key: apiKey
+      }
     }
 
     this.opts = { record, zone }
   }
 
+  /**
+   * @param {string} cid
+   * @returns {Promise<DNSRecord>}
+   */
   async link (cid) {
     const opts = {
       ...this.opts,
@@ -41,6 +54,10 @@ class Cloudflare {
 
   static get displayName () {
     return 'Cloudflare'
+  }
+
+  get displayName () {
+    return Cloudflare.displayName
   }
 
   static get slug () {

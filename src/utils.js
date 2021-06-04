@@ -1,10 +1,12 @@
 'use strict'
 
 const { existsSync } = require('fs')
+// @ts-ignore
 const trammel = require('trammel')
+// @ts-ignore
 const byteSize = require('byte-size')
 const terminalLink = require('terminal-link')
-const colors = require('colors/safe')
+const chalk = require('chalk')
 
 const pathsToCheck = [
   '_site', // jekyll, hakyll, eleventy
@@ -40,7 +42,7 @@ function guessPath () {
  * Display the size of the directory.
  *
  * @param {string} path
- * @returns {string}
+ * @returns {Promise<string>}
  */
 async function getReadableSize (path) {
   const size = await trammel(path, {
@@ -61,7 +63,7 @@ async function getReadableSize (path) {
  * @returns {string}
  */
 function terminalUrl (title, link) {
-  return `🔗  ${colors.green(terminalLink(title, link))}`
+  return `🔗  ${chalk.green(terminalLink(title, link))}`
 }
 
 module.exports = {
