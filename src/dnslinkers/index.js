@@ -1,3 +1,5 @@
+'use strict'
+
 const Cloudflare = require('./cloudflare')
 const DNSimple = require('./dnsimple')
 const DreamHost = require('./dreamhost')

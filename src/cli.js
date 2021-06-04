@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict'
+/* eslint-disable no-console */
 
 const updateNotifier = require('update-notifier')
 const yargs = require('yargs')

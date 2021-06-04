@@ -1,3 +1,5 @@
+'use strict'
+
 const dnslink = require('dnslink-cloudflare')
 const isEmpty = require('lodash.isempty')
 

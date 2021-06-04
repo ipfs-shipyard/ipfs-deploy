@@ -1,3 +1,5 @@
+'use strict'
+
 const { create: ipfsHttp, globSource } = require('ipfs-http-client')
 const all = require('it-all')
 const path = require('path')
