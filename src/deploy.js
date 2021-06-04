@@ -1,6 +1,7 @@
 const colors = require('colors/safe')
 const open = require('open')
 const path = require('path')
+const fs = require('fs')
 const clipboardy = require('clipboardy')
 
 const { dnsLinkersMap } = require('./dnslinkers')
@@ -99,6 +100,10 @@ async function deploy ({
     logger.info(`🚚  Directory ${colors.blue(dir)} weighs ${readableSize}.`)
 
     dir = path.normalize(dir)
+
+    if (!fs.statSync(dir).isDirectory()) {
+      throw new Error('path must be a directory')
+    }
   }
 
   tag = tag || __dirname

@@ -1,4 +1,5 @@
 const axios = require('axios')
+const path = require('path')
 const isEmpty = require('lodash.isempty')
 const { getDirFormData } = require('./utils')
 
@@ -32,7 +33,10 @@ class IpfsCluster {
       .split('\n')
       .map(JSON.parse)
 
-    return results.find(({ name }) => name === dir).cid['/']
+    const basename = path.basename(dir)
+    const root = results.find(({ name }) => name === basename)
+
+    return root.cid['/']
   }
 
   async pinCid (cid, tag) {

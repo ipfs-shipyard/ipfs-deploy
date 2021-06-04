@@ -1,5 +1,6 @@
 const { create: ipfsHttp, globSource } = require('ipfs-http-client')
 const all = require('it-all')
+const path = require('path')
 
 class IpfsNode {
   constructor (options) {
@@ -8,7 +9,9 @@ class IpfsNode {
 
   async pinDir (dir, tag) {
     const response = await all(this.ipfs.addAll(globSource(dir, { recursive: true })))
-    return response.pop().cid.toString()
+    const basename = path.basename(dir)
+    const root = response.find(({ path }) => path === basename)
+    return root.cid.toString()
   }
 
   async pinCid (cid, tag) {
