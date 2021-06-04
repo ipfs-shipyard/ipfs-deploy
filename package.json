@@ -49,7 +49,7 @@
     "types": "aegir ts -p types",
     "release": "aegir release -t node",
     "release-minor": "aegir release --type minor",
-    "release-major": "aegir-release --type major"
+    "release-major": "aegir release --type major"
   },
   "aegir": {
     "test": {
