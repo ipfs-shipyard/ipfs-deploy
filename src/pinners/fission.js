@@ -32,8 +32,8 @@ const putDAGObj = async (auth, node) => {
  */
 const uploadFile = async (auth, filepath) => {
   const resp = await axios.post(BASE_URL, fs.createReadStream(filepath), {
-    // @ts-ignore
-    maxContentLength: 'Infinity',
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity,
     auth,
     headers
   })
