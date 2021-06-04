@@ -60,9 +60,6 @@
     "build": {
       "bundle": false,
       "types": true
-    },
-    "release": {
-      "build": false
     }
   },
   "pre-push": [
