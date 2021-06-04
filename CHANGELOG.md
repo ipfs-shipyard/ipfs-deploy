@@ -1,3 +1,12 @@
+## [9.0.2](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v9.0.1...v9.0.2) (2021-06-04)
+
+
+### Bug Fixes
+
+* maxContentLength Infinity must be a string ([29c231a](https://github.com/ipfs-shipyard/ipfs-deploy/commit/29c231a0e0c5eeecb1a07ce41a727c6e8d560ea7))
+
+
+
 ## [9.0.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v9.0.0...v9.0.1) (2021-06-04)
 
 
