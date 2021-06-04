@@ -13,6 +13,7 @@ const { guessPath, getReadableSize, terminalUrl } = require('./utils')
 /**
  * @typedef {import('./dnslinkers/types').DNSLinker} DNSLinker
  * @typedef {import('./pinners/types').PinningService} PinningService
+ * @typedef {import('./pinners/types').PinDirOptions} PinDirOptions
  * @typedef {import('./types').DeployOptions} DeployOptions
  * @typedef {import('./types').Logger} Logger
  */
@@ -21,10 +22,10 @@ const { guessPath, getReadableSize, terminalUrl } = require('./utils')
  * @param {PinningService[]} services
  * @param {string|undefined} cid
  * @param {string|undefined} dir
- * @param {string|undefined} tag
+ * @param {PinDirOptions} pinOpts
  * @param {Logger} logger
  */
-async function pinCidOrDir (services, cid, dir, tag, logger) {
+async function pinCidOrDir (services, cid, dir, pinOpts, logger) {
   const pinnedCids = []
   const gatewayUrls = []
 
@@ -38,13 +39,13 @@ async function pinCidOrDir (services, cid, dir, tag, logger) {
 
     if (cid) {
       logger.info(`📠  Pinning CID to ${serviceName}…`)
-      await service.pinCid(cid, tag)
+      await service.pinCid(cid, pinOpts.tag)
       lastCid = cid
       logger.info(`📌  CID pinned to ${serviceName}:`)
     } else {
       logger.info(`📠  Uploading and pinning to ${serviceName}…`)
       // @ts-ignore
-      lastCid = await service.pinDir(dir, tag)
+      lastCid = await service.pinDir(dir, pinOpts)
       logger.info(`📌  Added and pinned to ${serviceName} with CID:`)
     }
 
@@ -172,6 +173,7 @@ async function deploy ({
 
   copyUrl = false,
   openUrls = false,
+  hiddenFiles = false,
 
   uploadServices: uploadServicesIds = [],
   pinningServices: pinningServicesIds = [],
@@ -224,7 +226,7 @@ async function deploy ({
   const gatewayUrls = /** @type {string[]} */([])
 
   if (uploadServices.length > 0) {
-    const res = await pinCidOrDir(uploadServices, undefined, dir, tag, logger)
+    const res = await pinCidOrDir(uploadServices, undefined, dir, { tag, hidden: hiddenFiles }, logger)
     pinnedCids.push(...res.pinnedCids)
     gatewayUrls.push(...res.gatewayUrls)
   }
@@ -237,7 +239,7 @@ async function deploy ({
 
   cid = cid || pinnedCids[0]
   if (pinningServices.length > 0) {
-    const res = await pinCidOrDir(pinningServices, cid, undefined, tag, logger)
+    const res = await pinCidOrDir(pinningServices, cid, undefined, { tag }, logger)
     pinnedCids.push(...res.pinnedCids)
     gatewayUrls.push(...res.gatewayUrls)
   }

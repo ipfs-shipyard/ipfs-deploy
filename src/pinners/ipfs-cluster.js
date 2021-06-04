@@ -7,6 +7,7 @@ const { getDirFormData } = require('./utils')
 
 /**
  * @typedef {import('./types').IPFSClusterOptions} IPFSClusterOptions
+ * @typedef {import('./types').PinDirOptions} PinDirOptions
  */
 
 class IpfsCluster {
@@ -27,11 +28,11 @@ class IpfsCluster {
 
   /**
    * @param {string} dir
-   * @param {string|undefined} tag
+   * @param {PinDirOptions|undefined} options
    * @returns {Promise<string>}
    */
-  async pinDir (dir, tag) {
-    const data = await getDirFormData(dir)
+  async pinDir (dir, { tag, hidden = false } = {}) {
+    const data = await getDirFormData(dir, hidden)
 
     const res = await axios
       .post(`${this.host}/add?name=${tag}`, data, {

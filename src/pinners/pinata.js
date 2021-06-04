@@ -6,6 +6,7 @@ const { getDirFormData } = require('./utils')
 
 /**
  * @typedef {import('./types').PinataOptions} PinataOptions
+ * @typedef {import('./types').PinDirOptions} PinDirOptions
  */
 
 const MAX_RETRIES = 3
@@ -30,11 +31,11 @@ class Pinata {
 
   /**
    * @param {string} dir
-   * @param {string|undefined} tag
+   * @param {PinDirOptions|undefined} options
    * @returns {Promise<string>}
    */
-  async pinDir (dir, tag) {
-    const data = await getDirFormData(dir)
+  async pinDir (dir, { tag, hidden = false } = {}) {
+    const data = await getDirFormData(dir, hidden)
     const metadata = JSON.stringify({ name: tag })
     data.append('pinataMetadata', metadata)
 

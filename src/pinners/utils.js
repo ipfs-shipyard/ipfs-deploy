@@ -6,12 +6,13 @@ const { globSource } = require('ipfs-http-client')
 
 /**
  * @param {string} dir
+ * @param {boolean} hidden
  * @returns {Promise<FormData>}
  */
-async function getDirFormData (dir) {
+async function getDirFormData (dir, hidden) {
   const data = new FormData()
 
-  for await (const file of globSource(dir, { recursive: true })) {
+  for await (const file of globSource(dir, { recursive: true, hidden })) {
     // @ts-ignore
     if (file.content) {
       // @ts-ignore
