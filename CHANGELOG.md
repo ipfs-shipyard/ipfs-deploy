@@ -1,3 +1,12 @@
+## [10.0.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v10.0.0...v10.0.1) (2021-06-05)
+
+
+### Bug Fixes
+
+* throw if can't determine CID ([9f97af9](https://github.com/ipfs-shipyard/ipfs-deploy/commit/9f97af9886734e2a79db74b9bd2750d7a87cf615))
+
+
+
 # [10.0.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v9.0.3...v10.0.0) (2021-06-05)
 
 
