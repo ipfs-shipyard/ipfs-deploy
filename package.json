@@ -1,6 +1,6 @@
 {
   "name": "ipfs-deploy",
-  "version": "10.0.1",
+  "version": "10.1.0",
   "description": "Zero-Config CLI to Deploy Static Websites to IPFS",
   "keywords": [
     "ipfs",
