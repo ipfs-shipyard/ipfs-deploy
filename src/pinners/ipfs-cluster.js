@@ -54,6 +54,10 @@ class IpfsCluster {
     // @ts-ignore
     const root = results.find(({ name }) => name === basename)
 
+    if (!root) {
+      throw new Error('could not determine the CID')
+    }
+
     return root.cid['/']
   }
 
