@@ -1,3 +1,13 @@
+# [10.1.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v10.0.1...v10.1.0) (2021-06-05)
+
+
+### Bug Fixes
+
+* output logs to stderr ([#216](https://github.com/ipfs-shipyard/ipfs-deploy/issues/216)) ([65878d0](https://github.com/ipfs-shipyard/ipfs-deploy/commit/65878d04adeaef5837407f1e9950f8ca3709369a))
+* scope clipboardy and open and warn on error ([#213](https://github.com/ipfs-shipyard/ipfs-deploy/issues/213)) ([7e15e59](https://github.com/ipfs-shipyard/ipfs-deploy/commit/7e15e5995a34c76f3282d9940eec8fad551626f0))
+
+
+
 ## [10.0.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v10.0.0...v10.0.1) (2021-06-05)
 
 
