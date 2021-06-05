@@ -1,10 +1,8 @@
 'use strict'
 
 const chalk = require('chalk')
-const open = require('open')
 const path = require('path')
 const fs = require('fs')
-const clipboardy = require('clipboardy')
 
 const { dnsLinkersMap } = require('./dnslinkers')
 const { pinnersMap } = require('./pinners')
@@ -86,6 +84,10 @@ async function dnsLink (services, cid, logger) {
 }
 
 /**
+ * Copy URL to clipboard. This function does not throw, but
+ * prints any error instead as it is not a fundamental part of
+ * the deploying process.
+ *
  * @param {string[]} hostnames
  * @param {string[]} gatewayUrls
  * @param {Logger} logger
@@ -101,25 +103,37 @@ function copyToClipboard (hostnames, gatewayUrls, logger) {
   logger.info('📋  Copying HTTP gateway URL to clipboard…')
 
   try {
+    const clipboardy = require('clipboardy')
     clipboardy.writeSync(toCopy)
     logger.info('📋  Copied HTTP gateway URL to clipboard:')
     logger.info(terminalUrl(toCopy, toCopy))
   } catch (e) {
     logger.info('⚠️  Could not copy URL to clipboard.')
-    logger.error(e)
+    logger.error(e.stack || e.toString())
   }
 }
 
 /**
+ * Open URLs on web browser. This function does not throw, but
+ * prints any error instead as it is not a fundamental part of
+ * the deploying process.
+ *
  * @param {string[]} gatewayUrls
  * @param {string[]} hostnames
  * @param {Logger} logger
  */
 function openUrlsBrowser (gatewayUrls, hostnames, logger) {
   logger.info('🏄  Opening URLs on web browser...')
-  gatewayUrls.forEach(url => { open(url) })
-  hostnames.forEach(hostname => open(`https://${hostname}`))
-  logger.info('🏄  All URLs opened.')
+
+  try {
+    const open = require('open')
+    gatewayUrls.forEach(url => { open(url) })
+    hostnames.forEach(hostname => open(`https://${hostname}`))
+    logger.info('🏄  All URLs opened.')
+  } catch (e) {
+    logger.info('⚠️  Could not open URLs on web browser.')
+    logger.error(e.stack || e.toString())
+  }
 }
 
 const dummyLogger = /** @type {Logger} */({
