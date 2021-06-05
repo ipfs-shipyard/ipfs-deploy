@@ -1,6 +1,7 @@
 # ipfs-deploy
 
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![standard-readme
+compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 [![](https://img.shields.io/github/workflow/status/ipfs-shipyard/ipfs-deploy/Node.js%20CI/master?style=flat-square)](https://github.com/ipfs-shipyard/ipfs-deploy/actions/workflows/ci.yaml)
@@ -11,13 +12,12 @@
   <img src="https://user-images.githubusercontent.com/5447088/62481739-220bcc80-b7ab-11e9-8a9e-25f23ed92768.gif">
 </p>
 
-The goal of `ipfs-deploy` is to make it as easy as possible to
-**deploy a static website to IPFS.**
+The goal of `ipfs-deploy` is to make it as easy as possible to **deploy a static
+website to IPFS.**
 
 - [Install](#install)
 - [Usage](#usage)
 - [API](#api)
-- [Security](#security)
 - [Contributing](#contributing)
 - [Users](#users)
 - [License](#license)
@@ -35,7 +35,8 @@ ipd public/
 ipfs-deploy public/
 ```
 
-You can run it directly with [npx](https://www.npmjs.com/package/npx 'npx') so you don't need to install it:
+You can run it directly with [npx](https://www.npmjs.com/package/npx 'npx') so
+you don't need to install it:
 
 ```bash
 npx ipfs-deploy _site
@@ -50,12 +51,9 @@ Please check [md/usage.md](md/usage.md) for further information!
 
 ## API
 
-There is an API so, however it is somewhat unstable and subject to change. Please check [md/api.md](md/api.md) for further information!
+> There is an API so, however it is somewhat unstable and subject to change.
 
-## Security
-
-- We use `dotenv` to handle credentials. Never commit your `.env` file to source control.
-- By default, we do **not** upload hidden files (dot files) to IPFS. If you are sure you want them to be added, use the flag `-H, --hidden`.
+Please check [md/api.md](md/api.md) for further information!
 
 ## Contributing
 
@@ -70,8 +68,8 @@ Please check [md/contributing.md](md/contributing.md) for further information!
 - _Your website here_
 
 If you use this package to deploy your website, please send a pull request so I
-can add it to the [Users](#users) section in the README. (I reserve the right
-to exercise discretion.)
+can add it to the [Users](#users) section in the README. (I reserve the right to
+exercise discretion.)
 
 ## License
 

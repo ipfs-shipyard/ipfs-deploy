@@ -1,7 +1,7 @@
 # Library API
 
-We've been trying to make `ipfs-deploy` more friendly as a library. However, we have
-no documentation yet.
+We've been trying to make `ipfs-deploy` more friendly as a library. However, we
+have no documentation yet.
 
 ```javascript
 const { deploy, dnsLinkers, dnsLinkersMap, pinners, pinnersMap} = require('ipfs-deploy')
