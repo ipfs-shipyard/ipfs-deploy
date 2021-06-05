@@ -1,6 +1,10 @@
 export interface Logger {
+  // For informational messages.
   info: (message: string) => void
+  // For error messages.
   error: (message: string) => void
+  // For program output.
+  out: (message: string) => void
 }
 
 export interface DeployOptions {

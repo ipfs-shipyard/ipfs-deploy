@@ -155,6 +155,12 @@ const options = {
       username: argv.fission && argv.fission.username,
       password: argv.fission && argv.fission.password
     }
+  },
+
+  logger: {
+    info: argv.quiet ? () => {} : console.error,
+    error: console.error,
+    out: console.log
   }
 }
 
@@ -162,21 +168,12 @@ if (!options.uploadServices && !options.pinningServices) {
   options.pinningServices = ['infura']
 }
 
-if (!argv.quiet) {
-  options.logger = {
-    info: console.log,
-    error: console.error
-  }
-}
-
 async function main () {
   try {
-    const cid = await deploy(options)
-    if (!argv.quiet) console.log() // Add an empty line
-    console.log(cid)
+    await deploy(options)
   } catch (e) {
-    console.error('❌  An error has occurred:\n')
-    console.error(e.stack || e.toString())
+    options.logger.error('❌  An error has occurred:\n')
+    options.logger.error(e.stack || e.toString())
     process.exit(1)
   }
 }
