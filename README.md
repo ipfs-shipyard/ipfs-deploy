@@ -54,8 +54,8 @@ There is an API so, however it is somewhat unstable and subject to change. Pleas
 
 ## Security
 
-We use `dotenv` to handle credentials. Don't commit your `.env` file to source
-control.
+- We use `dotenv` to handle credentials. Never commit your `.env` file to source control.
+- By default, we do **not** upload hidden files (dot files) to IPFS. If you are sure you want them to be added, use the flag `-H, --hidden`.
 
 ## Contributing
 

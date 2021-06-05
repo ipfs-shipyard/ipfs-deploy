@@ -8,6 +8,7 @@ export interface DeployOptions {
   cid?: string
   tag?: string
 
+  hiddenFiles?: boolean
   copyUrl?: boolean
   openUrls?: boolean
 

@@ -72,6 +72,12 @@ const argv = yargs
             describe: 'Only print the CID in the end',
             type: 'boolean',
             default: false
+          },
+          H: {
+            alias: 'hidden',
+            describe: 'Add hidden (dot) files to IPFS',
+            type: 'boolean',
+            default: false
           }
         })
         .example(
@@ -109,6 +115,7 @@ const options = {
 
   copyUrl: !argv.C,
   openUrls: argv.open,
+  hiddenFiles: argv.hidden,
 
   uploadServices: arrayFromString(argv.upload),
   pinningServices: arrayFromString(argv.pinner),

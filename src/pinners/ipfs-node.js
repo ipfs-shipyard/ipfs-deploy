@@ -6,6 +6,7 @@ const path = require('path')
 
 /**
  * @typedef {import('ipfs-http-client').Options} IpfsOptions
+ * @typedef {import('./types').PinDirOptions} PinDirOptions
  */
 
 class IpfsNode {
@@ -18,11 +19,11 @@ class IpfsNode {
 
   /**
    * @param {string} dir
-   * @param {string|undefined} tag
+   * @param {PinDirOptions|undefined} options
    * @returns {Promise<string>}
    */
-  async pinDir (dir, tag) {
-    const response = await all(this.ipfs.addAll(globSource(dir, { recursive: true })))
+  async pinDir (dir, { tag, hidden = false } = {}) {
+    const response = await all(this.ipfs.addAll(globSource(dir, { recursive: true, hidden })))
     const basename = path.basename(dir)
     const root = response.find(({ path }) => path === basename)
 

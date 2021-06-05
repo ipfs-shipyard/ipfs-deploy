@@ -10,6 +10,7 @@ const headers = { 'content-type': 'application/octet-stream' }
 
 /**
  * @typedef {import('./types').FissionOptions} FissionOptions
+ * @typedef {import('./types').PinDirOptions} PinDirOptions
  */
 
 /**
@@ -57,20 +58,25 @@ class Fission {
 
   /**
    * @param {string} dir
-   * @param {string|undefined} tag
+   * @param {PinDirOptions|undefined} options
    * @returns {Promise<string>}
    */
-  async pinDir (dir, tag) {
+  async pinDir (dir, { tag, hidden = false } = {}) {
     if (!fs.statSync(dir).isDirectory()) {
       return uploadFile(this.auth, dir)
     }
 
-    const files = fs.readdirSync(dir)
+    let files = fs.readdirSync(dir)
+
+    if (!hidden) {
+      files = files.filter(f => !path.basename(f).startsWith('.'))
+    }
+
     const links = await Promise.all(
       files.map(async file => {
         const filepath = path.join(dir, file)
         const stat = fs.statSync(filepath)
-        const cid = await this.pinDir(filepath, tag)
+        const cid = await this.pinDir(filepath, { tag, hidden })
         return {
           Name: file,
           Size: stat.size,

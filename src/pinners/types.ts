@@ -1,5 +1,10 @@
+export interface PinDirOptions {
+  tag?: string
+  hidden?: boolean
+}
+
 export interface PinningService {
-  pinDir: (dir: string, tag: string|undefined) => Promise<string>
+  pinDir: (dir: string, options: PinDirOptions|undefined) => Promise<string>
   pinCid: (cid: string, tag: string|undefined) => void
   gatewayUrl: (cid: string) => string
   displayName: string
