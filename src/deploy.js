@@ -138,7 +138,8 @@ function openUrlsBrowser (gatewayUrls, hostnames, logger) {
 
 const dummyLogger = /** @type {Logger} */({
   info: () => {},
-  error: () => {}
+  error: () => {},
+  out: () => {}
 })
 
 /**
@@ -268,6 +269,7 @@ async function deploy ({
     copyToClipboard(hostnames, gatewayUrls, logger)
   }
 
+  logger.out(cid)
   return cid
 }
 
