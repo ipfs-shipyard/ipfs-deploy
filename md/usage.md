@@ -6,7 +6,6 @@
 - [Pinning Services Configuration](#pinning-services-configuration)
   - [Infura (default)](#infura-default)
   - [DAppNode](#dappnode)
-  - [Fission](#fission)
   - [IPFS Cluster](#ipfs-cluster)
   - [Pinata](#pinata)
 - [DNS Providers Configuration](#dns-providers-configuration)
@@ -151,16 +150,6 @@ VPN at `ipfs.dappnode`. If you can't reach the node make sure that you are
 connected to your DAppNode VPN.
 
 - Usage: `-p dappnode`
-
-### [Fission](https://fission.codes)
-
-Fission is a backend-as-a-service that uses IPFS and supports pinning. This
-service requires signup.
-
-- Usage: `-p fission`
-- Environment variables
-  - `IPFS_DEPLOY_FISSION__USERNAME=<username>`
-  - `IPFS_DEPLOY_FISSION__PASSWORD=<password>`
 
 ### [IPFS Cluster](https://cluster.ipfs.io/)
 
