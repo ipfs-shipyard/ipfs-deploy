@@ -1,3 +1,7 @@
+## [10.1.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v10.1.0...v10.1.1) (2021-07-01)
+
+
+
 # [10.1.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v10.0.1...v10.1.0) (2021-06-05)
 
 
