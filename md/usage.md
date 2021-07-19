@@ -63,11 +63,11 @@ Options:
   -t, --tag           Used as tag in some pinning services
   -u, --upload        Upload to this pinning services. If -p is set, only these
                       services are used to upload
-            [choices: "dappnode", "fission", "infura", "ipfs-cluster", "pinata"]
+            [choices: "dappnode", "infura", "ipfs-cluster", "pinata"]
   -p, --pinner        Pin to this services. If -u is set, these services are
                       only used to pin and not upload. Defaults to "infura" if
                       neither -u or -p are set.
-            [choices: "dappnode", "fission", "infura", "ipfs-cluster", "pinata"]
+            [choices: "dappnode", "infura", "ipfs-cluster", "pinata"]
   -d, --dns           DNS provider whose dnslink TXT field will be updated
                                 [choices: "cloudflare", "dnsimple", "dreamhost"]
   -c, --cid           Pin this CID instead of uploading

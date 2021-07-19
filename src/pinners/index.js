@@ -7,7 +7,6 @@ const Pinata = require('./pinata')
 
 const pinners = [
   DAppNode,
-  Fission,
   Infura,
   IpfsCluster,
   Pinata

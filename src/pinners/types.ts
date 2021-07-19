@@ -10,11 +10,6 @@ export interface PinningService {
   displayName: string
 }
 
-export interface FissionOptions {
-  username: string
-  password: string
-}
-
 export interface IPFSClusterOptions {
   host: string
   username: string
