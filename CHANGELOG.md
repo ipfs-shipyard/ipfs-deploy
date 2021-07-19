@@ -1,3 +1,12 @@
+# [11.0.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v10.1.1...v11.0.0) (2021-07-19)
+
+
+### Bug Fixes
+
+* hostname link works ([#221](https://github.com/ipfs-shipyard/ipfs-deploy/issues/221)) ([43c328e](https://github.com/ipfs-shipyard/ipfs-deploy/commit/43c328e62ecd7f038e8e29657d9b3b33bac862d0))
+
+
+
 ## [10.1.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v10.1.0...v10.1.1) (2021-07-01)
 
 
