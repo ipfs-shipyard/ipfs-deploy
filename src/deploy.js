@@ -102,6 +102,10 @@ function copyToClipboard (hostnames, gatewayUrls, logger) {
 
   logger.info('📋  Copying HTTP gateway URL to clipboard…')
 
+  if (!toCopy.startsWith('https')) {
+    toCopy = `https://${toCopy}`
+  }
+
   try {
     const clipboardy = require('clipboardy')
     clipboardy.writeSync(toCopy)
