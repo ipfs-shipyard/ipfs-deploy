@@ -64,10 +64,6 @@ const cid = await deploy({
       host: argv.ipfsCluster && argv.ipfsCluster.host,
       username: argv.ipfsCluster && argv.ipfsCluster.username,
       password: argv.ipfsCluster && argv.ipfsCluster.password
-    },
-    fission: {
-      username: argv.fission && argv.fission.username,
-      password: argv.fission && argv.fission.password
     }
   }
 })

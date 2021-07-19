@@ -6,7 +6,6 @@
 - [Pinning Services Configuration](#pinning-services-configuration)
   - [Infura (default)](#infura-default)
   - [DAppNode](#dappnode)
-  - [Fission](#fission)
   - [IPFS Cluster](#ipfs-cluster)
   - [Pinata](#pinata)
 - [DNS Providers Configuration](#dns-providers-configuration)
@@ -64,11 +63,11 @@ Options:
   -t, --tag           Used as tag in some pinning services
   -u, --upload        Upload to this pinning services. If -p is set, only these
                       services are used to upload
-            [choices: "dappnode", "fission", "infura", "ipfs-cluster", "pinata"]
+            [choices: "dappnode", "infura", "ipfs-cluster", "pinata"]
   -p, --pinner        Pin to this services. If -u is set, these services are
                       only used to pin and not upload. Defaults to "infura" if
                       neither -u or -p are set.
-            [choices: "dappnode", "fission", "infura", "ipfs-cluster", "pinata"]
+            [choices: "dappnode", "infura", "ipfs-cluster", "pinata"]
   -d, --dns           DNS provider whose dnslink TXT field will be updated
                                 [choices: "cloudflare", "dnsimple", "dreamhost"]
   -c, --cid           Pin this CID instead of uploading
@@ -151,16 +150,6 @@ VPN at `ipfs.dappnode`. If you can't reach the node make sure that you are
 connected to your DAppNode VPN.
 
 - Usage: `-p dappnode`
-
-### [Fission](https://fission.codes)
-
-Fission is a backend-as-a-service that uses IPFS and supports pinning. This
-service requires signup.
-
-- Usage: `-p fission`
-- Environment variables
-  - `IPFS_DEPLOY_FISSION__USERNAME=<username>`
-  - `IPFS_DEPLOY_FISSION__PASSWORD=<password>`
 
 ### [IPFS Cluster](https://cluster.ipfs.io/)
 
