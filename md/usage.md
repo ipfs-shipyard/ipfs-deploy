@@ -186,8 +186,8 @@ gateway), so a stable pinning service is needed if you don't want to rely on
 your computer's IPFS daemon's availability to serve your website.
 
 In order to use the Cloudflare API, you either use your API Key and your email
-for full access. If you prefer to use the **token**, it will need to have read
-zone access for all zones and DNS editing permissions for the specific zone
+for full access. If you prefer to use the **token**, it will need to have **read**
+zone access for all zones and DNS **editing** permissions for the specific zone
 being updated.
 
 - Usage: `-d cloudflare`
