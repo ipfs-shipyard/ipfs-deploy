@@ -31,6 +31,10 @@ async function pinCidOrDir (services, cid, dir, pinOpts, logger) {
     throw new Error('either cid or dir is required')
   }
 
+  if (dir) {
+    dir = path.resolve(dir)
+  }
+
   for (const service of services) {
     const serviceName = chalk.whiteBright(service.displayName)
     let lastCid
