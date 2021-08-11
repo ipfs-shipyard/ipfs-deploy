@@ -1,3 +1,12 @@
+## [11.0.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.0.0...v11.0.1) (2021-08-11)
+
+
+### Bug Fixes
+
+* resolve path before pinning ([#224](https://github.com/ipfs-shipyard/ipfs-deploy/issues/224)) ([2ac842b](https://github.com/ipfs-shipyard/ipfs-deploy/commit/2ac842bd231b58b5bc70f5141c4c8f6466df86c5))
+
+
+
 # [11.0.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v10.1.1...v11.0.0) (2021-07-19)
 
 
