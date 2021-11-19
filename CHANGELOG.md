@@ -1,3 +1,12 @@
+# [11.1.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.0.1...v11.1.0) (2021-11-19)
+
+
+### Bug Fixes
+
+* allow non-directory paths ([#226](https://github.com/ipfs-shipyard/ipfs-deploy/issues/226)) ([f450621](https://github.com/ipfs-shipyard/ipfs-deploy/commit/f450621f1816f30156f450e9a5ef31fb2d30bfbb))
+
+
+
 ## [11.0.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.0.0...v11.0.1) (2021-08-11)
 
 
