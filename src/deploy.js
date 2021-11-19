@@ -178,7 +178,7 @@ async function checkDirAndCid (dir, cid, logger) {
     dir = path.normalize(dir)
 
     if (!fs.statSync(dir).isDirectory()) {
-      throw new Error('path must be a directory')
+      logger.info('⚠️   Given path is not a directory. Continuing.')
     }
   }
 
