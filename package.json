@@ -66,6 +66,7 @@
     "lint"
   ],
   "dependencies": {
+    "@aws-sdk/client-route-53": "^3.47.0",
     "axios": "^0.21.1",
     "byte-size": "^7.0.1",
     "chalk": "^4.1.1",
@@ -109,3 +110,4 @@
     "sixcorners <sixcorners@gmail.com>"
   ]
 }
+ 

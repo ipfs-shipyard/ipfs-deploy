@@ -129,6 +129,13 @@ const options = {
       zone: argv.cloudflare && argv.cloudflare.zone,
       record: argv.cloudflare && argv.cloudflare.record
     },
+    route53: {
+      accessKeyId: argv.route53 && argv.route53.accessKeyId,
+      secretAccessKey: argv.route53 && argv.route53.secretAccessKey,
+      region: argv.route53 && argv.route53.region,
+      hostedZoneId: argv.route53 && argv.route53.hostedZoneId,
+      record: argv.route53 && argv.route53.record
+    },
     dnsimple: {
       token: argv.dnsimple && argv.dnsimple.token,
       zone: argv.dnsimple && argv.dnsimple.zone,
