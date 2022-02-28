@@ -60,13 +60,7 @@ class Route53 {
       }
     })
 
-    try {
-
-   await client.send(command)
-
-  } catch (err) {
-      console.log(err)
-  }
+    await client.send(command)
 
     return {
       record: this.record,

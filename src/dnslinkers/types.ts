@@ -23,7 +23,7 @@ export interface DNSimpleOptions {
 }
 
 export interface Route53Options {
-  accessKeyId : string
+  accessKeyId: string
   secretAccessKey: string
   region: string
   hostedZoneId: string
