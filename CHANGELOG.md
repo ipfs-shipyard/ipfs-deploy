@@ -1,3 +1,13 @@
+# [11.2.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.1.0...v11.2.0) (2022-03-01)
+
+
+### Features
+
+* c4rex pinning service ([#229](https://github.com/ipfs-shipyard/ipfs-deploy/issues/229)) ([ff2e7f2](https://github.com/ipfs-shipyard/ipfs-deploy/commit/ff2e7f2254f03a4e286f4449eaccb95136956876))
+* route53 dns service ([#230](https://github.com/ipfs-shipyard/ipfs-deploy/issues/230)) ([391e2c3](https://github.com/ipfs-shipyard/ipfs-deploy/commit/391e2c3a8a38ab198405b5b59a8ed332c8eb165f))
+
+
+
 # [11.1.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.0.1...v11.1.0) (2021-11-19)
 
 
