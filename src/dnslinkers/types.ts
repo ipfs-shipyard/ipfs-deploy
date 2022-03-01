@@ -22,6 +22,14 @@ export interface DNSimpleOptions {
   record: string
 }
 
+export interface Route53Options {
+  accessKeyId: string
+  secretAccessKey: string
+  region: string
+  hostedZoneId: string
+  record: string
+}
+
 export interface DreamHostOptions {
   key: string
   record: string

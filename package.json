@@ -66,6 +66,7 @@
     "lint"
   ],
   "dependencies": {
+    "@aws-sdk/client-route-53": "^3.47.0",
     "axios": "^0.21.1",
     "byte-size": "^7.0.1",
     "chalk": "^4.1.1",
@@ -106,6 +107,8 @@
     "Kevin Cox <kevincox@kevincox.ca>",
     "Marcin Rataj <lidel@lidel.org>",
     "Michael <michael@m-bauer.org>",
-    "sixcorners <sixcorners@gmail.com>"
+    "sixcorners <sixcorners@gmail.com>",
+    "Boris Claus Verhaaff <boris@c4rex.dev>"
   ]
 }
+ 

@@ -206,6 +206,31 @@ being updated.
     - `IPFS_DEPLOY_CLOUDFLARE__ZONE=<zone>`
     - `IPFS_DEPLOY_CLOUDFLARE__RECORD=<record>`
 
+### [AWS Route53](https://aws.amazon.com/route53/)
+
+Amazon Route 53 is a highly available and scalable cloud Domain Name System (DNS) web service. 
+It is designed to give developers and businesses an extremely reliable and cost effective way
+to route end users to Internet applications by translating names like www.example.com 
+into the numeric IP addresses like 192.0.2.1 that computers use to connect to each other. 
+Amazon Route 53 is fully compliant with IPv6 as well.
+
+AWS Route53 documentation:
+
+- [Get Started with Amazon Route53](https://console.aws.amazon.com/route53/home)
+- [Understanding and getting your AWS credentials](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)
+
+Usage:
+
+- Usage: `-d route53`
+- Environment variables
+  - Credentials
+    - `IPFS_DEPLOY_ROUTE53__ACCESS_KEY_ID=<accessKeyId>`
+    - `IPFS_DEPLOY_ROUTE53__SECRET_ACCESS_KEY=<secretAccessKey>`
+  - Configuration
+    - `IPFS_DEPLOY_ROUTE53__REGION=<region>`
+    - `IPFS_DEPLOY_ROUTE53__RECORD=<record>`
+    - `IPFS_DEPLOY_ROUTE53__HOSTED_ZONE_ID=<hostedZoneId>`
+
 #### Examples
 
 ```bash
