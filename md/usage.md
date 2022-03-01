@@ -173,6 +173,12 @@ requires signup.
   - `IPFS_DEPLOY_PINATA__API_KEY=<api key>`
   - `IPFS_DEPLOY_PINATA__SECRET_API_KEY=<secret api key>`
 
+### [C4REX](https://c4rex.co)
+
+C4REX is a free to use upload api and pinning service provided by [C4REX nearshore services](https://c4rex.dev)
+
+- Usage: `-u c4rex -p c4rex`
+
 ## DNS Providers Configuration
 
 ### [Cloudflare](https://cloudflare.com)
