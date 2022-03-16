@@ -7,10 +7,7 @@ class c4rex extends IpfsNode {
     super({
       host: 'api.ipfs.c4rex.co',
       port: 443,
-      protocol: 'https',
-      headers: {
-        Authorization: `Basic ${Buffer.from('api-ipfs:4PIUS3R').toString('base64')}`
-      }
+      protocol: 'https'
     })
   }
 

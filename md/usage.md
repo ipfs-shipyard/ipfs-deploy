@@ -8,10 +8,12 @@
   - [DAppNode](#dappnode)
   - [IPFS Cluster](#ipfs-cluster)
   - [Pinata](#pinata)
+  - [C4REX](#c4rex)
 - [DNS Providers Configuration](#dns-providers-configuration)
   - [Cloudflare](#cloudflare)
   - [DNSimple](#dnsimple)
   - [DreamHost](#dreamhost)
+  - [AWS Route53](#AWS-Route53)
 
 You can get started just by typing out `ipd` and it will have smart defaults. By
 default, it deploys to Infura, which doesn't need signup and you'll get a link
@@ -175,7 +177,7 @@ requires signup.
 
 ### [C4REX](https://c4rex.co)
 
-C4REX is a free to use upload api and pinning service provided by [C4REX nearshore services](https://c4rex.dev)
+C4REX is a free to use upload and pinning service provided by [C4REX nearshore services](https://c4rex.dev)
 
 - Usage: `-u c4rex -p c4rex`
 
@@ -206,7 +208,19 @@ being updated.
     - `IPFS_DEPLOY_CLOUDFLARE__ZONE=<zone>`
     - `IPFS_DEPLOY_CLOUDFLARE__RECORD=<record>`
 
-### [AWS Route53](https://aws.amazon.com/route53/)
+#### Examples
+
+```bash
+# Top level domain
+IPFS_DEPLOY_CLOUDFLARE__ZONE=example.com
+IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.example.com
+
+# Subdomain
+IPFS_DEPLOY_CLOUDFLARE__ZONE=example.com
+IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.mysubdomain.example.com
+```
+
+### [AWS-Route53](https://aws.amazon.com/route53/)
 
 Amazon Route 53 is a highly available and scalable cloud Domain Name System (DNS) web service. 
 It is designed to give developers and businesses an extremely reliable and cost effective way
@@ -231,16 +245,22 @@ Usage:
     - `IPFS_DEPLOY_ROUTE53__RECORD=<record>`
     - `IPFS_DEPLOY_ROUTE53__HOSTED_ZONE_ID=<hostedZoneId>`
 
-#### Examples
-
 ```bash
+
 # Top level domain
-IPFS_DEPLOY_CLOUDFLARE__ZONE=example.com
-IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.example.com
+
+IPFS_DEPLOY_ROUTE53__ACCESS_KEY_ID=AAAABBBBCCCCDDDDEEEE
+IPFS_DEPLOY_ROUTE53__SECRET_ACCESS_KEY=AbcdAbcdAbcdAbcdAbcdAbcdAbcdAbcdAbcdAbcd
+IPFS_DEPLOY_ROUTE53__REGION=us-east-1
+IPFS_DEPLOY_ROUTE53__RECORD=_dnslink.example.com
+IPFS_DEPLOY_ROUTE53__HOSTED_ZONE_ID=ZZZZQQQQSSSS1111NNNNN
 
 # Subdomain
-IPFS_DEPLOY_CLOUDFLARE__ZONE=example.com
-IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.mysubdomain.example.com
+IPFS_DEPLOY_ROUTE53__ACCESS_KEY_ID=AAAABBBBCCCCDDDDEEEE
+IPFS_DEPLOY_ROUTE53__SECRET_ACCESS_KEY=AbcdAbcdAbcdAbcdAbcdAbcdAbcdAbcdAbcdAbcd
+IPFS_DEPLOY_ROUTE53__REGION=us-east-1
+IPFS_DEPLOY_ROUTE53__RECORD=_dnslink.mysubdomain.example.com
+IPFS_DEPLOY_ROUTE53__HOSTED_ZONE_ID=ZZZZQQQQSSSS1111NNNNN
 ```
 
 ### [DNSimple](https://dnsimple.com)
