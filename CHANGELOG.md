@@ -1,3 +1,7 @@
+## [11.2.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.2.0...v11.2.1) (2022-03-17)
+
+
+
 # [11.2.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.1.0...v11.2.0) (2022-03-01)
 
 
