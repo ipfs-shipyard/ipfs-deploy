@@ -1,3 +1,12 @@
+## [11.2.2](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.2.1...v11.2.2) (2022-04-08)
+
+
+### Features
+
+* add handing of Infura credentials ([#232](https://github.com/ipfs-shipyard/ipfs-deploy/issues/232)) ([b8083cf](https://github.com/ipfs-shipyard/ipfs-deploy/commit/b8083cf9205d093258ce4e4af1ca5e157ae33258))
+
+
+
 ## [11.2.1](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.2.0...v11.2.1) (2022-03-17)
 
 
