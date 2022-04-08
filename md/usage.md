@@ -139,9 +139,15 @@ Will pin `QmHash` to Pinata and Infura.
 
 Infura is a freemium pinning service that doesn't require any additional setup.
 It's the default one used. Please bear in mind that Infura is a free service, so
-there is probably a rate-limiting.
+there is probably a rate-limiting.  
+
+Env variables are optional for users that want to use their own Infura account.
+
 
 - Usage: `-p infura`
+- Environment variables
+  - `IPFS_DEPLOY_INFURA__PROJECT_ID=<Infura Project ID>`
+  - `IPFS_DEPLOY_INFURA__PROJECT_SECRET=<nfura Project Secret>`
 
 ### [DAppNode](https://dappnode.io)
 

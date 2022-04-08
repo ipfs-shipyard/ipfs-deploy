@@ -149,6 +149,10 @@ const options = {
   },
 
   pinningServicesCredentials: {
+    infura: {
+      projectId: argv.infura && argv.infura.projectId,
+      projectSecret: argv.infura && argv.infura.projectSecret
+    },
     pinata: {
       apiKey: argv.pinata && argv.pinata.apiKey,
       secretApiKey: argv.pinata && argv.pinata.secretApiKey

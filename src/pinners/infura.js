@@ -1,14 +1,29 @@
 'use strict'
 
+const isString = require('lodash.isstring')
 const IpfsNode = require('./ipfs-node')
 
+/**
+ * @typedef {import('ipfs-http-client').Options} IpfsOptions
+ * @typedef {import('./types').InfuraOptions} InfuraOptions
+ */
+
 class Infura extends IpfsNode {
-  constructor () {
-    super({
+  /**
+   * @param {InfuraOptions} options
+   */
+  constructor ({ projectId, projectSecret }) {
+    /** @type {IpfsOptions} */
+    const options = {
       host: 'ipfs.infura.io',
       port: 5001,
       protocol: 'https'
-    })
+    }
+    if ([projectId, projectSecret].every(isString)) {
+      const authorization = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64')
+      options.headers = { authorization }
+    }
+    super(options)
   }
 
   /**

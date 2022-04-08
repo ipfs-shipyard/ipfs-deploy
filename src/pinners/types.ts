@@ -16,6 +16,11 @@ export interface IPFSClusterOptions {
   password: string
 }
 
+export interface InfuraOptions {
+  projectId?: string
+  projectSecret?: string
+}
+
 export interface PinataOptions {
   apiKey: string
   secretApiKey: string
