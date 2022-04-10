@@ -75,6 +75,7 @@ Options:
   -c, --cid           Pin this CID instead of uploading
   -q, --quiet         Only print the CID in the end   [boolean] [default: false]
   -H, --hidden        Add hidden (dot) files to IPFS  [boolean] [default: false]
+      --unpin-old     Unpin old requires a DNS linker [boolean] [default: false]
   -h, --help          Show help                                        [boolean]
 
 Examples:
@@ -104,6 +105,10 @@ Please keep in mind:
   sure you want them to be added, use the flag `-H, --hidden`.
 - All of the services are subject to their terms.
 
+## Unpinning
+It works by getting CID to unpin from dnslinker and then tries to unpin it from every
+upload and pin service. Currently, implemented only for CloudFlare and pinners that
+derive from IpfsNode (c4rex, DAppNode, Infura).
 
 ## Uploading and Pining
 

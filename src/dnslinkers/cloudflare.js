@@ -3,6 +3,7 @@
 // @ts-ignore
 const dnslink = require('dnslink-cloudflare')
 const isEmpty = require('lodash.isempty')
+const getLinkedCid = require('../lib/cloudflareCid')
 
 /**
  * @typedef {import('./types').DNSRecord} DNSRecord
@@ -53,10 +54,10 @@ class Cloudflare {
   }
 
   /**
-   * @returns {Promise<string>}
+   * @returns {Promise<string|null>}
    */
   async getLinkedCid () {
-    throw new Error('getLinkedCid not implemented in Cloudflare')
+    return getLinkedCid(this.api, this.opts)
   }
 
   static get displayName () {
