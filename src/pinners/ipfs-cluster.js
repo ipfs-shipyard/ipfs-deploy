@@ -76,7 +76,7 @@ class IpfsCluster {
   /**
    * @param {string} cid
    */
-  unpinCid (cid) {
+  async unpinCid (cid) {
     throw new Error('unpinCid not implemented in IpfsCluster')
   }
 

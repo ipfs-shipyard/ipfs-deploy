@@ -206,10 +206,22 @@ async function unpin (dnsServices, pinServices, logger) {
   }
 
   const cidToUnpin = linkedCids[0]
+  if (!cidToUnpin) {
+    logger.info('There is nothing to unpin')
+    return
+  }
 
   for (const pinProvider of pinServices) {
     logger.info(`Unpinning ${cidToUnpin} from ${pinProvider.displayName}`)
-    pinProvider.unpinCid(cidToUnpin)
+    try {
+      await pinProvider.unpinCid(cidToUnpin)
+    } catch (e) {
+      if (e.name === 'HTTPError' && e.message === 'not pinned or pinned indirectly') {
+        logger.info(`${cidToUnpin} not pinned to ${pinProvider.displayName}, moving forward`)
+      } else {
+        throw (e)
+      }
+    }
   }
 }
 
@@ -278,7 +290,7 @@ async function deploy ({
     if (dnsProviders.length === 0) {
       throw new Error('If you want to unpin you must provide dns provider')
     }
-    await unpin(dnsProviders, pinningServices, logger)
+    await unpin(dnsProviders, uploadServices.concat(pinningServices), logger)
   }
 
   const pinnedCids = /** @type {string[]} */([])

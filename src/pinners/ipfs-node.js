@@ -46,8 +46,8 @@ class IpfsNode {
   /**
    * @param {string} cid
    */
-  unpinCid (cid) {
-    throw new Error('unpinCid not implemented in IpfsNode')
+  async unpinCid (cid) {
+    await this.ipfs.pin.rm(cid)
   }
 
   /**
