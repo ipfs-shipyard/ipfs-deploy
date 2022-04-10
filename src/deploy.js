@@ -213,15 +213,7 @@ async function unpin (dnsServices, pinServices, logger) {
 
   for (const pinProvider of pinServices) {
     logger.info(`Unpinning ${cidToUnpin} from ${pinProvider.displayName}`)
-    try {
-      await pinProvider.unpinCid(cidToUnpin)
-    } catch (e) {
-      if (e.name === 'HTTPError' && e.message === 'not pinned or pinned indirectly') {
-        logger.info(`${cidToUnpin} not pinned to ${pinProvider.displayName}, moving forward`)
-      } else {
-        throw (e)
-      }
-    }
+    await pinProvider.unpinCid(cidToUnpin, logger)
   }
 }
 

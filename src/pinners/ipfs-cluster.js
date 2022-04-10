@@ -8,6 +8,7 @@ const { getDirFormData } = require('./utils')
 /**
  * @typedef {import('./types').IPFSClusterOptions} IPFSClusterOptions
  * @typedef {import('./types').PinDirOptions} PinDirOptions
+ * @typedef {import('../types').Logger} Logger
  */
 
 class IpfsCluster {
@@ -75,8 +76,9 @@ class IpfsCluster {
 
   /**
    * @param {string} cid
+   * @param {Logger} logger
    */
-  async unpinCid (cid) {
+  async unpinCid (cid, logger) {
     throw new Error('unpinCid not implemented in IpfsCluster')
   }
 
