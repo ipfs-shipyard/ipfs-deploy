@@ -93,6 +93,13 @@ class Pinata {
 
   /**
    * @param {string} cid
+   */
+  unpinCid (cid) {
+    throw new Error('unpinCid not implemented in Pinata')
+  }
+
+  /**
+   * @param {string} cid
    * @returns string
    */
   gatewayUrl (cid) {

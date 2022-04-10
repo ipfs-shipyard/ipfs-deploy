@@ -45,6 +45,13 @@ class IpfsNode {
 
   /**
    * @param {string} cid
+   */
+  unpinCid (cid) {
+    throw new Error('unpinCid not implemented in IpfsNode')
+  }
+
+  /**
+   * @param {string} cid
    * @returns string
    */
   gatewayUrl (cid) {

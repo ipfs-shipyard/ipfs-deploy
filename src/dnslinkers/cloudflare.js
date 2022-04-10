@@ -52,6 +52,13 @@ class Cloudflare {
     }
   }
 
+  /**
+   * @returns {Promise<string>}
+   */
+  async getLinkedCid () {
+    throw new Error('getLinkedCid not implemented in Cloudflare')
+  }
+
   static get displayName () {
     return 'Cloudflare'
   }

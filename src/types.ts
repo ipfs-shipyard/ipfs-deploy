@@ -15,6 +15,7 @@ export interface DeployOptions {
   hiddenFiles?: boolean
   copyUrl?: boolean
   openUrls?: boolean
+  unpinOld?: boolean
 
   uploadServices: string[]
   pinningServices: string[]

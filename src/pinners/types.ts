@@ -6,6 +6,7 @@ export interface PinDirOptions {
 export interface PinningService {
   pinDir: (dir: string, options: PinDirOptions|undefined) => Promise<string>
   pinCid: (cid: string, tag: string|undefined) => void
+  unpinCid: (cid: string) => void
   gatewayUrl: (cid: string) => string
   displayName: string
 }

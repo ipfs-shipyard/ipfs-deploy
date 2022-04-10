@@ -186,6 +186,34 @@ async function checkDirAndCid (dir, cid, logger) {
 }
 
 /**
+ * @param {DNSLinker[]} dnsServices
+ * @param {PinningService[]} pinServices
+ * @param {Logger} logger
+ */
+async function unpin (dnsServices, pinServices, logger) {
+  /** @type {string[]} */
+  const linkedCids = []
+
+  for (const dnsProvider of dnsServices) {
+    logger.info(`Getting linked cid from ${dnsProvider.displayName}`)
+    const cid = await dnsProvider.getLinkedCid()
+    logger.info(`Got cid: ${cid}`)
+    linkedCids.push(cid)
+  }
+
+  if (linkedCids.some(v => v !== linkedCids[0])) {
+    throw new Error(`Found inconsistency in linked CIDs: ${linkedCids}`)
+  }
+
+  const cidToUnpin = linkedCids[0]
+
+  for (const pinProvider of pinServices) {
+    logger.info(`Unpinning ${cidToUnpin} from ${pinProvider.displayName}`)
+    pinProvider.unpinCid(cidToUnpin)
+  }
+}
+
+/**
  * @param {DeployOptions} options
  * @returns {Promise<string>}
  */
@@ -197,6 +225,7 @@ async function deploy ({
   copyUrl = false,
   openUrls = false,
   hiddenFiles = false,
+  unpinOld = false,
 
   uploadServices: uploadServicesIds = [],
   pinningServices: pinningServicesIds = [],
@@ -244,6 +273,13 @@ async function deploy ({
     const DNSLinker = dnsLinkersMap.get(name)
     return new DNSLinker(dnsProvidersCredentials[name])
   })
+
+  if (unpinOld) {
+    if (dnsProviders.length === 0) {
+      throw new Error('If you want to unpin you must provide dns provider')
+    }
+    await unpin(dnsProviders, pinningServices, logger)
+  }
 
   const pinnedCids = /** @type {string[]} */([])
   const gatewayUrls = /** @type {string[]} */([])

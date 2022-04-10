@@ -78,6 +78,11 @@ const argv = yargs
             describe: 'Add hidden (dot) files to IPFS',
             type: 'boolean',
             default: false
+          },
+          'unpin-old': {
+            describe: 'Unpin old requires a DNS linker',
+            type: 'boolean',
+            default: false
           }
         })
         .example(
@@ -116,6 +121,7 @@ const options = {
   copyUrl: !argv.C,
   openUrls: argv.open,
   hiddenFiles: argv.hidden,
+  unpinOld: argv.unpinOld,
 
   uploadServices: arrayFromString(argv.upload),
   pinningServices: arrayFromString(argv.pinner),

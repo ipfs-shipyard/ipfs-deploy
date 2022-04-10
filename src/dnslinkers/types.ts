@@ -5,6 +5,7 @@ export interface DNSRecord {
 
 export interface DNSLinker {
   link: (cid: string) => Promise<DNSRecord>
+  getLinkedCid: () => Promise<string>
   displayName: string
 }
 

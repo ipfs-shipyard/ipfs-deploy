@@ -75,6 +75,13 @@ class IpfsCluster {
 
   /**
    * @param {string} cid
+   */
+  unpinCid (cid) {
+    throw new Error('unpinCid not implemented in IpfsCluster')
+  }
+
+  /**
+   * @param {string} cid
    * @returns string
    */
   gatewayUrl (cid) {
