@@ -71,7 +71,7 @@
     "byte-size": "^8.1.0",
     "chalk": "^4.1.1",
     "clipboardy": "^2.3.0",
-    "dnslink-cloudflare": "^3.0.0",
+    "dnslink-cloudflare": "banciur/dnslink-cloudflare#banciur/handle_web3",
     "dnslink-dnsimple": "^1.0.1",
     "dotenv": "^16.0.0",
     "dreamhost": "^1.0.5",
