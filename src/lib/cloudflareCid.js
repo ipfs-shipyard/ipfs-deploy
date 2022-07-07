@@ -22,7 +22,7 @@ async function getRecord (api, id, name) {
 
   for (let i = 1; (res = await api(`zones/${id}/dns_records?type=TXT&page=${i}`)) && res.body.result_info.total_pages >= i; i++) {
     for (const record of res.body.result) {
-      if (record.name === name && record.content.startsWith('dnslink=')) {
+      if (record.name.includes(name) && record.content.startsWith('dnslink=')) {
         return record
       }
     }
@@ -51,10 +51,10 @@ function getClient (apiOpts) {
   return got.extend(opts)
 }
 
-async function getLinkedCid (apiOpts, { zone, record }) {
+async function getLinkedCid (apiOpts, { zone, web3Hostname }) {
   const api = getClient(apiOpts)
   const id = await getZoneId(api, zone)
-  const zoneRecord = await getRecord(api, id, record)
+  const zoneRecord = await getRecord(api, id, web3Hostname)
   if (zoneRecord) {
     // assuming content 'dnslink=/ipfs/QmZ4tDuvesekSs4qM5ZBKpXiZGun7S2CYtEZRB3DYXkjGx'
     return zoneRecord.content.slice(zoneRecord.content.lastIndexOf('/') + 1)

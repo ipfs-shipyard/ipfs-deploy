@@ -275,6 +275,7 @@ async function deploy ({
   logger.info('⚙️   Validating DNS providers configurations…')
   const dnsProviders = dnsProvidersIds.map(name => {
     const DNSLinker = dnsLinkersMap.get(name)
+    // logger.info(dnsProvidersCredentials[name])
     return new DNSLinker(dnsProvidersCredentials[name])
   })
 

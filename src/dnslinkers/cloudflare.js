@@ -14,13 +14,13 @@ class Cloudflare {
   /**
    * @param {CloudflareOptions} options
    */
-  constructor ({ apiEmail, apiKey, apiToken, zone, record }) {
+  constructor ({ apiEmail, apiKey, apiToken, zone, web3Hostname }) {
     if ([apiKey, apiEmail, apiToken].every(isEmpty)) {
       throw new Error('apiEmail and apiKey or apiToken are required for Cloudflare')
     }
 
-    if ([zone, record].some(isEmpty)) {
-      throw new Error('zone and record are required for CloudFlare')
+    if ([zone, web3Hostname].some(isEmpty)) {
+      throw new Error('zone and web3 hostname are required for CloudFlare')
     }
 
     if (isEmpty(apiKey)) {
@@ -32,7 +32,7 @@ class Cloudflare {
       }
     }
 
-    this.opts = { record, zone }
+    this.opts = { web3Hostname, zone }
   }
 
   /**
@@ -48,7 +48,7 @@ class Cloudflare {
     const content = await dnslink(this.api, opts)
 
     return {
-      record: opts.record,
+      record: opts.web3Hostname,
       value: content
     }
   }

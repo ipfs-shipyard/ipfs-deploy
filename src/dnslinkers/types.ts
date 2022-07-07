@@ -14,7 +14,7 @@ export interface CloudflareOptions {
   apiKey?: string
   apiToken?: string
   zone: string
-  record: string
+  web3Hostname: string
 }
 
 export interface DNSimpleOptions {

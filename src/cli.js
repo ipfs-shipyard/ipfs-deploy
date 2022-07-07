@@ -133,7 +133,7 @@ const options = {
       apiToken: argv.cloudflare && argv.cloudflare.apiToken,
       apiEmail: argv.cloudflare && argv.cloudflare.apiEmail,
       zone: argv.cloudflare && argv.cloudflare.zone,
-      record: argv.cloudflare && argv.cloudflare.record
+      web3Hostname: argv.cloudflare && argv.cloudflare.web3Hostname
     },
     route53: {
       accessKeyId: argv.route53 && argv.route53.accessKeyId,

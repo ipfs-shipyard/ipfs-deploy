@@ -217,18 +217,18 @@ being updated.
     - `IPFS_DEPLOY_CLOUDFLARE__API_TOKEN=<scoped token>`
   - Configuration
     - `IPFS_DEPLOY_CLOUDFLARE__ZONE=<zone>`
-    - `IPFS_DEPLOY_CLOUDFLARE__RECORD=<record>`
+    - `IPFS_DEPLOY_CLOUDFLARE__WEB3_HOSTNAME=<web3 hostname>`
 
 #### Examples
 
 ```bash
 # Top level domain
 IPFS_DEPLOY_CLOUDFLARE__ZONE=example.com
-IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.example.com
+IPFS_DEPLOY_CLOUDFLARE__WEB3_HOSTNAME=example.com
 
 # Subdomain
 IPFS_DEPLOY_CLOUDFLARE__ZONE=example.com
-IPFS_DEPLOY_CLOUDFLARE__RECORD=_dnslink.mysubdomain.example.com
+IPFS_DEPLOY_CLOUDFLARE__WEB3_HOSTNAME=mysubdomain.example.com
 ```
 
 ### [AWS-Route53](https://aws.amazon.com/route53/)
