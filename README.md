@@ -6,7 +6,7 @@ compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 [![](https://img.shields.io/github/workflow/status/ipfs-shipyard/ipfs-deploy/Node.js%20CI/master?style=flat-square)](https://github.com/ipfs-shipyard/ipfs-deploy/actions/workflows/ci.yaml)
 
-> Upload static website to IPFS pinning services and optionally update DNS.
+> Upload static websites to IPFS pinning services and optionally update the DNS.
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/5447088/62481739-220bcc80-b7ab-11e9-8a9e-25f23ed92768.gif">
