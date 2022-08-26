@@ -64,6 +64,11 @@ const cid = await deploy({
       host: argv.ipfsCluster && argv.ipfsCluster.host,
       username: argv.ipfsCluster && argv.ipfsCluster.username,
       password: argv.ipfsCluster && argv.ipfsCluster.password
+    },
+    filebase: {
+      apiKey: argv.filebase && argv.filebase.apiKey,
+      secretApiKey: argv.filebase && argv.filebase.secretApiKey,
+      bucket: argv.filebase && argv.filebase.bucket
     }
   }
 })
