@@ -1,3 +1,5 @@
+> ⚠️ **This repository does not have a maintainer and therefore does not provide guaranteed maintenance/support**. Please check issue [#242](https://github.com/ipfs-shipyard/ipfs-deploy/issues/242) for more information 
+
 # ipfs-deploy
 
 [![standard-readme
