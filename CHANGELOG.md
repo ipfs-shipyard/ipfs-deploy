@@ -1,3 +1,12 @@
+# [12.0.0](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.2.2...v12.0.0) (2022-09-01)
+
+
+### Features
+
+* Filebase support ([#241](https://github.com/ipfs-shipyard/ipfs-deploy/issues/241)) ([0f0d353](https://github.com/ipfs-shipyard/ipfs-deploy/commit/0f0d3539dea402a22a3897cb035c2f46bd27181d))
+
+
+
 ## [11.2.2](https://github.com/ipfs-shipyard/ipfs-deploy/compare/v11.2.1...v11.2.2) (2022-04-08)
 
 
