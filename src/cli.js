@@ -166,6 +166,11 @@ const options = {
       apiKey: argv.filebase && argv.filebase.apiKey,
       secretApiKey: argv.filebase && argv.filebase.secretApiKey,
       bucket: argv.filebase && argv.filebase.bucket
+    },
+    'ipfs-node': {
+      host: argv.ipfsNode && argv.ipfsNode.host,
+      port: argv.ipfsNode && argv.ipfsNode.port,
+      protocol: argv.ipfsNode && argv.ipfsNode.protocol
     }
   },
 
