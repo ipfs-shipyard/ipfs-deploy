@@ -5,13 +5,15 @@ const Infura = require('./infura')
 const IpfsCluster = require('./ipfs-cluster')
 const Pinata = require('./pinata')
 const c4rex = require('./c4rex')
+const Filebase = require('./filebase')
 
 const pinners = [
   DAppNode,
   Infura,
   IpfsCluster,
   Pinata,
-  c4rex
+  c4rex,
+  Filebase
 ]
 
 const pinnersMap = pinners.reduce((map, pinner) => {

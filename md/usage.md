@@ -9,6 +9,7 @@
   - [IPFS Cluster](#ipfs-cluster)
   - [Pinata](#pinata)
   - [C4REX](#c4rex)
+  - [Filebase](#filebase)
 - [DNS Providers Configuration](#dns-providers-configuration)
   - [Cloudflare](#cloudflare)
   - [DNSimple](#dnsimple)
@@ -69,7 +70,7 @@ Options:
   -p, --pinner        Pin to this services. If -u is set, these services are
                       only used to pin and not upload. Defaults to "infura" if
                       neither -u or -p are set.
-            [choices: "dappnode", "infura", "ipfs-cluster", "pinata"]
+            [choices: "dappnode", "infura", "ipfs-cluster", "pinata", "filebase"]
   -d, --dns           DNS provider whose dnslink TXT field will be updated
                                 [choices: "cloudflare", "dnsimple", "dreamhost"]
   -c, --cid           Pin this CID instead of uploading
@@ -186,6 +187,18 @@ requires signup.
 C4REX is a free to use upload and pinning service provided by [C4REX nearshore services](https://c4rex.dev)
 
 - Usage: `-u c4rex -p c4rex`
+
+### [Filebase](https://filebase.com)
+
+Filebase is another freemium pinning service. It gives you more control over
+what's uploaded. You can delete, label and add custom metadata. This service
+requires signup.
+
+- Usage: `-p filebase`
+- Environment variables
+  - `IPFS_DEPLOY_FILEBASE__API_KEY=<api key>`
+  - `IPFS_DEPLOY_FILEBASE__SECRET_API_KEY=<secret api key>`
+  - `IPFS_DEPLOY_FILEBASE__BUCKET=<bucket>`
 
 ## DNS Providers Configuration
 

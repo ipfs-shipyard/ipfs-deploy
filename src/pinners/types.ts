@@ -25,3 +25,9 @@ export interface PinataOptions {
   apiKey: string
   secretApiKey: string
 }
+
+export interface FilebaseOptions {
+  apiKey: string
+  secretApiKey: string
+  bucket: string
+}
