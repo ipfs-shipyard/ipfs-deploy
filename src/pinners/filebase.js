@@ -3,7 +3,7 @@
 const isEmpty = require('lodash.isempty')
 const { FilebaseClient } = require('@filebase/client')
 const { filesFromPath } = require('files-from-path')
-const {default: axios} = require('axios')
+const { default: axios } = require('axios')
 
 /**
  * @typedef {import('./types').FilebaseOptions} FilebaseOptions
@@ -16,7 +16,7 @@ class Filebase {
   /**
    * @param {FilebaseOptions} options
    */
-  constructor ({ apiKey, secretApiKey, bucket}) {
+  constructor ({ apiKey, secretApiKey, bucket }) {
     if ([apiKey, secretApiKey, bucket].some(isEmpty)) {
       throw new Error('apiKey and secretApiKey are required for Pinata')
     }
@@ -27,7 +27,7 @@ class Filebase {
       bucket: bucket
     }
 
-    this.tokenString = btoa(`${this.auth.api_key}:${this.auth.secret_api_key}:${this.auth.bucket}`);
+    this.tokenString = btoa(`${this.auth.api_key}:${this.auth.secret_api_key}:${this.auth.bucket}`)
   }
 
   /**
