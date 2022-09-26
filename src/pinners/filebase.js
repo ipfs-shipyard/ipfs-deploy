@@ -18,7 +18,7 @@ class Filebase {
    */
   constructor ({ apiKey, secretApiKey, bucket }) {
     if ([apiKey, secretApiKey, bucket].some(isEmpty)) {
-      throw new Error('apiKey and secretApiKey are required for Pinata')
+      throw new Error('apiKey, secretApiKey and bucket are required for Filebase')
     }
 
     this.auth = {
