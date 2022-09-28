@@ -1,5 +1,3 @@
-> ⚠️ **This repository does not have a maintainer and therefore does not provide guaranteed maintenance/support**. Please check issue [#242](https://github.com/ipfs-shipyard/ipfs-deploy/issues/242) for more information 
-
 # ipfs-deploy
 
 [![standard-readme
@@ -17,12 +15,17 @@ compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?
 The goal of `ipfs-deploy` is to make it as easy as possible to **deploy a static
 website to IPFS.**
 
+- [Maintainer](#maintainer)
 - [Install](#install)
 - [Usage](#usage)
 - [API](#api)
 - [Contributing](#contributing)
 - [Users](#users)
 - [License](#license)
+
+## Maintainer 
+
+This package is community-maintaned. Current go-to maintainer is [@websoftwares](https://github.com/websoftwares).
 
 ## Install
 
