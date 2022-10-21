@@ -78,6 +78,7 @@
     "dreamhost": "^1.0.5",
     "files-from-path": "^0.2.6",
     "form-data": "^4.0.0",
+    "got": "^11.8.2",
     "ipfs-http-client": "^50.1.0",
     "it-all": "^1.0.6",
     "lodash.isempty": "^4.4.0",
