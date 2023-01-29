@@ -1,19 +1,18 @@
-'use strict'
+import { fileURLToPath } from 'node:url'
+import chalk from 'chalk'
+import path from 'node:path'
+import fs from 'node:fs'
 
-const chalk = require('chalk')
-const path = require('path')
-const fs = require('fs')
-
-const { dnsLinkersMap } = require('./dnslinkers')
-const { pinnersMap } = require('./pinners')
-const { guessPath, getReadableSize, terminalUrl } = require('./utils')
+import { dnsLinkersMap } from './dnslinkers/index.js'
+import { pinnersMap } from './pinners/index.js'
+import { guessPath, getReadableSize, terminalUrl } from './utils.js'
 
 /**
- * @typedef {import('./dnslinkers/types').DNSLinker} DNSLinker
- * @typedef {import('./pinners/types').PinningService} PinningService
- * @typedef {import('./pinners/types').PinDirOptions} PinDirOptions
- * @typedef {import('./types').DeployOptions} DeployOptions
- * @typedef {import('./types').Logger} Logger
+ * @typedef {import('./dnslinkers/types.js').DNSLinker} DNSLinker
+ * @typedef {import('./pinners/types.js').PinningService} PinningService
+ * @typedef {import('./pinners/types.js').PinDirOptions} PinDirOptions
+ * @typedef {import('./types.js').DeployOptions} DeployOptions
+ * @typedef {import('./types.js').Logger} Logger
  */
 
 /**
@@ -96,7 +95,7 @@ async function dnsLink (services, cid, logger) {
  * @param {string[]} gatewayUrls
  * @param {Logger} logger
  */
-function copyToClipboard (hostnames, gatewayUrls, logger) {
+async function copyToClipboard (hostnames, gatewayUrls, logger) {
   let toCopy
   if (hostnames.length > 0) {
     toCopy = hostnames[hostnames.length - 1]
@@ -111,11 +110,11 @@ function copyToClipboard (hostnames, gatewayUrls, logger) {
   }
 
   try {
-    const clipboardy = require('clipboardy')
-    clipboardy.writeSync(toCopy)
+    const { default: clipboardy } = await import('clipboardy')
+    await clipboardy.write(toCopy)
     logger.info('📋  Copied HTTP gateway URL to clipboard:')
     logger.info(terminalUrl(toCopy, toCopy))
-  } catch (e) {
+  } catch (/** @type {any} */ e) {
     logger.info('⚠️  Could not copy URL to clipboard.')
     logger.error(e.stack || e.toString())
   }
@@ -130,15 +129,15 @@ function copyToClipboard (hostnames, gatewayUrls, logger) {
  * @param {string[]} hostnames
  * @param {Logger} logger
  */
-function openUrlsBrowser (gatewayUrls, hostnames, logger) {
+async function openUrlsBrowser (gatewayUrls, hostnames, logger) {
   logger.info('🏄  Opening URLs on web browser...')
 
   try {
-    const open = require('open')
+    const { default: open } = await import('open')
     gatewayUrls.forEach(url => { open(url) })
     hostnames.forEach(hostname => open(`https://${hostname}`))
     logger.info('🏄  All URLs opened.')
-  } catch (e) {
+  } catch (/** @type {any} */ e) {
     logger.info('⚠️  Could not open URLs on web browser.')
     logger.error(e.stack || e.toString())
   }
@@ -189,7 +188,7 @@ async function checkDirAndCid (dir, cid, logger) {
  * @param {DeployOptions} options
  * @returns {Promise<string>}
  */
-async function deploy ({
+export default async function deploy ({
   dir,
   cid,
   tag,
@@ -211,7 +210,7 @@ async function deploy ({
   dir = res.dir
   cid = res.cid
 
-  tag = tag || __dirname
+  tag = tag || fileURLToPath(new URL('.', import.meta.url))
 
   // In the case we only set pinning services and we're deploying a directory,
   // then call those upload services.
@@ -270,15 +269,13 @@ async function deploy ({
   const hostnames = await dnsLink(dnsProviders, cid, logger)
 
   if (openUrls) {
-    openUrlsBrowser(gatewayUrls, hostnames, logger)
+    await openUrlsBrowser(gatewayUrls, hostnames, logger)
   }
 
   if (copyUrl) {
-    copyToClipboard(hostnames, gatewayUrls, logger)
+    await copyToClipboard(hostnames, gatewayUrls, logger)
   }
 
   logger.out(cid)
   return cid
 }
-
-module.exports = deploy

@@ -1,18 +1,18 @@
-'use strict'
-
-const isEmpty = require('lodash.isempty')
-const { FilebaseClient } = require('@filebase/client')
-const { filesFromPath } = require('files-from-path')
-const { default: axios } = require('axios')
+import isEmpty from 'lodash.isempty'
+// @ts-ignore
+import { FilebaseClient } from '@filebase/client'
+// @ts-ignore
+import { filesFromPath } from 'files-from-path'
+import axios from 'axios'
 
 /**
- * @typedef {import('./types').FilebaseOptions} FilebaseOptions
- * @typedef {import('./types').PinDirOptions} PinDirOptions
+ * @typedef {import('./types.js').FilebaseOptions} FilebaseOptions
+ * @typedef {import('./types.js').PinDirOptions} PinDirOptions
  */
 
 const PIN_HASH_URL = 'https://api.filebase.io/v1/ipfs/pins'
 
-class Filebase {
+export default class Filebase {
   /**
    * @param {FilebaseOptions} options
    */
@@ -24,7 +24,7 @@ class Filebase {
     this.auth = {
       api_key: apiKey,
       secret_api_key: secretApiKey,
-      bucket: bucket
+      bucket
     }
 
     this.tokenString = btoa(`${this.auth.api_key}:${this.auth.secret_api_key}:${this.auth.bucket}`)
@@ -57,7 +57,7 @@ class Filebase {
    */
   async pinCid (cid, tag) {
     const body = JSON.stringify({
-      cid: cid,
+      cid,
       name: tag
     })
 
@@ -91,5 +91,3 @@ class Filebase {
     return 'filebase'
   }
 }
-
-module.exports = Filebase

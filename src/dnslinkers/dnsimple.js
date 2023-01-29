@@ -1,15 +1,13 @@
-'use strict'
-
 // @ts-ignore
-const dnslink = require('dnslink-dnsimple')
-const isEmpty = require('lodash.isempty')
+import dnslink from 'dnslink-dnsimple'
+import isEmpty from 'lodash.isempty'
 
 /**
- * @typedef {import('./types').DNSRecord} DNSRecord
- * @typedef {import('./types').DNSimpleOptions} DNSimpleOptions
+ * @typedef {import('./types.js').DNSRecord} DNSRecord
+ * @typedef {import('./types.js').DNSimpleOptions} DNSimpleOptions
  */
 
-class DNSimple {
+export default class DNSimple {
   /**
    * @param {DNSimpleOptions} options
    */
@@ -63,5 +61,3 @@ class DNSimple {
     return 'dnsimple'
   }
 }
-
-module.exports = DNSimple

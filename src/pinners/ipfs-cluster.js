@@ -1,16 +1,13 @@
-'use strict'
-
-const { default: axios } = require('axios')
-const path = require('path')
-const isEmpty = require('lodash.isempty')
-const { getDirFormData } = require('./utils')
+import axios from 'axios'
+import isEmpty from 'lodash.isempty'
+import { getDirFormData } from './utils.js'
 
 /**
- * @typedef {import('./types').IPFSClusterOptions} IPFSClusterOptions
- * @typedef {import('./types').PinDirOptions} PinDirOptions
+ * @typedef {import('./types.js').IPFSClusterOptions} IPFSClusterOptions
+ * @typedef {import('./types.js').PinDirOptions} PinDirOptions
  */
 
-class IpfsCluster {
+export default class IpfsCluster {
   /**
    *
    * @param {IPFSClusterOptions} options
@@ -32,7 +29,7 @@ class IpfsCluster {
    * @returns {Promise<string>}
    */
   async pinDir (dir, { tag, hidden = false } = {}) {
-    const data = await getDirFormData(dir, hidden)
+    const data = await getDirFormData(dir, hidden, 'upload')
 
     const res = await axios
       .post(`${this.host}/add?name=${tag}`, data, {
@@ -50,9 +47,8 @@ class IpfsCluster {
       .split('\n')
       .map(JSON.parse)
 
-    const basename = path.basename(dir)
     // @ts-ignore
-    const root = results.find(({ name }) => name === basename)
+    const root = results.find(({ name }) => name === 'upload')
 
     if (!root) {
       throw new Error('could not determine the CID')
@@ -93,5 +89,3 @@ class IpfsCluster {
     return 'ipfs-cluster'
   }
 }
-
-module.exports = IpfsCluster

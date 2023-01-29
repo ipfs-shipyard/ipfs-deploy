@@ -25,9 +25,7 @@ with the name of the pinning service. Let's say it's called `PinningService`:
 create a file at `src/pinners/pinning-service.js` with the following contents:
 
 ```javascript
-'use strict'
-
-class PinningService {
+export default class PinningService {
   constructor () {
     // TODO
   }
@@ -52,8 +50,6 @@ class PinningService {
     return 'pinning-service'
   }
 }
-
-module.exports = PinningService
 ```
 
 Where `options` in the constructor are the required parameters to connect to
@@ -69,7 +65,7 @@ the name of the DNS provider. Let's say it's called `DNS Provider`: create a
 file at `src/dnslinkers/dns-provider.js` with the following contents:
 
 ```javascript
-class DNSProvider {
+export default class DNSProvider {
   constructor () {
     // TODO
   }
@@ -94,9 +90,6 @@ class DNSProvider {
     return 'dns-provider'
   }
 }
-
-module.exports = DNSProvider
-
 ```
 
 Where `options` in the constructor are the required parameters to connect to

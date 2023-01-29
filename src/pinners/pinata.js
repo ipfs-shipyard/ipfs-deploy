@@ -1,12 +1,10 @@
-'use strict'
-
-const { default: axios } = require('axios')
-const isEmpty = require('lodash.isempty')
-const { getDirFormData } = require('./utils')
+import axios from 'axios'
+import isEmpty from 'lodash.isempty'
+import { getDirFormData } from './utils.js'
 
 /**
- * @typedef {import('./types').PinataOptions} PinataOptions
- * @typedef {import('./types').PinDirOptions} PinDirOptions
+ * @typedef {import('./types.js').PinataOptions} PinataOptions
+ * @typedef {import('./types.js').PinDirOptions} PinDirOptions
  */
 
 const MAX_RETRIES = 3
@@ -14,7 +12,7 @@ const RETRY_CODES = [429]
 const PIN_DIR_URL = 'https://api.pinata.cloud/pinning/pinFileToIPFS'
 const PIN_HASH_URL = 'https://api.pinata.cloud/pinning/pinByHash'
 
-class Pinata {
+export default class Pinata {
   /**
    * @param {PinataOptions} options
    */
@@ -55,7 +53,7 @@ class Pinata {
           })
 
         return res.data.IpfsHash
-      } catch (err) {
+      } catch (/** @type {any} */ err) {
         if (err && err.response && RETRY_CODES.includes(err.response.status)) {
           retries += 1
           lastErrorCode = err.response.status
@@ -111,5 +109,3 @@ class Pinata {
     return 'pinata'
   }
 }
-
-module.exports = Pinata

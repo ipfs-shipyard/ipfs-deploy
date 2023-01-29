@@ -1,11 +1,10 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 /* eslint-env mocha */
-'use strict'
 
-const { expect } = require('aegir/utils/chai')
-const proxyquire = require('proxyquire').noCallThru()
+import { expect } from 'aegir/chai'
+import esmock from 'esmock'
 
-const DNSimple = proxyquire('../../src/dnslinkers/dnsimple', {
+const DNSimple = await esmock('../../src/dnslinkers/dnsimple.js', {
   // @ts-ignore
   'dnslink-dnsimple': (_token, { link }) => {
     return { record: { content: `dnslink=${link}` } }

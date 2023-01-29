@@ -1,30 +1,24 @@
-'use strict'
-
-const FormData = require('form-data')
-const path = require('path')
-const { globSource } = require('ipfs-http-client')
+import FormData from 'form-data'
+import { globSource } from 'ipfs-http-client'
 
 /**
  * @param {string} dir
  * @param {boolean} hidden
+ * @param {string} pathPrefix
  * @returns {Promise<FormData>}
  */
-async function getDirFormData (dir, hidden) {
+export async function getDirFormData (dir, hidden, pathPrefix = '') {
   const data = new FormData()
 
-  for await (const file of globSource(dir, { recursive: true, hidden })) {
+  for await (const file of globSource(dir, '**/*', { hidden })) {
     // @ts-ignore
     if (file.content) {
       // @ts-ignore
       data.append('file', file.content, {
-        filepath: path.normalize(file.path)
+        filepath: pathPrefix + file.path
       })
     }
   }
 
   return data
-}
-
-module.exports = {
-  getDirFormData
 }

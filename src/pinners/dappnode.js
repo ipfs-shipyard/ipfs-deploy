@@ -1,8 +1,6 @@
-'use strict'
+import IpfsNode from './ipfs-node.js'
 
-const IpfsNode = require('./ipfs-node')
-
-class DAppNode extends IpfsNode {
+export default class DAppNode extends IpfsNode {
   constructor () {
     super({
       host: 'ipfs.dappnode',
@@ -23,5 +21,3 @@ class DAppNode extends IpfsNode {
     return 'dappnode'
   }
 }
-
-module.exports = DAppNode

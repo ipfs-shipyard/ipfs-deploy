@@ -1,12 +1,11 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 /* eslint-env mocha */
-'use strict'
 
-const { expect } = require('aegir/utils/chai')
-const proxyquire = require('proxyquire').noCallThru()
+import { expect } from 'aegir/chai'
+import esmock from 'esmock'
 
-it('guessPath throws when cannot find any guessable path', () => {
-  const { guessPath } = proxyquire('../src/utils', {
+it('guessPath throws when cannot find any guessable path', async () => {
+  const { guessPath } = await esmock('../src/utils.js', {
     fs: {
       existsSync: () => false
     }
@@ -15,8 +14,8 @@ it('guessPath throws when cannot find any guessable path', () => {
   expect(guessPath).to.throw()
 })
 
-it('guessPath throws if more than one guessable path is available', () => {
-  const { guessPath } = proxyquire('../src/utils', {
+it('guessPath throws if more than one guessable path is available', async () => {
+  const { guessPath } = await esmock('../src/utils.js', {
     fs: {
       /**
        * @param {string} path
@@ -38,8 +37,8 @@ it('guessPath throws if more than one guessable path is available', () => {
   expect(guessPath).to.throw()
 })
 
-it('guessPath returns guessable path', () => {
-  const { guessPath } = proxyquire('../src/utils', {
+it('guessPath returns guessable path', async () => {
+  const { guessPath } = await esmock('../src/utils.js', {
     fs: {
       /**
        * @param {string} path

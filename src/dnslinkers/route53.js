@@ -1,17 +1,15 @@
-'use strict'
-
 // @ts-ignore
 
-const { Route53Client, ChangeResourceRecordSetsCommand } = require('@aws-sdk/client-route-53')
-const isEmpty = require('lodash.isempty')
+import { Route53Client, ChangeResourceRecordSetsCommand } from '@aws-sdk/client-route-53'
+import isEmpty from 'lodash.isempty'
 const TTL = 60
 
 /**
- * @typedef {import('./types').DNSRecord} DNSRecord
- * @typedef {import('./types').Route53Options} Route53Options
+ * @typedef {import('./types.js').DNSRecord} DNSRecord
+ * @typedef {import('./types.js').Route53Options} Route53Options
  */
 
-class Route53 {
+export default class Route53 {
   /**
    * @param {Route53Options} options
    */
@@ -48,7 +46,7 @@ class Route53 {
             ResourceRecordSet: {
               Name: this.record,
               Type: 'TXT',
-              TTL: TTL,
+              TTL,
               ResourceRecords: [
                 {
                   Value: `"${txtValue}"`
@@ -80,5 +78,3 @@ class Route53 {
     return 'route53'
   }
 }
-
-module.exports = Route53
