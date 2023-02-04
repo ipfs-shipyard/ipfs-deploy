@@ -74,7 +74,7 @@
   ],
   "dependencies": {
     "@aws-sdk/client-route-53": "^3.53.0",
-    "@filebase/client": "^0.0.2",
+    "@filebase/client": "^0.0.4",
     "axios": "^1.2.6",
     "byte-size": "^8.1.0",
     "chalk": "^4.1.1",
