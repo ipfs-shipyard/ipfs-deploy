@@ -1,12 +1,10 @@
-'use strict'
-
-const { existsSync } = require('fs')
+import { existsSync } from 'node:fs'
 // @ts-ignore
-const trammel = require('trammel')
+import trammel from 'trammel'
 // @ts-ignore
-const byteSize = require('byte-size')
-const terminalLink = require('terminal-link')
-const chalk = require('chalk')
+import byteSize from 'byte-size'
+import terminalLink from 'terminal-link'
+import chalk from 'chalk'
 
 const pathsToCheck = [
   '_site', // jekyll, hakyll, eleventy
@@ -25,7 +23,7 @@ const pathsToCheck = [
  *
  * @returns {string}
  */
-function guessPath () {
+export function guessPath () {
   const guesses = pathsToCheck.filter(existsSync)
   if (guesses.length > 1) {
     throw new Error('more than one guessable path to deploy, please specify a path')
@@ -44,7 +42,7 @@ function guessPath () {
  * @param {string} path
  * @returns {Promise<string>}
  */
-async function getReadableSize (path) {
+export async function getReadableSize (path) {
   const size = await trammel(path, {
     stopOnError: true,
     type: 'raw'
@@ -62,12 +60,6 @@ async function getReadableSize (path) {
  * @param {string} link
  * @returns {string}
  */
-function terminalUrl (title, link) {
+export function terminalUrl (title, link) {
   return `🔗  ${chalk.green(terminalLink(title, link))}`
-}
-
-module.exports = {
-  guessPath,
-  getReadableSize,
-  terminalUrl
 }

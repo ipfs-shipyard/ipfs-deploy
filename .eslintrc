@@ -1,3 +1,6 @@
 {
-  "extends": "ipfs"
+  "extends": "ipfs",
+  "parserOptions": {
+    "sourceType": "module"
+  }
 }

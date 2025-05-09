@@ -1,6 +1,8 @@
 {
   "extends": "aegir/src/config/tsconfig.aegir.json",
   "compilerOptions": {
+    "module": "node16",
+    "moduleResolution": "node16",
     "outDir": "dist",
     "baseUrl": "./",
     "paths": {

@@ -1,9 +1,8 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 /* eslint-env mocha */
-'use strict'
 
-const { expect } = require('aegir/utils/chai')
-const proxyquire = require('proxyquire').noCallThru()
+import { expect } from 'aegir/chai'
+import esmock from 'esmock'
 
 // @ts-ignore
 const getBuiltPinata = async (Pinata) => {
@@ -15,7 +14,7 @@ const getBuiltPinata = async (Pinata) => {
   return pinata
 }
 
-const getPinataNoThrow = () => proxyquire('../../src/pinners/pinata', {
+const getPinataNoThrow = () => esmock('../../src/pinners/pinata.js', {
   'ipfs-http-client': {
     globSource: function * () {
       yield {}
@@ -33,12 +32,12 @@ const getPinataNoThrow = () => proxyquire('../../src/pinners/pinata', {
 })
 
 const getBuiltPinataNoThrow = async () => {
-  const Pinata = getPinataNoThrow()
+  const Pinata = await getPinataNoThrow()
   return getBuiltPinata(Pinata)
 }
 
 const getBuiltPinataThrowAxios = async () => {
-  const Pinata = proxyquire('../../src/pinners/pinata', {
+  const Pinata = await esmock('../../src/pinners/pinata.js', {
     axios: {
       default: {
         post: () => { throw new Error() }
@@ -49,16 +48,16 @@ const getBuiltPinataThrowAxios = async () => {
   return getBuiltPinata(Pinata)
 }
 
-it('pinata constructor throws with missing options', () => {
-  const Pinata = getPinataNoThrow()
+it('pinata constructor throws with missing options', async () => {
+  const Pinata = await getPinataNoThrow()
 
   expect(() => new Pinata({
     apiKey: 'somewhere'
   })).to.throw()
 })
 
-it('pinata constructor does not throw with correct options', () => {
-  const Pinata = getPinataNoThrow()
+it('pinata constructor does not throw with correct options', async () => {
+  const Pinata = await getPinataNoThrow()
 
   expect(() => new Pinata({
     apiKey: 'apiKey',
@@ -83,6 +82,7 @@ it('pinata pinCid throws on HTTP request failure', async () => {
 })
 
 it('pinata pinDir throws on file system failure', async () => {
-  const pinata = await getBuiltPinata(require('../../src/pinners/pinata'))
+  const { default: Pinata } = await import('../../src/pinners/pinata.js')
+  const pinata = await getBuiltPinata(Pinata)
   await expect(pinata.pinDir('dir')).to.be.rejected()
 })

@@ -1,11 +1,10 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 /* eslint-env mocha */
-'use strict'
 
-const { expect } = require('aegir/utils/chai')
-const proxyquire = require('proxyquire').noCallThru()
+import { expect } from 'aegir/chai'
+import esmock from 'esmock'
 
-const IpfsCluster = proxyquire('../../src/pinners/ipfs-cluster', {
+const IpfsCluster = await esmock('../../src/pinners/ipfs-cluster', {
   axios: {
     default: {
       post: async () => ({

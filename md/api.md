@@ -3,8 +3,10 @@
 We've been trying to make `ipfs-deploy` more friendly as a library. However, we
 have no documentation yet.
 
+This library is only available in ESM format.
+
 ```javascript
-const { deploy, dnsLinkers, dnsLinkersMap, pinners, pinnersMap} = require('ipfs-deploy')
+import { deploy, dnsLinkers, dnsLinkersMap, pinners, pinnersMap } from 'ipfs-deploy'
 
 // Get available dnsLinkers identifiers
 dnsLinkersMap.keys()
@@ -21,7 +23,7 @@ dnsLinkersMap.get('cloudflare')
 How we currently use the deploy function:
 
 ```javascript
-const { deploy } = require('ipfs-deploy')
+import { deploy } from 'ipfs-deploy'
 
 const cid = await deploy({
   dir: argv.path,

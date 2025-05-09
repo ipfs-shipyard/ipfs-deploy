@@ -1,18 +1,11 @@
-'use strict'
+import Cloudflare from './cloudflare.js'
+import DNSimple from './dnsimple.js'
+import DreamHost from './dreamhost.js'
+import Route53 from './route53.js'
 
-const Cloudflare = require('./cloudflare')
-const DNSimple = require('./dnsimple')
-const DreamHost = require('./dreamhost')
-const Route53 = require('./route53')
+export const dnsLinkers = [Cloudflare, DNSimple, DreamHost, Route53]
 
-const dnsLinkers = [Cloudflare, DNSimple, DreamHost, Route53]
-
-const dnsLinkersMap = dnsLinkers.reduce((map, dnsLinker) => {
+export const dnsLinkersMap = dnsLinkers.reduce((map, dnsLinker) => {
   map.set(dnsLinker.slug, dnsLinker)
   return map
 }, new Map())
-
-module.exports = {
-  dnsLinkers,
-  dnsLinkersMap
-}

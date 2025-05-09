@@ -1,11 +1,10 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 /* eslint-env mocha */
-'use strict'
 
-const { expect } = require('aegir/utils/chai')
-const proxyquire = require('proxyquire').noCallThru()
+import { expect } from 'aegir/chai'
+import esmock from 'esmock'
 
-const Cloudflare = proxyquire('../../src/dnslinkers/cloudflare', {
+const Cloudflare = await esmock('../../src/dnslinkers/cloudflare.js', {
   'dnslink-cloudflare': () => 'value'
 })
 

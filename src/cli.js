@@ -3,14 +3,17 @@
 // @ts-nocheck
 
 /* eslint-disable no-console */
-'use strict'
 
-const updateNotifier = require('update-notifier')
-const yargs = require('yargs')
-const dotenv = require('dotenv')
+import { readFile } from 'node:fs/promises'
+import updateNotifier from 'update-notifier'
+import yargs from 'yargs/yargs'
+import { hideBin } from 'yargs/helpers'
+import dotenv from 'dotenv'
 
-const { deploy, dnsLinkersMap, pinnersMap } = require('.')
-const pkg = require('../package.json')
+import { deploy, dnsLinkersMap, pinnersMap } from './index.js'
+
+const pkgUrl = new URL('../package.json', import.meta.url)
+const pkg = JSON.parse(await readFile(pkgUrl, 'utf8'))
 
 const dnsProviders = [...dnsLinkersMap.keys()]
 const pinningServices = [...pinnersMap.keys()]
@@ -18,7 +21,7 @@ const pinningServices = [...pinnersMap.keys()]
 updateNotifier({ pkg, updateCheckInterval: 0 }).notify()
 dotenv.config()
 
-const argv = yargs
+const argv = yargs(hideBin(process.argv))
   .scriptName('ipfs-deploy')
   .usage(
     '$0 [path] [options]',
