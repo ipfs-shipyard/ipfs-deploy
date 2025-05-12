@@ -58,7 +58,7 @@ class IpfsCluster {
       throw new Error('could not determine the CID')
     }
 
-    return root.cid['/']
+    return root.cid
   }
 
   /**
