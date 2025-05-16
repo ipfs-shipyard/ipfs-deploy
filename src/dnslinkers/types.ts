@@ -14,6 +14,7 @@ export interface CloudflareOptions {
   apiToken?: string
   zone: string
   record: string
+  useWeb3Gw?: boolean
 }
 
 export interface DNSimpleOptions {

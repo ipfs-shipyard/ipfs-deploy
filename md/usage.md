@@ -217,6 +217,9 @@ for full access. If you prefer to use the **token**, it will need to have **read
 zone access for all zones and DNS **editing** permissions for the specific zone
 being updated.
 
+To use the new Web3 Gateway feature set `IPFS_DEPLOY_CLOUDFLARE__USE_WEB3_GW` to `true`.
+The **token** need to have **edit** permission on `Web3 Hostnames` for the specific zone.
+
 - Usage: `-d cloudflare`
 - Environment variables
   - Credentials
@@ -226,6 +229,7 @@ being updated.
   - Configuration
     - `IPFS_DEPLOY_CLOUDFLARE__ZONE=<zone>`
     - `IPFS_DEPLOY_CLOUDFLARE__RECORD=<record>`
+    - `IPFS_DEPLOY_CLOUDFLARE__USE_WEB3_GW=<0|true>`
 
 #### Examples
 
