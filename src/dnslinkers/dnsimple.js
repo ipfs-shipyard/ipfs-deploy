@@ -51,6 +51,13 @@ class DNSimple {
     }
   }
 
+  /**
+   * @returns {Promise<string>}
+   */
+  async getLinkedCid () {
+    throw new Error('getLinkedCid not implemented in DNSimple')
+  }
+
   static get displayName () {
     return 'DNSimple'
   }

@@ -68,6 +68,10 @@ class Route53 {
     }
   }
 
+  async getLinkedCid () {
+    throw new Error('getLinkedCid not implemented in Route53')
+  }
+
   static get displayName () {
     return 'Route53'
   }

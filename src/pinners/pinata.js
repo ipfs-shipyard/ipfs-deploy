@@ -7,6 +7,7 @@ const { getDirFormData } = require('./utils')
 /**
  * @typedef {import('./types').PinataOptions} PinataOptions
  * @typedef {import('./types').PinDirOptions} PinDirOptions
+ * @typedef {import('../types').Logger} Logger
  */
 
 const MAX_RETRIES = 3
@@ -89,6 +90,14 @@ class Pinata {
     }
 
     await axios.post(PIN_HASH_URL, body, config)
+  }
+
+  /**
+   * @param {string} cid
+   * @param {Logger} logger
+   */
+  async unpinCid (cid, logger) {
+    throw new Error('unpinCid not implemented in Pinata')
   }
 
   /**

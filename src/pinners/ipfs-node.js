@@ -7,6 +7,7 @@ const path = require('path')
 /**
  * @typedef {import('ipfs-http-client').Options} IpfsOptions
  * @typedef {import('./types').PinDirOptions} PinDirOptions
+ * @typedef {import('../types').Logger} Logger
  */
 
 class IpfsNode {
@@ -41,6 +42,22 @@ class IpfsNode {
    */
   async pinCid (cid, tag) {
     await this.ipfs.pin.add(cid)
+  }
+
+  /**
+   * @param {string} cid
+   * @param {Logger} logger
+   */
+  async unpinCid (cid, logger) {
+    try {
+      await this.ipfs.pin.rm(cid)
+    } catch (e) {
+      if (e.name === 'HTTPError' && e.message === 'not pinned or pinned indirectly') {
+        logger.info(`${cid} not pinned to ${this.displayName}, moving forward`)
+      } else {
+        throw (e)
+      }
+    }
   }
 
   /**

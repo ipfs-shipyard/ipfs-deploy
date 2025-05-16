@@ -186,6 +186,38 @@ async function checkDirAndCid (dir, cid, logger) {
 }
 
 /**
+ * @param {DNSLinker[]} dnsServices
+ * @param {PinningService[]} pinServices
+ * @param {Logger} logger
+ */
+async function unpin (dnsServices, pinServices, logger) {
+  /** @type {string[]} */
+  const linkedCids = []
+
+  for (const dnsProvider of dnsServices) {
+    logger.info(`Getting linked cid from ${dnsProvider.displayName}`)
+    const cid = await dnsProvider.getLinkedCid()
+    logger.info(`Got cid: ${cid}`)
+    linkedCids.push(cid)
+  }
+
+  if (linkedCids.some(v => v !== linkedCids[0])) {
+    throw new Error(`Found inconsistency in linked CIDs: ${linkedCids}`)
+  }
+
+  const cidToUnpin = linkedCids[0]
+  if (!cidToUnpin) {
+    logger.info('There is nothing to unpin')
+    return
+  }
+
+  for (const pinProvider of pinServices) {
+    logger.info(`Unpinning ${cidToUnpin} from ${pinProvider.displayName}`)
+    await pinProvider.unpinCid(cidToUnpin, logger)
+  }
+}
+
+/**
  * @param {DeployOptions} options
  * @returns {Promise<string>}
  */
@@ -197,6 +229,7 @@ async function deploy ({
   copyUrl = false,
   openUrls = false,
   hiddenFiles = false,
+  unpinOld = false,
 
   uploadServices: uploadServicesIds = [],
   pinningServices: pinningServicesIds = [],
@@ -242,8 +275,16 @@ async function deploy ({
   logger.info('⚙️   Validating DNS providers configurations…')
   const dnsProviders = dnsProvidersIds.map(name => {
     const DNSLinker = dnsLinkersMap.get(name)
+    // logger.info(dnsProvidersCredentials[name])
     return new DNSLinker(dnsProvidersCredentials[name])
   })
+
+  if (unpinOld) {
+    if (dnsProviders.length === 0) {
+      throw new Error('If you want to unpin you must provide dns provider')
+    }
+    await unpin(dnsProviders, uploadServices.concat(pinningServices), logger)
+  }
 
   const pinnedCids = /** @type {string[]} */([])
   const gatewayUrls = /** @type {string[]} */([])

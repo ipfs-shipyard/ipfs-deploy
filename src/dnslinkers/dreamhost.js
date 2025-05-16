@@ -68,6 +68,10 @@ class DreamHost {
     })
   }
 
+  async getLinkedCid () {
+    throw new Error('getLinkedCid not implemented in DreamHost')
+  }
+
   static get displayName () {
     return 'DreamHost'
   }

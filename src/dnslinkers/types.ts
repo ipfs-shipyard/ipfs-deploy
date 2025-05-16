@@ -5,6 +5,7 @@ export interface DNSRecord {
 
 export interface DNSLinker {
   link: (cid: string) => Promise<DNSRecord>
+  getLinkedCid: () => Promise<string>
   displayName: string
 }
 
@@ -13,7 +14,7 @@ export interface CloudflareOptions {
   apiKey?: string
   apiToken?: string
   zone: string
-  record: string
+  web3Hostname: string
 }
 
 export interface DNSimpleOptions {
